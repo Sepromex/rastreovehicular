@@ -130,7 +130,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 			$port = empty($this->port) ? NULL : $this->port;
 			$socket = NULL;
 		}
-
+ 
 		$client_flags = ($this->compress === TRUE) ? MYSQLI_CLIENT_COMPRESS : 0;
 		$this->_mysqli = mysqli_init();
 

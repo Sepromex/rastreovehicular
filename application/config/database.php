@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | DATABASE CONNECTIVITY SETTINGS
 | -------------------------------------------------------------------
 | This file will contain the settings needed to access your database.
-|
+| 
 | For complete instructions please consult the 'Database Connection'
 | page of the User Guide.
 |
@@ -73,12 +73,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+/*$db['default'] = array(
+	'dsn'	=> '',
+	'hostname' => '127.0.0.1',
+	'port'     => '3306',
+	'username' => 'root',
+	'password' => 'Sepromex2021@_',
+	'database' => 'sepromex_master',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);*/
+
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => '10.0.1.3',
+	'port'     => '3306',
+	'username' => 'egweb',
+	'password' => '53g53pr0',
+	'database' => 'sepromex',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -94,3 +119,5 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+?>
