@@ -25,7 +25,7 @@
                                 <li class="nav-item" style="padding: 5px 2px !important;">
                                     <a href="#" data-mailtype="inbox" class="nav-link padding-tab active"> 
                                         <i class="mdi mdi-car font-tab"></i> 
-                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=count($vehiculos)?></span>
+                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=count($vehicle_list)?></span>
                                     </a>
                                 </li>
                                 <li class="nav-item" style="padding: 5px 2px !important;">
@@ -140,7 +140,7 @@
                                 <i class="mdi mdi-camera-timer"></i>
                                 mdi mdi-gauge-empty
                             -->                            
-                            <?php foreach($vehiculos as $v){ ?>
+                            <?php foreach($vehicle_list as $v){ ?>
                             <?php if($v->ID_VEH != ""){ ?>
                             <li class="py-1 px-2 mail-item inbox sent starred">
                                 <div class="d-flex align-self-center align-middle">

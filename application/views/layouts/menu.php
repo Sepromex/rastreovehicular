@@ -32,7 +32,7 @@
 
             <li class="dropdown"><a href="#"><i class="icon-doc mr-1"></i> Cuenta </a>                  
                 <ul>  
-                    <li><a href="#"><i class="icon-book-open"></i> Usuarios </a> </li>                                  
+                    <li><a href="Users/User"><i class="icon-book-open"></i> Usuarios </a> </li>                                  
                 </ul>                   
             </li>
 

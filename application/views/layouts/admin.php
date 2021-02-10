@@ -1,31 +1,31 @@
-<?php function b_url(){ echo ""; } ?>
 <!DOCTYPE html>
 <html lang="en">
     <!-- START: Head-->
     <head>
         <meta charset="UTF-8">
-        <title>EGWEB</title>
-        <link rel="shortcut icon" href="<?=b_url()?>/dist/images/favicon.ico" />
+        <title><?=$custom["title"]?></title>
+        <link rel="shortcut icon" href="<?=base_url()?>/dist/images/favicon.ico" />
         <meta name="viewport" content="width=device-width,initial-scale=1">         
         <!-- START: Template CSS-->
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/jquery-ui/jquery-ui.min.css">
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/jquery-ui/jquery-ui.theme.min.css">
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/simple-line-icons/css/simple-line-icons.css">        
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/flags-icon/css/flag-icon.min.css">        
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/materialdesign-webfont/css/materialdesignicons.min.css"> 
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/jquery-ui/jquery-ui.theme.min.css">
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/simple-line-icons/css/simple-line-icons.css">        
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/flags-icon/css/flag-icon.min.css">        
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/materialdesign-webfont/css/materialdesignicons.min.css">        
         <!-- END Template CSS-->       
-
+        
         <!-- START: Page CSS-->   
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/morris/morris.css"> 
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/weather-icons/css/pe-icon-set-weather.min.css">  
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/starrr/starrr.css"> 
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/fontawesome/css/all.min.css">
-        <link rel="stylesheet" href="<?=b_url()?>/dist/vendors/ionicons/css/ionicons.min.css">  
-        <!-- END: Page CSS--> 
-        <script src="socket.io.js"></script>
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/morris/morris.css"> 
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/weather-icons/css/pe-icon-set-weather.min.css">  
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/starrr/starrr.css"> 
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/ionicons/css/ionicons.min.css">  
+        <!-- END: Page CSS-->  
+
+        <!-- <script src="socket.io.js"></script>-->
         <script>
-        const $events = document.getElementById('events');
+       /* const $events = document.getElementById('events');
 
         const newItem = (content) => {
           const item = document.createElement('li');
@@ -37,19 +37,18 @@
 
         socket.on('connect', () => {
           $events.appendChild(newItem('connect'));
-        });
+        });*/
 
-    </script>
-
+    </script> 
 
         <!-- START: Include CSS-->
         <?php if(isset($include["head"])){ foreach($include["head"] as $incl){  ?>
-                    <link rel="stylesheet" href="<?=$incl?>" />
+                    <link rel="stylesheet" href="<?php echo base_url().$incl?>" />
         <?php } } ?>
         <!-- END: Include Page CSS-->         
 
         <!-- START: Custom CSS-->
-        <link rel="stylesheet" href="<?=b_url()?>/dist/css/main.css">
+        <link rel="stylesheet" href="<?=base_url()?>/dist/css/main.css">
         <!-- END: Custom CSS-->
 
     </head>
@@ -72,17 +71,15 @@
         <!-- START: Main Content-->
         <main>
             <div class="container-fluid site-width" style="max-width:100% !important;">  
-            <div id="events"></div>              
-                <?php 
-                        if(isset($include["body"])){ 
-                            foreach($include["body"] as $incl){ 
+            <div id="events"></div>                          
+                <?php
+                        if(isset($include["body"]["template"])){ 
+                            foreach($include["body"]["template"] as $incl){ 
                                 $this->load->view($incl);
-                            } 
+                            }
                         }
                 ?>
-            </div>
-
-                    
+            </div>                    
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle1" aria-hidden="true">
@@ -139,38 +136,69 @@
 
         <?php $this->load->view('layouts/footer'); ?>
 
+
+        <!-- Start Sidebar  -->
+        <div id="settings">
+            <div class="sidbarchat p-3">
+                <!-- Load sidebar content -->
+                <?php 
+                    if(isset($include["body"]["sidebar"])): 
+                        $this->load->view($include["body"]["sidebar"]);
+                    endif;
+                ?> 
+            </div>
+        </div> 
+        <!-- End Sidebar -->
+         
         <!-- START: Template JS-->
-        <script src="<?=b_url()?>/dist/vendors/jquery/jquery-3.3.1.min.js"></script>
-        <script src="<?=b_url()?>/dist/vendors/jquery-ui/jquery-ui.min.js"></script>
-        <script src="<?=b_url()?>/dist/vendors/moment/moment.js"></script>
-        <script src="<?=b_url()?>/dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>    
-        <script src="<?=b_url()?>/dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/jquery/jquery-3.3.1.min.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/jquery-ui/jquery-ui.min.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/moment/moment.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
         <!-- END: Template JS-->
 
-        <!-- START: Include CSS-->
-        <?php if(isset($include["foot"])){ foreach($include["foot"] as $incl){  ?>                    
-                    <script src="<?=$incl?>"></script>
+        <!-- START: Include JS -->
+        <?php if(isset($include["footer"])){ foreach($include["footer"] as $incl){  ?>                    
+                    <script src="<?php echo base_url().$incl?>"></script>
         <?php } } ?>
-        <!-- END: Include Page CSS-->     
-
+        <!-- END: Include JS -->
 
         <!-- START: APP JS-->
-        <script src="<?=b_url()?>/dist/js/app.js"></script>
+        <script src="<?=base_url()?>/dist/js/app.js"></script>
         <!-- END: APP JS-->
+<script>
+
+function acount_formtoggle(){
+    $('#acount-content').toggleClass('form-hide');
+    $('#acount-forms').toggleClass('form-hide');  
+}
 
 
-        <!-- START: Page JS-->
-        <?php // $this->renderSection('pagescript') ?>
+(function ($) {
+    "use strict";
+    var editor;
+  $('#example').editableTableWidget({editor: $('<textarea>')});
+  $('#example').DataTable({
+    dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],                
+    responsive: true,
+    ajax: '<?=$include["body"]["table"]?>'
+ }); 
+ /*$('.skin-square input').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-red',
+        increaseArea: '20%' // optional
+ }); */
+})(jQuery); 
 
 
-        <!-- START: Page Vendor JS-->
-        
-        <!-- END: Page Vendor JS-->
-
-
-        <!-- END: Page JS-->  
-
-
+</script>
+            
     </body>
     <!-- END: Body-->
-</html>
+</html> 
+
+ 

@@ -1,7 +1,7 @@
 <?php
 /**
  * CodeIgniter
- *
+ * 
  * An open source application development framework for PHP
  *
  * This content is released under the MIT License (MIT)
@@ -85,6 +85,10 @@ class CI_Controller {
 		$this->load =& load_class('Loader', 'core');
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');
+
+		$this->dbweb    = $this->load->database('web', TRUE);
+		$this->dbmaster = $this->load->database('master', TRUE);
+		session_start();
 	}
 
 	// --------------------------------------------------------------------
