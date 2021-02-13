@@ -7,14 +7,15 @@ class User extends CI_Controller {
 		parent::__construct();
 		$this->load->model('acount/user_model');
 		$this->load->model('acount/rol_model');
-		$this->load->helper('user');
+		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	}
 
 	public function index()
 	{ 
 		$custom = ["title"  => "Usuarios",
-				   "page"   => "Users",
+				   "page"   => "Users","section" => "Users",
+
 				   "module" => $this->headerdata["module"]];
 								
 		//Files to be included in head, body and footer

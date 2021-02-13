@@ -35,11 +35,12 @@ class Login extends CI_Controller {
         }
     }
     
-    //Guardar el usuario en session
+    //Guardar el usuario en session 
     private function init($user){
         $login = array("id"      => $user["id_usuario"],
                        "usuario" => $user["usuario"],
                        "nombre"  => $user["nombre"],
+                       "company" => $user["id_empresa"],
                        "estatus" => $user["estatus"]);
         $_SESSION["user"]  = $login;
     }
@@ -48,7 +49,7 @@ class Login extends CI_Controller {
         session_destroy();
         header('Location:http://rastreovehicular/Login');
     }
-
+ 
     //Cargar vista de recuperar contraseña
     public function PasswordRecovery(){        
         $custom = array("title" => "Recuperar Contraseña",

@@ -6,14 +6,14 @@ class Rol extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('acount/rol_model');
-		$this->load->helper('user');
+		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	}
 
 	public function index()
 	{  	
 		$data["custom"]   = ["title"  => "Roles de Usuarios",
-                             "page"   => "Rol",
+                             "page"   => "Rol","section" => "Rol",
                              "module" => $this->headerdata["module"]];
 
         //Files to be included in head, body and footer

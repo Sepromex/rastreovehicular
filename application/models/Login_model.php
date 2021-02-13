@@ -5,11 +5,11 @@ Class Login_model extends CI_Model {
     // get login database
     public function check_login($user, $password)
 	{
-        $this->dbmaster->select("id_usuario, usuario, estatus, concat(nombre, ' ', apellido) as nombre, password");
-		$this->dbmaster->from("usuarios");
-        $this->dbmaster->where("usuario",$user);		
-        $this->dbmaster->where("password",$password);				
-        $query = $this->dbmaster->get();        
+        $this->db->select("id_usuario, usuario, estatus, concat(nombre, ' ', apellido) as nombre, password, id_empresa");
+		$this->db->from("usuarios");
+        $this->db->where("usuario",$user);		
+        $this->db->where("password",$password);				
+        $query = $this->db->get();        
          
 		if($query->num_rows()>0){            
 			return $query->row_array();

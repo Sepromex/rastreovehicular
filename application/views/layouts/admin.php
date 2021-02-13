@@ -167,36 +167,11 @@
         <!-- START: APP JS-->
         <script src="<?=base_url()?>/dist/js/app.js"></script>
         <!-- END: APP JS-->
-<script>
-
-function acount_formtoggle(){
-    $('#acount-content').toggleClass('form-hide');
-    $('#acount-forms').toggleClass('form-hide');  
-}
-
-
-(function ($) {
-    "use strict";
-    var editor;
-  $('#example').editableTableWidget({editor: $('<textarea>')});
-  $('#example').DataTable({
-    dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],                
-    responsive: true,
-    ajax: '<?=$include["body"]["table"]?>'
- }); 
- /*$('.skin-square input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-red',
-        increaseArea: '20%' // optional
- }); */
-})(jQuery); 
-
-
-</script>
-            
+        <?php
+             if(isset($include["scripts"])){ foreach($include["scripts"] as $incl){  
+                $this->load->view($incl);
+              } }
+        ?>  
     </body>
     <!-- END: Body-->
 </html> 
