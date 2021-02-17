@@ -16,8 +16,8 @@
             <a href="#" class="bg-primary py-2 px-2 rounded ml-auto text-white text-center openside">
                 <i class="icon-plus align-middle text-white"></i> 
                 <span class="d-none d-xl-inline-block">Rol Nuevo</span>
-            </a> 
-        </div>
+            </a>   
+        </div> 
     </div>
 </div>  
  
@@ -37,4 +37,3 @@
         </table>
     </div>
 </div>
- 
