@@ -30,12 +30,12 @@
         <div class="card border h-100">            
         <?php if(isset($include["body"]["list"])): ?>
             <div class="card-body p-0" id="acount-content">
-            <!-- End Content -->            
+            <!-- End Content -->
             <?php $this->load->view($include["body"]["list"]); ?>
             <!-- End content -->
             </div>
             <div class="card-body form-hide" id="acount-forms">
-            <!-- End Content -->            
+            <!-- End Content -->                        
             <?php $this->load->view($include["body"]["config"]); ?>
             <!-- End content -->
             </div>
@@ -50,4 +50,4 @@
     </div>
 
 </div> 
-<!-- END: Card DATA--> 
+<!-- END: Card DATA --> 

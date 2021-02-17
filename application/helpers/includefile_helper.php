@@ -40,18 +40,21 @@ function includefiles($page){
             $body        = ["template" => ["map/map"]];
             $footer      = ["/dist/vendors/quill/quill.min.js","/dist/js/mail.script.js"];
         break;
-
+ 
         // ###### ACOUNT FILES ###### //
+        // **** Users files  => Acount/User **** //
         case "Users": 
-            $options = ["datatable"]; 
+            $options     = ["datatable","icheck"]; 
             $body        = ["template" => ["acount/config"],
-                            "list"     => "acount/users/user_list",
+                            "list"     => "acount/users/user_list",  
                             "table"    => "/Acount/User/List",
                             "config"   => "acount/users/user_configform",
                             "add_url"  => "/Acount/User/new",                            
-                            "sidebar"  => "acount/users/add_user"]; 
+                            "sidebar"  => "acount/users/add_user",
+                            "upconf"   => "/Acount/User/update",
+                            "deleteit" => "/Acount/User/delete"]; 
         break;
-
+        // **** Rol files  => Acount/Rol **** //
         case "Rol":
             $options = ["datatable","icheck"];
             $datatable   = "/dist/vendors/datatable";
@@ -60,7 +63,9 @@ function includefiles($page){
                             "table"    => "/Acount/Rol/List",
                             "config"   => "acount/roles/rol_configform",
                             "add_url"  => "/Acount/Rol/new",
-                            "sidebar"  => "acount/roles/add_rol"];
+                            "sidebar"  => "acount/roles/add_rol",
+                            "upconf"   => "/Acount/Rol/update",
+                            "deleteit" => "/Acount/Rol/delete"];
         break;
         // **** Company files  => Acount/Contact **** //
         case "CompanyList":
@@ -74,28 +79,31 @@ function includefiles($page){
                             "upconf"   => "/Acount/Companys/update",
                             "deleteit" => "/Acount/Companys/delete"]; 
         break; 
-
+        // **** My Company files  => Acount/Company/MyCompany **** //
         case "MyCompany":
             $options = ["datatable","icheck"];            
             $body        = ["template" => ["acount/config"],  
                             "content"  => "acount/company/mycompany",  
-                            "table"    => "/Acount/Companys/List",
-                            "config"   => "acount/roles/rol_configform",
-                            "add_url"  => "/Acount/Rol/new",
+                            "table"    => "/Acount/Companys/List",                            
+                            "upconf"   => "/Acount/Companys/update",
+                            "deleteit" => "/Acount/Companys/delete",
+                            "add_url"  => "/Acount/Companys/new",
                             "sidebar"  => "acount/roles/add_rol"]; 
         break;
-
-        case "BranchOffice":
-            $options = ["datatable","icheck"]; 
+        // **** Office List files   => Acount/Office **** //
+        case "OfficeList":
+            $options = ["datatable","icheck"];
             $body        = ["template" => ["acount/config"],
-                            "list"     => "acount/company/company_list", 
-                            "table"    => "/Acount/Companys/List",
-                            "config"   => "acount/roles/rol_configform",
-                            "add_url"  => "/Acount/Rol/new",
-                            "sidebar"  => "acount/roles/add_rol"]; 
+                            "list"     => "acount/office/office_list",  
+                            "table"    => "/Acount/Office/List", 
+                            "config"   => "acount/office/office_configform",
+                            "add_url"  => "/Acount/Office/new",  
+                            "sidebar"  => "acount/office/add_office",
+                            "upconf"   => "/Acount/Office/update",
+                            "deleteit" => "/Acount/Office/delete"]; 
         break;
         // **** Contact files   => Acount/Contact **** //
-        case "ContactList":
+        case "ContactList": 
             $options = ["datatable","icheck"]; 
             $body        = ["template" => ["acount/config"],
                             "list"     => "acount/contact/contact_list", 

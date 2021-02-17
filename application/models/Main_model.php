@@ -17,11 +17,16 @@ Class Main_model extends CI_Model {
     } 
 
     // Contact list
-    public function contact_list()
+    public function contact_list($id = 0, $type="company")
 	{
-        $this->db->select("id_contacto,nombre");
+        $field = "id_empresa";
+        if($type == "office"){ $field = "id_sucursal"; }        
+        $this->db->select("*");
 		$this->db->from("contactos");
-        $this->db->where("estatus","1");        
+        $this->db->where("estatus","1");         
+        if($id > 0){
+            $this->db->where($field,$id); 
+        }       
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
@@ -29,6 +34,21 @@ Class Main_model extends CI_Model {
 			return false; 			
         }	            
     } 
+
+    public function office_list($company = 0)
+	{
+        $this->db->select("*"); 
+		$this->db->from("sucursales"); 
+        if($company > 0){
+            $this->db->where("id_empresa",$company); 
+        }        
+        $query = $this->db->get();         
+		if($query->num_rows()>0){            
+			return $query->result();
+		}else{			
+			return false; 			
+        }	            
+    }   
   
     // Company list
     public function company_list()
@@ -43,19 +63,7 @@ Class Main_model extends CI_Model {
         }	            
     } 
 
-    // Office list
-    public function office_list($id_empresa)
-	{
-        $this->db->select("id_sucursal, nombre");
-        $this->db->where("id_empresa", $id_empresa);
-		$this->db->from("sucursales");        
-        $query = $this->db->get();         
-		if($query->num_rows()>0){            
-			return $query->result();
-		}else{			
-			return false; 			
-        }	            
-    } 
+ 
 
     public function get_locations()
 	{
@@ -74,8 +82,7 @@ Class Main_model extends CI_Model {
         $this->dbmaster->select("*");
 		$this->dbmaster->from("municipios");        
         $this->dbmaster->order_by("nombre","asc");
-        $query = $this->dbmaster->get();         
-		
+        $query = $this->dbmaster->get();		
         if($query->num_rows()>0){        
 			return $query->result();
 		}	     

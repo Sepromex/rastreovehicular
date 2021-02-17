@@ -57,11 +57,11 @@
     <!-- START: Body-->
     <body id="main-container" class="default horizontal-menu">
 
-        <!-- START: Pre Loader -->
+        <!-- START: Pre Loader  
         <div class="se-pre-con">
             <div class="loader"></div>
         </div>
-        <!-- END: Pre Loader-->
+          END: Pre Loader-->
 
 
         <?php $this->load->view('layouts/header'); ?>

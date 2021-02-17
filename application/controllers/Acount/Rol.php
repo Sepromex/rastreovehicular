@@ -12,18 +12,17 @@ class Rol extends CI_Controller {
 
 	public function index()
 	{  	
-		$data["custom"]   = ["title"  => "Roles de Usuarios",
-                             "page"   => "Rol","section" => "Rol",
-                             "module" => $this->headerdata["module"]];
-
+		$data["custom"]   = ["title"   => "Roles de Usuarios",
+                             "page"    => "Rol",
+							 "prefix"  => "rol",
+							 "section" => "Users",
+                             "module"  => $this->headerdata["module"]];
         //Files to be included in head, body and footer
 		$data["include"]  = includefiles($data["custom"]["page"]);
 		$data["modules"]  = $this->rol_model->get_modules();  
-
 		//Load view
-		$this->load->view('layouts/admin',$data);	
-		 
-	}
+		$this->load->view('layouts/admin',$data);		 
+	} 
 	
 	public function List(){
 		//Json rol list
@@ -38,7 +37,7 @@ class Rol extends CI_Controller {
 							  ($row->descripcion!='')?$row->descripcion:'',  
 							  "<div class='text-center'>".user_status($row->estatus)."</div>",
 							  $icon]; 
-					$jsonData['data'][] = $data;
+					$jsonData['data'][] = $data; 
 				}   
 		} 
         echo json_encode($jsonData);
@@ -71,7 +70,7 @@ class Rol extends CI_Controller {
 		if($rol && $access): echo "true"; else: echo "No se edito el rol de usuario"; endif;
 
 	}
-
+ 
 	public function delete(){
 		$user = $this->rol_model->delete_user($_POST["id"]);    
 		if($user): echo "true"; else: echo "No se elimino el usuario"; endif;	

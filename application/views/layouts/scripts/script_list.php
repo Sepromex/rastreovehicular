@@ -25,6 +25,7 @@ function acount_formtoggle(){
 
 // Insert New Row
 var newelement_form = document.getElementById('<?=$custom["prefix"]?>_newform');     
+if(newelement_form){
     newelement_form.onsubmit = function(){ 
          $.ajax({
             type: "POST", 
@@ -39,11 +40,15 @@ var newelement_form = document.getElementById('<?=$custom["prefix"]?>_newform');
             }
         }); 
     };  
+}
 
 // Save Config Form
-var configform = document.getElementById('<?=$custom["prefix"]?>_configform');     
+function save_configform(){
+ /*var configform = document.getElementById('< ?=$custom["prefix"]?>_configform');
     configform.onsubmit = function(){ 
-    $.ajax({
+    
+};*/
+    $.ajax({ 
         type: "POST",
         data: $("#<?=$custom["prefix"]?>_configform").serialize(),
         url: "<?=$include["body"]["upconf"]?>",
@@ -55,8 +60,8 @@ var configform = document.getElementById('<?=$custom["prefix"]?>_configform');
              }             
         }
     }); 
-}; 
-
+} 
+ 
 // Delete list element
 function list_delete(id){
     $.ajax({
@@ -71,7 +76,7 @@ function list_delete(id){
                 alert(response); 
             }            
         }
-    });
+    }); 
 } 
 
 // View Contact Config form
@@ -80,23 +85,23 @@ function contact_formedit(id){
         type: "POST",
         data: {id:id},
         url: "/Acount/contact/view_contactconfig",
-        success: function (contact) {  
+        success: function (contact) {
             $("#conf_companyidlabel").html(contact.id_empresa);
-            $("#conf_companyidlabel").html(contact.fecha_reg);            
+            $("#conf_companyidlabel").html(contact.fecha_reg);
             $("#conf_companyid").val(contact.id_empresa);
-            $("#conf_companyuserid").val(contact.giro);            
+            $("#conf_companyuserid").val(contact.giro);        
             $("#conf_companystatus").val(contact.estatus);
             $("#conf_companyname").val(contact.nombre);
             $("#conf_companyailable").val(contact.horario);
             $("#conf_companyjob").val(contact.puesto);
-            $("#conf_companyemail").val(contact.email);            
-            $("#conf_companyphone").val(contact.telefono); 
-            $("#conf_companylocation").val(contact.ubicacion); 
-            $("#conf_companycompanyid").val(contact.id_empresa);   
+            $("#conf_companyemail").val(contact.email);
+            $("#conf_companyphone").val(contact.telefono);
+            $("#conf_companylocation").val(contact.ubicacion);
+            $("#conf_companycompanyid").val(contact.id_empresa);
             acount_formtoggle();
         } 
     });
-}
+} 
 
 // View Company Config Form
 function company_formedit(id){
@@ -104,9 +109,11 @@ function company_formedit(id){
         type: "POST",
         data: {id:id},
         url: "/Acount/companys/view_companyconfig",
-        success: function (company) {        
- 
-            $("#company_labelname").html(company.razon_social);
+        success: function (response) {  
+            //var company = response.company;
+            //var contactofficelist = response.contactofficelist;
+
+            /*$("#company_labelname").html(company.razon_social);
             $("#company_labeltype").html(company.giro);
             $("#company_labeldate").html(company.fecha_reg);                        
             $("#conf_companyid").val(company.id_empresa);
@@ -121,10 +128,49 @@ function company_formedit(id){
             $("#conf_companyaddress").val(company.direccion);
             $("#conf_companysub").val(company.colonia);
             $("#conf_companycity").val(company.ciudad);
-            $("#conf_companystate").val(company.estado); 
+            $("#conf_companystate").val(company.estado);*/ 
 
+            $("#acount-forms").html(response);
              acount_formtoggle();
         } 
     });
 }
+
+function office_formedit(id,company){
+    $.ajax({
+        type: "POST",
+        data: {id:id,id_company:company},
+        url: "/Acount/office/view_officeconfig",
+        success: function (response) {        
+            $("#acount-forms").html(response);
+            acount_formtoggle();
+        } 
+    });
+}
+
+
+function user_formedit(id){
+    $.ajax({
+        type: "POST",
+        data: {id:id},
+        url: "/Acount/User/view_userconfig",
+        success: function (response) {              
+           /* $("#conf_useridlabel").html(user.id_usuario);
+            $("#conf_userid").val(user.id_usuario);
+            $("#conf_user").val(user.usuario);            
+            $("#conf_username").val(user.nombre);
+            $("#conf_userlastname").val(user.apellido);            
+            $("#conf_useremail").val(user.email);
+            $("#conf_userstatus").val(user.estatus);
+            $("#conf_userfechareg").html(user.fecha_reg);
+            $("#conf_userpassword").val(user.password); 
+            $("#conf_userconfirmpassword").val(user.password); */
+            $("#acount-forms").html(response);            
+            acount_formtoggle(); 
+        } 
+    });
+}
+
+
+
 </script>

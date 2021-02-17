@@ -1,16 +1,26 @@
-<div class="card-header  justify-content-between align-items-center">
+<div class="card-header  justify-content-between align-items-center"> 
     <div class="sub-header   px-md-0 align-self-center d-sm-flex w-100 rounded">
         <div class="w-sm-100 mr-auto">
-            <h4 class="card-title">Roles de Usuarios</h4>                          
+            <h4 class="card-title">Usuarios</h4>                          
+        </div>  
+    </div>
+</div> 
+
+
+<div class="profile-menu theme-background border  z-index-1 p-2">
+    <div class="d-sm-flex">
+        <div class="align-self-center">
+            <?php $this->load->view("acount/users/menu_user"); ?>
         </div>
-        <div class=" mt-sm-0">
-             <a href="#" class="bg-primary py-2 px-2 rounded ml-auto text-white text-center openside">
+        <div class="align-self-center ml-auto text-center text-sm-right">           
+            <a href="#" class="bg-primary py-2 px-2 rounded ml-auto text-white text-center openside">
                 <i class="icon-plus align-middle text-white"></i> 
                 <span class="d-none d-xl-inline-block">Rol Nuevo</span>
             </a> 
         </div>
     </div>
-</div> 
+</div>  
+ 
 
 <div class="card-body">
     <div class="table-responsive">

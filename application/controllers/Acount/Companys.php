@@ -21,8 +21,10 @@ class Companys extends CI_Controller {
         //Files to be included in head, body and footer
 		$data["include"]     = includefiles($data["custom"]["page"]); 		
 		$data["contactlist"] = $this->main_model->contact_list();
+		$data["officelist"]  = $this->main_model->office_list();		
 		$data["states"]      = $this->main_model->get_locations(); 
-		$data["cities"]      = $this->main_model->get_city(); 
+		$data["cities"]      = $this->main_model->get_city();	
+
 		//Load view
 		$this->load->view('layouts/admin',$data);	 
 	}
@@ -67,11 +69,14 @@ class Companys extends CI_Controller {
 	}
 
 	public function view_companyconfig(){
-		$company = $this->company_model->company_byid($_POST["id"]);         
-		header("Content-type: application/json");        	
-		echo json_encode($company);
-	} 
+		$data["company_contactlist"] = $this->main_model->contact_list($_POST["id"]);
+		$data["company_officelist"]  = $this->main_model->office_list($_POST["id"]);		
+		$data["company"]  = $this->company_model->company_byid($_POST["id"]);
+		$data["states"]      = $this->main_model->get_locations(); 
+		$data["cities"]      = $this->main_model->get_city(); 
 
+		$this->load->view("acount/company/company_configform",$data); 			
+	} 
 
 	public function update(){	 
 		$company    = ["razon_social"  => $_POST["conf_companyname"],
@@ -87,7 +92,7 @@ class Companys extends CI_Controller {
 					   "ciudad"        => (isset($_POST["conf_companycity"]))?$_POST["conf_companycity"]:"",
 					   "estado"        => (isset($_POST["conf_companystate"]))?$_POST["conf_companystate"]:""];
 		$company    = $this->company_model->update_company($company,$_POST["conf_companyid"]);    
-		if($company): echo "trues"; else: echo "No se edito la empresa"; endif;
+		if($company): echo "true"; else: echo "No se edito la empresa"; endif;
 	}
 
 	public function delete(){
@@ -98,24 +103,23 @@ class Companys extends CI_Controller {
 	public function MyCompany($id){
 		$data["custom"]   = ["title"   => "Mi Empresa",
                              "page"    => "MyCompany",
+							 "prefix"  => "company",
 							 "section" => "Company",
-                             "module"  => $this->headerdata["module"]];
+                             "module"  => $this->headerdata["module"]];							 
         //Files to be included in head, body and footer
-		$data["include"]  = includefiles($data["custom"]["page"]); 	
-		$data["company"]  = $this->company_model->company_byid($id);
+		$data["include"]     = includefiles($data["custom"]["page"]); 	
+		// Info company
+		$data["company"]     = $this->company_model->company_byid($id);
+		// Info selects
+		$data["contactlist"] = $this->main_model->contact_list();
+		$data["officelist"]  = $this->main_model->office_list();		
+		$data["states"]      = $this->main_model->get_locations(); 
+		$data["cities"]      = $this->main_model->get_city();
+
+		$data["company_contactlist"] = $this->main_model->contact_list($id);
+		$data["company_officelist"]  = $this->main_model->office_list($id);
+		
 		//Load view
 		$this->load->view('layouts/admin',$data);
 	}
- 
-	public function BranchOffice(){
-		$data["custom"]   = ["title"   => "Sucursales",
-							 "page"    => "BranchOffice",
-							 "section" => "Company",
-				 			 "module"  => $this->headerdata["module"]]; 
-		//Files to be included in head, body and footer
-		$data["include"]  = includefiles($data["custom"]["page"]); 
-		//Load view
-		$this->load->view('layouts/admin',$data);
-	}
-	
 } 

@@ -1,6 +1,3 @@
-<style>
- 
-</style>
 <div class="modal-header">
     <h5 class="modal-title">
         <i class="icon-pencil"></i>  &nbsp; Configurar Rol de Usuario
@@ -44,7 +41,7 @@
                 <h4>Permisos de acceso</h4>
             </div>
         </div> 
-
+ 
         <div class="form-row skin skin-square">                        
             <div id="accordion2" class="accordion-alt col-md-12 grid" role="tablist"> 
             <?php $item="0"; foreach($modules as $id_module => $module): ?>
@@ -228,27 +225,5 @@ user_configform.onsubmit = function(){
         }
     }); 
 };
-
-
-
-function rol_delete(id){
-    $.ajax({
-        type: "POST",
-        data: {id:id},
-        url: "/Acount/User/delete",
-        success: function (response) {              
-            console.log(response); 
-            if (response == "true") {
-                location.reload(); 
-            } else {                            
-                alert(response); 
-            }
-            
-        }
-    });
-} 
-
-
-
-
+  
 </script> 

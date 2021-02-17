@@ -6,7 +6,7 @@
 </div>
 <form class="add-contact-form needs-validation" id="rol_newform" novalidate>
     <div class="modal-body h-100">  
-
+ 
         <div class="row"> 
             <label for="rol_name" class="col-form-label">Rol</label>
             <input type="text" name="rol_name" id="rol_name" class="form-control" required="" >
@@ -23,22 +23,4 @@
         <button type="submit" class="btn btn-primary">Agregar Rol</button>
     </div>
 </form> 
-                     
-<script>
-    var user_form = document.getElementById('rol_newform');     
-    user_form.onsubmit = function(){ 
-         $.ajax({
-            type: "POST",
-            data: $("#rol_newform").serialize(),
-            url: "<?=$include["body"]["add_url"]?>",
-            success: function (response) { 
-                if (response == "true") {
-                    location.reload();                     
-                } else {                            
-                    alert(response); 
-                }
-            }
-        }); 
-    };
-      
-</script>
+ 

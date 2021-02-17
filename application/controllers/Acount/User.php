@@ -10,22 +10,20 @@ class User extends CI_Controller {
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	}
-
+ 
 	public function index()
 	{ 
-		$custom = ["title"  => "Usuarios",
-				   "page"   => "Users","section" => "Users",
-
-				   "module" => $this->headerdata["module"]];
-								
+		$data["custom"]  = ["title"   => "Usuarios",
+							"page"    => "Users",							
+							"prefix"  => "user",
+							"section" => "Users",
+							"module"  => $this->headerdata["module"]];  
 		//Files to be included in head, body and footer
-		$data["include"]      = includefiles($custom["page"]);
-		$data["custom"]       = $custom;
-		$data["rollist"]      = $this->rol_model->rol_list();
+		$data["include"]      = includefiles($data["custom"]["page"]);		
+		$data["rollist"] = $this->rol_model->rol_list(); 
 		
 		//Load view
-		$this->load->view('layouts/admin',$data);	
-		 
+		$this->load->view('layouts/admin',$data);	 
 	}
 	
 	public function List(){
@@ -67,10 +65,21 @@ class User extends CI_Controller {
 	}
 
 	 
-	public function view_userconfig(){
-		$user = $this->user_model->user_byid($_POST["id"]);	
-		header("Content-type: application/json");        	
-		echo json_encode($user);
+	public function view_userconfig(){		
+		/*header("Content-type: application/json");        	
+		echo json_encode($user);*/
+
+		$data["user"]    = $this->user_model->user_byid($_POST["id"]);	
+		$data["rollist"] = $this->rol_model->rol_list(); 
+
+		/*$data["company_contactlist"] = $this->main_model->contact_list($_POST["id"]);
+		$data["company_officelist"]  = $this->main_model->office_list($_POST["id"]);		
+		$data["company"]  = $this->company_model->company_byid($_POST["id"]);
+		$data["states"]      = $this->main_model->get_locations(); 
+		$data["cities"]      = $this->main_model->get_city(); */
+ 
+		$this->load->view("acount/users/user_configform",$data); 
+
 	}
 
 	public function update(){
@@ -82,7 +91,7 @@ class User extends CI_Controller {
 					 "password"  => $_POST["conf_userpassword"],
 					 "estatus"   => $_POST["conf_userstatus"]];
 			$user_id = $this->user_model->update_user($user,$_POST["conf_userid"]);    
-			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;			 
+			if($user_id): echo "trues"; else: echo "No se edito el usuario"; endif;			 
 		}else{
 			echo "Las contraseñas no coinciden";
 		}
