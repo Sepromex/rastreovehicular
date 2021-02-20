@@ -23,10 +23,10 @@
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/ionicons/css/ionicons.min.css">  
         <!-- END: Page CSS-->  
 
-        <!-- <script src="socket.io.js"></script>-->
+        <!-- <script src="socket.io.js"></script> -->
         <script>
-       /* const $events = document.getElementById('events');
 
+       /* const $events = document.getElementById('events');
         const newItem = (content) => {
           const item = document.createElement('li');
           item.innerText = content;
@@ -49,6 +49,7 @@
 
         <!-- START: Custom CSS-->
         <link rel="stylesheet" href="<?=base_url()?>/dist/css/main.css">
+        <link rel="stylesheet" href="<?=base_url()?>/dist/css/rv.css">
         <!-- END: Custom CSS-->
 
     </head>
@@ -166,14 +167,26 @@
 
         <!-- START: APP JS-->
         <script src="<?=base_url()?>/dist/js/app.js"></script>
+        
         <!-- END: APP JS-->
         <?php
-             if(isset($include["scripts"])){ foreach($include["scripts"] as $incl){  
+            if(isset($include["scripts"])){ foreach($include["scripts"] as $incl){  
                 $this->load->view($incl);
-              } }
+            } } 
+
+            if(isset($include["scriptend"]) && is_array($include["scriptend"])){ 
+                foreach($include["scriptend"] as $incl){ 
+                    $this->load->view($incl);
+                }
+            }
+
+            
         ?>  
+
+        <?php if(isset($include["scriptendfile"])){ foreach($include["scriptendfile"] as $incl){  ?>                    
+            <script src="<?php echo base_url().$incl?>"></script>
+        <?php } } ?> 
+         
     </body>
     <!-- END: Body-->
 </html> 
-
- 

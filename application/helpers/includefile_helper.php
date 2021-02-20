@@ -18,10 +18,10 @@ function  fileby_option($options){
                                     "$dtableurl/editor/numeric-input-example.js"],
                         "scripts" => ["layouts/scripts/script_list"]];
         $icheck                 =   ["head"   =>  ["/dist/vendors/icheck/skins/all.css"],            
-                                     "footer" =>  ["/dist/vendors/icheck/icheck.min.js"]];
+                                     "footer" =>  ["/dist/vendors/icheck/icheck.min.js"]];        
+        $validate               =   ["footer" => ["/dist/js/validate.js"]];
 
-        $allfiles               =   ["datatable" => $datatable, "icheck" => $icheck];  
-       
+        $allfiles               =   ["datatable" => $datatable, "icheck" => $icheck, "validate" => $validate];         
         $return = [];
 
         foreach($options as $option){
@@ -34,8 +34,9 @@ function  fileby_option($options){
 
 function includefiles($page){
     $opt = [];
-    switch($page){
+    switch($page){         
         case "MainMap":
+            $options     = ["icheck"];
             $head        = ["dist/vendors/quill/quill.snow.css"];
             $body        = ["template" => ["map/map"]];
             $footer      = ["/dist/vendors/quill/quill.min.js","/dist/js/mail.script.js"];
@@ -44,7 +45,7 @@ function includefiles($page){
         // ###### ACOUNT FILES ###### //
         // **** Users files  => Acount/User **** //
         case "Users": 
-            $options     = ["datatable","icheck"]; 
+            $options     = ["datatable","icheck","validate"]; 
             $body        = ["template" => ["acount/config"],
                             "list"     => "acount/users/user_list",  
                             "table"    => "/Acount/User/List",
@@ -52,7 +53,21 @@ function includefiles($page){
                             "add_url"  => "/Acount/User/new",                            
                             "sidebar"  => "acount/users/add_user",
                             "upconf"   => "/Acount/User/update",
-                            "deleteit" => "/Acount/User/delete"]; 
+                            "deleteit" => "/Acount/User/delete"];
+            //$scriptend     = ["acount/users/validate_user"];  
+            $scriptendfile = ["/dist/js/validate_user.js"];
+        break; 
+        // **** Profile files  => Acount/User **** //
+        case "Profile": 
+            $options     = ["datatable","icheck"]; 
+            $body        = ["template" => ["acount/config"],  
+                            "content"  => "acount/users/profile",   
+                            "table"    => "/Acount/Companys/List",                            
+                            "upconf"   => "/Acount/Companys/update",
+                            "deleteit" => "/Acount/Companys/delete",
+                            "add_url"  => "/Acount/Companys/new",
+                            "upconf"   => "/Acount/User/update",
+                            "deleteit" => "/Acount/User/deleteprofile"];
         break;
         // **** Rol files  => Acount/Rol **** //
         case "Rol":
@@ -116,20 +131,24 @@ function includefiles($page){
         break;
         // ###### ACOUNT FILES ###### //        
     }
-
+ 
     if(isset($options)){
         if(!isset($head)){ $head = []; }
         if(!isset($footer)){ $footer = []; }
-        if(!isset($scripts)){ $scripts = []; }
+        if(!isset($scripts)){ $scripts = []; } 
+        if(!isset($scriptend)){ $scriptend = []; }
+        if(!isset($scriptendfile)){ $scriptendfile = []; }
+        
+        
 
-        $opt = fileby_option($options);  
+        $opt = fileby_option($options);
         foreach($opt as $opts){  
             if(isset($opts["head"])){
                 foreach($opts["head"] as $file){ 
                     array_push($head, $file); 
                 }
-            }
-            if(isset($opts["head"])){
+            } 
+            if(isset($opts["footer"])){
                 foreach($opts["footer"] as $file){  
                     array_push($footer, $file); 
                 }
@@ -138,11 +157,16 @@ function includefiles($page){
                 foreach($opts["scripts"] as $file){  
                     array_push($scripts, $file); 
                 }
+            }
+            if(isset($opts["scriptend"])){
+                foreach($opts["scriptend"] as $file){  
+                    array_push($scriptend, $file); 
+                }
             } 
         }
-    }
-
-    $include = ["head" => $head, "body" => $body, "footer" => $footer, "scripts" => $scripts];    
+    } 
+    
+    $include = ["head" => $head, "body" => $body, "footer" => $footer, "scripts" => $scripts, "scriptend" => $scriptend, "scriptendfile" => $scriptendfile];    
     return $include;
 }
 

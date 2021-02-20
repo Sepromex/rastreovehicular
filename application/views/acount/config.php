@@ -1,6 +1,3 @@
-<style>
-.form-hide{ display:none; }
-</style>
 <!-- START: Card Data-->
 <div class="row row-eq-height">
 

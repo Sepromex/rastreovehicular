@@ -1,53 +1,52 @@
 <script> 
-(function ($) {    
-    "use strict";
-    var editor;
-  $('#example').editableTableWidget({editor: $('<textarea>')});
-  $('#example').DataTable({
-    dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],                
-    responsive: true,
-    ajax: '<?=$include["body"]["table"]?>'
- }); 
- /*$('.skin-square input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-red',
-        increaseArea: '20%' // optional
- }); */
-})(jQuery);  
+(function ($) {
+    "use strict";    
+    $('.send_form').on('click', function () {                           	
+        var name = $(this).data("function");           
+        self[name]();  
+    });    
 
+    $('.reset_form').on('click', function () {                           	
+        var name = $(this).data("reset");           
+        self[name]();  
+    });    
+
+    $('#example').DataTable({
+        dom: 'Bfrtip', 
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],                
+        responsive: true,
+        ajax: '<?=$include["body"]["table"]?>'
+    });  
+})(jQuery);
+
+
+//Show config form
 function acount_formtoggle(){
     $('#acount-content').toggleClass('form-hide');
     $('#acount-forms').toggleClass('form-hide');  
 }
 
 // Insert New Row
-var newelement_form = document.getElementById('<?=$custom["prefix"]?>_newform');     
-if(newelement_form){
-    newelement_form.onsubmit = function(){ 
-         $.ajax({
-            type: "POST", 
-            data: $("#<?=$custom["prefix"]?>_newform").serialize(),
-             url: "<?=$include["body"]["add_url"]?>",
-            success: function (response) { 
-                if (response == "true") {
-                    location.reload();                     
-                } else {                            
-                    alert(response); 
-                }
+function insert_newrow(){
+    $.ajax({
+        type: "POST", 
+        data: $("#<?=$custom["prefix"]?>_newform").serialize(),
+            url: "<?=$include["body"]["add_url"]?>",
+        success: function (response) { 
+            if (response == "true") {
+                // location.reload();                     
+            } else {                            
+                alert(response); 
             }
-        }); 
-    };  
+        }
+    }); 
 }
+ 
 
 // Save Config Form
-function save_configform(){
- /*var configform = document.getElementById('< ?=$custom["prefix"]?>_configform');
-    configform.onsubmit = function(){ 
-    
-};*/
+function save_configform(){  
     $.ajax({ 
         type: "POST",
         data: $("#<?=$custom["prefix"]?>_configform").serialize(),
@@ -61,7 +60,7 @@ function save_configform(){
         }
     }); 
 } 
- 
+   
 // Delete list element
 function list_delete(id){
     $.ajax({
@@ -101,7 +100,7 @@ function contact_formedit(id){
             acount_formtoggle();
         } 
     });
-} 
+}  
 
 // View Company Config Form
 function company_formedit(id){
@@ -131,7 +130,7 @@ function company_formedit(id){
             $("#conf_companystate").val(company.estado);*/ 
 
             $("#acount-forms").html(response);
-             acount_formtoggle();
+            acount_formtoggle();
         } 
     });
 }
@@ -149,28 +148,73 @@ function office_formedit(id,company){
 }
 
 
-function user_formedit(id){
+
+
+
+function checkbyclass(clas,id){ 
+    if($("#check_"+clas+id).is(":checked")){
+        $(".check_"+clas+id).each( function() {
+            $(this).attr('checked', true);
+        });
+        if(clas != "read"){
+            $(".check_read"+id).each( function() {
+                $(this).attr('checked', true);
+            });
+            $("#check_read"+id).attr('checked', true); 
+        }
+    }else{
+        $(".check_"+clas+id).each( function() {
+            $(this).attr('checked', false);
+        });
+    } 
+}
+
+function crean_checkform(){  
+    $(".skin-square input:checkbox").each( function() {
+            $(this).attr('checked', false);
+    });
+}
+ 
+
+function rol_formedit(id){
     $.ajax({
         type: "POST",
         data: {id:id},
-        url: "/Acount/User/view_userconfig",
-        success: function (response) {              
-           /* $("#conf_useridlabel").html(user.id_usuario);
-            $("#conf_userid").val(user.id_usuario);
-            $("#conf_user").val(user.usuario);            
-            $("#conf_username").val(user.nombre);
-            $("#conf_userlastname").val(user.apellido);            
-            $("#conf_useremail").val(user.email);
-            $("#conf_userstatus").val(user.estatus);
-            $("#conf_userfechareg").html(user.fecha_reg);
-            $("#conf_userpassword").val(user.password); 
-            $("#conf_userconfirmpassword").val(user.password); */
-            $("#acount-forms").html(response);            
-            acount_formtoggle(); 
-        } 
+        url: "/Acount/Rol/view_rolconfig",
+        success: function (response) { 
+            crean_checkform();             
+            var rol = response.rol;
+            $("#conf_rolidlabel").html(rol.id_rol);
+            $("#conf_rolid").val(rol.id_rol);
+            $("#conf_rolfechareg").html(rol.fecha_reg);
+            $("#conf_rolname").val(rol.rol);
+            $("#conf_rolstatus").val(rol.estatus);
+            $("#conf_roldescription").val(rol.descripcion);   
+            
+
+            if(response.access.length>0){
+                $.each(response.access, function(i, acs) { 
+                    var idcheck =  acs.id_modulo+acs.id_submodulo;                  
+                    if(acs.insertar == "1"){                                                
+                        $("#check_insert"+idcheck).attr('checked', true);                                                
+                    }
+                    if(acs.editar == "1"){                                                
+                        $("#check_edit"+idcheck).attr('checked', true);                                                
+                    }
+                    if(acs.eliminar == "1"){                                                
+                        $("#check_delete"+idcheck).attr('checked', true);                                                
+                    }
+                    if(acs.leer == "1"){                                                
+                        $("#check_read"+idcheck).attr('checked', true);                                                
+                    }   
+                });   
+            } 
+
+            acount_formtoggle();
+
+        }
     });
 }
-
 
 
 </script>

@@ -15,7 +15,7 @@
     <!-- START: Card Data-->
     <div class="row">
 
-        <div class="col-2 mt-3">
+        <div class="col-2 mt-3"> 
             <div class="card">
                 <!-- ##### TABS ##### -->
                 <div class="card-header">                                   

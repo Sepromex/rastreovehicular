@@ -69,12 +69,16 @@ class Companys extends CI_Controller {
 	}
 
 	public function view_companyconfig(){
+		//Get list of contacts and offices where company = $_POST["id"]
 		$data["company_contactlist"] = $this->main_model->contact_list($_POST["id"]);
 		$data["company_officelist"]  = $this->main_model->office_list($_POST["id"]);		
-		$data["company"]  = $this->company_model->company_byid($_POST["id"]);
-		$data["states"]      = $this->main_model->get_locations(); 
-		$data["cities"]      = $this->main_model->get_city(); 
+		//Get a list of states and cities, used to select the office address
+		$data["states"]              = $this->main_model->get_locations(); 
+		$data["cities"]              = $this->main_model->get_city(); 
+		//Get company info
+		$data["company"]       	     = $this->company_model->company_byid($_POST["id"]);
 
+		//Load view and send DATA
 		$this->load->view("acount/company/company_configform",$data); 			
 	} 
 

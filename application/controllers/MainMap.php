@@ -5,17 +5,20 @@ class MainMap extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('Mainmap_model');		
+		$this->load->model('Mainmap_model');
+		$this->headerdata["module"] = "Maps";		
 	}
 
 	public function index()
 	{ 	
-		$custom = array("title" => "Rastreo Vehicular",
-				        "page"  => "MainMap"); 
+		$data["custom"]   = ["title"   => "Rastreo Vehicular",
+				"page"    => "MainMap",
+				"prefix"  => "map",
+				"section" => "Map",
+				"module"  => $this->headerdata["module"]];
 
 		//Archivos que se incluiran en head, body y footer 
-		$data["include"]      = includefiles($custom["page"]);
-		$data["custom"]       = $custom;
+		$data["include"]      = includefiles($data["custom"]["page"]);		
 		$data["vehicle_list"] = $this->Mainmap_model->vehicle_list(); 
 
 		//Cargar vista

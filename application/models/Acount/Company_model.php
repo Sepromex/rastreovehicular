@@ -14,7 +14,7 @@ Class Company_model extends CI_Model {
 			return false; 			
         }	            
     }    
-
+ 
     public function add_company($data){        
         $this->db->insert('empresas',$data);
 		return $this->db->insert_id();   
@@ -23,11 +23,16 @@ Class Company_model extends CI_Model {
     // Get company by ID
     public function company_byid($id)
 	{
+        // Select all fields
         $this->db->select("*");
+        // Select table
 		$this->db->from("empresas");
+        // Condition
         $this->db->where("id_empresa",$id);
+        // Get row
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
+            // Return row to controller Company
 			return $query->row_array();
 		}else{			
 			return false; 			

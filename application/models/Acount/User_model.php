@@ -46,4 +46,17 @@ Class User_model extends CI_Model {
         $this->db->where('id_usuario',$id);
         return $this->db->delete('usuarios');
     }
+
+    public function validate_user($value,$field){
+        $this->db->select($field);
+		$this->db->from("usuarios");
+        $this->db->where($field,$value);        
+        $query = $this->db->get();
+		if($query->num_rows()>0){            
+			return $query->result();
+		}else{			
+			return false; 			
+        }
+    }
+
 }

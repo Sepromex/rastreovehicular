@@ -9,7 +9,7 @@ function user_status($type){
 }   
 function user_toption($user_id){
     $data = ["edit_function"   => "user_formedit",
-             "delete_function" => "user_delete",
+             "delete_function" => "list_delete",
              "id"              => $user_id];
     return listoption_template($data);
 }  

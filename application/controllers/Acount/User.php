@@ -9,19 +9,20 @@ class User extends CI_Controller {
 		$this->load->model('acount/rol_model');
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
-	}
+	} 
  
 	public function index()
 	{ 
 		$data["custom"]  = ["title"   => "Usuarios",
 							"page"    => "Users",							
 							"prefix"  => "user",
-							"section" => "Users",
+							"section" => "Users",							
 							"module"  => $this->headerdata["module"]];  
 		//Files to be included in head, body and footer
-		$data["include"]      = includefiles($data["custom"]["page"]);		
-		$data["rollist"] = $this->rol_model->rol_list(); 
-		
+		$data["include"]     = includefiles($data["custom"]["page"]);		
+		$data["rollist"]     = $this->rol_model->rol_list(); 
+		 
+		//print_array($data["include"]);
 		//Load view
 		$this->load->view('layouts/admin',$data);	 
 	}
@@ -41,10 +42,10 @@ class User extends CI_Controller {
 							  "<div class='text-center'>".user_status($row->estatus)."</div>",
 							  $icon]; 
 					$jsonData['data'][] = $data;
-				}   
+				}
 		} 
         echo json_encode($jsonData);
-	}
+	}  
 
 
 	public function new(){
@@ -63,23 +64,11 @@ class User extends CI_Controller {
 			echo "Las contraseñas no coinciden";
 		}
 	}
-
 	 
-	public function view_userconfig(){		
-		/*header("Content-type: application/json");        	
-		echo json_encode($user);*/
-
+	public function view_userconfig(){	
 		$data["user"]    = $this->user_model->user_byid($_POST["id"]);	
 		$data["rollist"] = $this->rol_model->rol_list(); 
-
-		/*$data["company_contactlist"] = $this->main_model->contact_list($_POST["id"]);
-		$data["company_officelist"]  = $this->main_model->office_list($_POST["id"]);		
-		$data["company"]  = $this->company_model->company_byid($_POST["id"]);
-		$data["states"]      = $this->main_model->get_locations(); 
-		$data["cities"]      = $this->main_model->get_city(); */
- 
 		$this->load->view("acount/users/user_configform",$data); 
-
 	}
 
 	public function update(){
@@ -89,10 +78,12 @@ class User extends CI_Controller {
 					 "apellido"  => $_POST["conf_userlastname"],
 					 "email"     => $_POST["conf_useremail"],
 					 "password"  => $_POST["conf_userpassword"],
+					 "fecha_inicio" => $_POST["conf_userfechainicio"],
+					 "fecha_fin"    => $_POST["conf_userfechafin"],
 					 "estatus"   => $_POST["conf_userstatus"]];
 			$user_id = $this->user_model->update_user($user,$_POST["conf_userid"]);    
-			if($user_id): echo "trues"; else: echo "No se edito el usuario"; endif;			 
-		}else{
+			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;			 
+		}else{ 
 			echo "Las contraseñas no coinciden";
 		}
 	}
@@ -102,6 +93,29 @@ class User extends CI_Controller {
 		if($user): echo "true"; else: echo "No se elimino el usuario"; endif;	
 	}
 
-	 
-  
+	public function Profile(){
+		$data["custom"]  = ["title"   => "Perfil de usuario",
+							"page"    => "Profile",
+							"prefix"  => "user",
+							"section" => "Users",
+							"module"  => $this->headerdata["module"]];   
+		//Files to be included in head, body and footer
+		$data["include"]  = includefiles($data["custom"]["page"]);		
+		$data["rollist"]  = $this->rol_model->rol_list(); 
+		$data["user"]     = $this->user_model->user_byid($_SESSION["user"]["id"]);
+		
+		//Load view
+		$this->load->view('layouts/admin',$data);	
+	}
+ 
+	public function validate_name(){				
+		$user = $this->user_model->validate_user($_POST["name"],"usuario");
+		if($user): echo "false"; else: echo "true"; endif;			
+	} 
+
+	public function validate_email(){
+		$user = $this->user_model->validate_user($_POST["email"],"email");
+		if($user): echo "false"; else: echo "true"; endif;			
+	} 
+	  
 }

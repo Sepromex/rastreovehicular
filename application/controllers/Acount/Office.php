@@ -91,7 +91,7 @@ class Office extends CI_Controller {
 					   "ciudad"        => (isset($_POST["conf_officecity"]))?$_POST["conf_officecity"]:"",
 					   "estado"        => (isset($_POST["conf_officestate"]))?$_POST["conf_officestate"]:""];
 		$office     = $this->office_model->update_office($office,$_POST["conf_officeid"]);    
-		if($office): echo "trues"; else: echo "No se edito la sucursal"; endif;		
+		if($office): echo "true"; else: echo "No se edito la sucursal"; endif;		
 	}
 
 	public function delete(){
