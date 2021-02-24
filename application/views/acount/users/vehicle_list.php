@@ -11,11 +11,11 @@
                     <div class="contact family-contact p-0">                             
                         <div class="contact-content" style="min-width:300px;">
                             <div class="contact-profile col-md-4">                                                   
-                                    <div class="contact-info">
+                                <div class="contact-info">
                                     <p class="contact-name mb-0"><?=$ccl->nombre?></p>
                                     <p class="contact-position mb-0 small font-weight-bold text-muted"><?=$ccl->puesto?></p>
                                     <small class="body-color"><?=$ccl->horario?></small>                                            
-                                    </div>
+                                </div>
                             </div>
                             <div class="contact-email col-md-3">
                                 <p class="mb-0 small">Contacto </p>

@@ -72,7 +72,7 @@ class User extends CI_Controller {
 		$data["companylist"]  = $this->main_model->company_list();  //companys
 		$data["usersep"]      = $this->main_model->users_sepromex();  //sepromex users
 		$data["vehiclelist"]  = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
-		
+		 
 		//Load view
 		$this->load->view("acount/users/user_configform",$data);
 	}
