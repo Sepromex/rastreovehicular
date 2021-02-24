@@ -1,10 +1,10 @@
-<?php if(isset($office_contactlist)): if(is_array($office_contactlist)): ?>
+<?php if(isset($vehiclelistd)): if(is_array($vehiclelistd)): ?>
 <div class="row mt-3"> 
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">                               
                 <h4 class="card-title">Contactos</h4>
-            </div>
+            </div> 
             <div class="card-body p-0">
                 <div class="contacts list">
                 <?php foreach($office_contactlist as $ccl): ?>

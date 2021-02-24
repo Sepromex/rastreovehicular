@@ -10,6 +10,18 @@ function general_validate(id,feedback){
     }
 }
 
+function validate_select(id,feedback){
+    if($(id).val() == 0) {        
+        mns = "* Campo requerido, seleccione una opción";
+        invalid_input(id,feedback,mns);
+        return "false";
+    }
+    else{
+        valid_input(id,feedback);
+        return "true";
+    }
+}
+
 function validate_lastname(id,feedback){
     if($(id).val().length < 4) {        
         mns = "* Campo requerido, el apellido debe ser mayor 4 carácteres";
@@ -93,7 +105,7 @@ function validateEmail(email) {
     return emailReg.test(email);
 }
 
-function validate_email(id,feedback,edit){
+function validate_email(id,feedback,edit=""){
     if(edit.trim() == $(id).val()){     
         valid_input(id,feedback);
         return "true";
@@ -167,7 +179,7 @@ function valid_input(id,feedback){
 
 function invalid_input(id,feedback,mns=""){
     $(feedback).html(mns);
-    $(feedback).css("display","block");
+    $(feedback).css("display","block");    
     $(id).removeClass('valid');
     $(id).addClass('invalid'); 
 } 

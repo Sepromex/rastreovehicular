@@ -14,24 +14,19 @@ function reset_user(){
     $("#user_newform .invalid-feedback").css("display","none");
 } 
 
-function validate_edituser(){  
-    var username = document.getElementById("conf_user").classList.contains('invalid');
-    var name     = document.getElementById("conf_username").classList.contains('invalid');
-    var email    = document.getElementById("conf_useremail").classList.contains('invalid');
-    var password = document.getElementById("conf_userpassword").classList.contains('invalid');
-    var confpass = document.getElementById("conf_userconfirmpassword").classList.contains('invalid');
-    
+function validate_edituser(){     
     var band = 1;
-    if(username == "false"){ band = 0;}
-    if(email == "false"){ band = 0;} 
-    if(password == "false"){ band = 0;} 
-    if(confpass == "false"){ band = 0;} 
-    if(rolid == "false"){ band = 0;}
-    if(lastname == "false"){ band = 0;}
-    if(name == "false"){ band = 0;}
+    if($("#conf_user").hasClass('invalid')){ console.log("user invalid"); band = 0; }
+    if($("#conf_useremail").hasClass('invalid')){ band = 0;} 
+    if($("#conf_userpassword").hasClass('invalid')){ band = 0;} 
+    if($("#conf_userconfirmpassword").hasClass('invalid')){ band = 0;}  
+    if($("#conf_username").hasClass('invalid')){ band = 0;}
+    if($("#conf_userrol").hasClass('invalid')){ band = 0; }
+    if($("#conf_usercompany").hasClass('invalid')){ band = 0; }
+    if($("#conf_usersepromex").hasClass('invalid')){ band = 0; }
+
     if(band == 1){
-        //insert_newrow();
-        console.log("guardar");
+        save_configform();
     }
 }
 
@@ -45,13 +40,13 @@ function validate_user(){
     var lastname = validate_lastname("#newuser_lastname","#feedback-newuser_lastname");
     var name     = validate_name("#newuser_name","#feedback-newuser_name");           
     var band = 1;
-    if(username == "false"){ band = 0;}
-    if(email == "false"){ band = 0;} 
-    if(password == "false"){ band = 0;} 
-    if(confpass == "false"){ band = 0;} 
-    if(rolid == "false"){ band = 0;}
-    if(lastname == "false"){ band = 0;}
-    if(name == "false"){ band = 0;}
+    if(username == "false"){ band = 0; }
+    if(email == "false"){ band = 0; } 
+    if(password == "false"){ band = 0; } 
+    if(confpass == "false"){ band = 0; } 
+    if(rolid == "false"){ band = 0; }
+    if(lastname == "false"){ band = 0; }
+    if(name == "false"){ band = 0; }
     if(band == 1){
         insert_newrow();
     }

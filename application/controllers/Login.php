@@ -8,6 +8,7 @@ class Login extends CI_Controller {
         $this->load->model('login_model');
 	}
 
+    //Load login
 	public function index()
 	{    
         $custom = array("title" => "Login",
@@ -16,26 +17,26 @@ class Login extends CI_Controller {
         $this->load->view('login/main_login',$data);
     }
     
-    //Iniciar session
+    //Start session
     public function start()
 	{
-        //Recibir variables por POST
+        //Get data
         $usuario  = $_POST["user"];
         $password = $_POST["password"];
 
-        //Buscar usuario en la DB
+        //Search user 
         $user = $this->login_model->check_login($usuario, $password);
-
-        //Si el usuario existe, guardarlo en sessión y redireccionar
+ 
+        //If user exist, save and return true
         if($user){            
             $this->init($user);
             echo "true";             
-        }else{
+        }else{ 
             echo "false";
         }
     }
     
-    //Guardar el usuario en session 
+    //Save user in session
     private function init($user){
         $login = array("id"      => $user["id_usuario"],
                        "usuario" => $user["usuario"],
@@ -44,13 +45,13 @@ class Login extends CI_Controller {
                        "estatus" => $user["estatus"]);
         $_SESSION["user"]  = $login;
     }
-    //Cerrar session
+    //Close session
     public function cerrar_session(){
         session_destroy();
         header('Location:http://rastreovehicular/Login');
     }
  
-    //Cargar vista de recuperar contraseña
+    //Load recovery view
     public function PasswordRecovery(){        
         $custom = array("title" => "Recuperar Contraseña",
                         "form"  => "login/recovery");
@@ -58,15 +59,15 @@ class Login extends CI_Controller {
         $this->load->view('login/main_login',$data); 
     }
 
-    //Enviar correo de recupercion
+    //Send email recovery
     public function SendRecovery(){
-        //Recibir variables por POST
+        //Get data
         $email  = $_POST["email"];
 
-        //Buscar usuario en la DB y enviar email
+        //Search user in DB and send email
         $send = $this->login_model->send_email($email);
  
-        //Si se envío el correo regresa true
+        //If email send, return true
          if($send){             
              echo "true";             
          }else{

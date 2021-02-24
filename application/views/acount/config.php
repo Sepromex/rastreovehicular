@@ -18,7 +18,7 @@
                     <a class="nav-link h6 <?=($custom['section'] == 'Contact')?'active':''?>" href="/Acount/Contact">
                         <i class="icon-people h4"></i> Contactos
                     </a>
-                </li>                
+                </li>            
             </ul>   
         </div>
     </div>

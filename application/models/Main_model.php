@@ -7,7 +7,7 @@ Class Main_model extends CI_Model {
 	{
         $this->db->select("id_usuario, email, concat(nombre, ' ', apellido) as nombre");
 		$this->db->from("usuarios");
-        $this->db->where("estatus","1");        
+        //$this->db->where("estatus","1");        
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
@@ -15,7 +15,7 @@ Class Main_model extends CI_Model {
 			return false; 			
         }	            
     } 
-
+ 
     // Contact list
     public function contact_list($id = 0, $type="company")
 	{
@@ -63,6 +63,36 @@ Class Main_model extends CI_Model {
         }	            
     } 
 
+    // Sepromex users
+    public function users_sepromex(){
+        $this->dbweb->select("id_usuario, username as nombre");
+		$this->dbweb->from("usuarios");
+        $this->dbweb->where("username !=","");
+        $this->dbmaster->order_by("nombre","asc");     
+        $query = $this->dbweb->get();
+		if($query->num_rows()>0){            
+			return $query->result();
+		}else{			
+			return false; 			
+        }	
+    }
+
+    
+    // Vehicle list
+    public function vehicle_list($empresa = 0){
+        $this->db->select("id_vehiculo,vehiculo,placas,modelo");
+		$this->db->from("vehiculos");
+        if($id > 0){
+            $this->db->where("id_empresa",$empresa);
+        }        
+        $this->db->order_by("nombre","asc");
+        $query = $this->db->get();
+		if($query->num_rows()>0){
+			return $query->result();
+		}else{
+			return false;
+        }
+    }
  
 
     public function get_locations()

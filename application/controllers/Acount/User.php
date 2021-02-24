@@ -7,6 +7,7 @@ class User extends CI_Controller {
 		parent::__construct();
 		$this->load->model('acount/user_model');
 		$this->load->model('acount/rol_model');
+		$this->load->model('main_model');
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	} 
@@ -66,23 +67,34 @@ class User extends CI_Controller {
 	}
 	 
 	public function view_userconfig(){	
-		$data["user"]    = $this->user_model->user_byid($_POST["id"]);	
-		$data["rollist"] = $this->rol_model->rol_list(); 
-		$this->load->view("acount/users/user_configform",$data); 
+		$data["user"]         = $this->user_model->user_byid($_POST["id"]);	 //user info
+		$data["rollist"]      = $this->rol_model->rol_list();   // User rol list
+		$data["companylist"]  = $this->main_model->company_list();  //companys
+		$data["usersep"]      = $this->main_model->users_sepromex();  //sepromex users
+		$data["vehiclelist"]  = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
+		
+		//Load view
+		$this->load->view("acount/users/user_configform",$data);
 	}
-
-	public function update(){
+   
+	public function update(){ 
 		if($_POST["conf_userpassword"] == $_POST["conf_userconfirmpassword"]){
-			$user = ["usuario"   => $_POST["conf_user"],
-					 "nombre"    => $_POST["conf_username"],
-					 "apellido"  => $_POST["conf_userlastname"],
-					 "email"     => $_POST["conf_useremail"],
-					 "password"  => $_POST["conf_userpassword"],
+			$user = ["usuario"   	=> $_POST["conf_user"],
+					 "nombre"    	=> $_POST["conf_username"],
+					 "apellido"  	=> $_POST["conf_userlastname"],
+					 "email"     	=> $_POST["conf_useremail"],
+					 "password"  	=> $_POST["conf_userpassword"],
 					 "fecha_inicio" => $_POST["conf_userfechainicio"],
 					 "fecha_fin"    => $_POST["conf_userfechafin"],
-					 "estatus"   => $_POST["conf_userstatus"]];
+					 "estatus"   	=> $_POST["conf_userstatus"],
+					 "id_sepro"   	=> $_POST["conf_usersepromex"],
+					 "id_rol"       => $_POST["conf_userrol"],
+					 "estatus"      => $_POST["conf_userstatus"],
+					 "id_empresa"   => $_POST["conf_usercompany"]];
+
 			$user_id = $this->user_model->update_user($user,$_POST["conf_userid"]);    
-			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;			 
+			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;
+			//print_array($_POST);
 		}else{ 
 			echo "Las contraseñas no coinciden";
 		}
@@ -107,6 +119,8 @@ class User extends CI_Controller {
 		//Load view
 		$this->load->view('layouts/admin',$data);	
 	}
+
+	
  
 	public function validate_name(){				
 		$user = $this->user_model->validate_user($_POST["name"],"usuario");

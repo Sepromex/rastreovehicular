@@ -19,7 +19,7 @@ Class User_model extends CI_Model {
     // Get user by ID
     public function user_byid($id)
 	{
-        $this->db->select("id_usuario, usuario, estatus, email, nombre, apellido, password, fecha_reg");
+        $this->db->select("*");
 		$this->db->from("usuarios");
         $this->db->where("id_usuario",$id);
         $query = $this->db->get();

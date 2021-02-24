@@ -12,22 +12,22 @@ Class Login_model extends CI_Model {
         $query = $this->db->get();        
          
 		if($query->num_rows()>0){            
-			return $query->row_array();
-		}else{			
-			return false; 			
-		}	    
+		    return $query->row_array();
+		}else{
+            return false;	 		
+		}
     } 
-    
+     
     public function send_email($email){
         $this->dbmaster->select("email");
 		$this->dbmaster->from("usuarios");
         $this->dbmaster->where("email",$email);        
         $query = $this->dbmaster->get(); 
-         
-        //verificar si existe email en la DB
-		if($query->num_rows()>0){            
-            //Generar código
-            //Enviar correo
+            
+        //check email in db
+		if($query->num_rows()>0){ 
+            //load code
+            //send email
             return true;
             
 		}else{			
