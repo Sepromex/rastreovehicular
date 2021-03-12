@@ -98,8 +98,8 @@ Class Rol_model extends CI_Model {
         return $access_id;
     }
     
-    public function delete_user($id){
-        $this->db->where('id_usuario',$id);
-        return $this->db->delete('usuarios');
+    public function delete_rol($id){
+        $this->db->where('id_rol',$id);
+        return $this->db->delete('usuario_roles');
     }
 }

@@ -9,17 +9,17 @@
     <!-- START: Card Data-->
     <div class="row mt-3">        
         <div class="col-xl-12">
-            <div class="card">
-                <form class="add-contact-form needs-validation configform" id="rol_configform" novalidate>
+            <div class="card"> 
+                <form class="needs-validation" id="rol_configform" method="POST" novalidate>
 
                     <div class="card-header d-flex justify-content-between align-items-center">                               
                         <h4 class="card-title">Datos Generales</h4>
                         <div class="align-self-center ml-auto text-center text-sm-right">  
                             <button type="button" class="btn btn-danger" onclick="acount_formtoggle()">Cancelar</button>         
-                            <button type="submit" class="btn btn-success">Editar Rol</button>
+                            <button type="button" onclick="velidate_form('rol_configform','config')" class="btn btn-success">Editar Rol</button>
                         </div>
                     </div> 
-
+ 
                     <div class="card-body">
 
                         <div class="form-row">
@@ -37,7 +37,7 @@
                         <div class="form-row"> 
                             <div class="form-group col-md-4">
                                 <label for="conf_rolname">Rol</label>
-                                <input type="text" class="form-control rounded" id="conf_rolname" name="conf_rolname">
+                                <input type="text" class="form-control rounded" id="conf_rolname" name="conf_rolname" required="">
                             </div>  
                             <div class="form-group col-md-2">
                                 <label for="conf_userstatus">Estatus</label>
@@ -48,7 +48,7 @@
                             </div>  
                             <div class="form-group col-md-6">
                                 <label for="conf_roldescription">Descripcion</label>
-                                <input type="text" class="form-control" id="conf_roldescription" name="conf_roldescription">
+                                <input type="text" class="form-control" id="conf_roldescription" name="conf_roldescription" required="">
                             </div> 
                         </div> 
 

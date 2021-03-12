@@ -5,8 +5,7 @@ class Contact extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('acount/contact_model');
-		$this->load->model('main_model');
+		$this->load->model('acount/contact_model');		
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	}

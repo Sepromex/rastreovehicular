@@ -4,9 +4,9 @@
     </h5> 
     <i class="icon-close icons openside h3"></i>     
 </div>
-<form class="add-contact-form needs-validation" id="rol_newform" novalidate>
+<form class="needs-validation" id="rol_newform" method="POST" novalidate>
     <div class="modal-body h-100">  
- 
+  
         <div class="row"> 
             <label for="rol_name" class="col-form-label">Rol</label>
             <input type="text" name="rol_name" id="rol_name" class="form-control" required="" >
@@ -20,7 +20,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-danger openside">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Agregar Rol</button>
+        <button type="button" class="btn btn-primary" onclick="velidate_form('rol_newform','new')">Agregar Rol</button>
     </div>
 </form> 
  

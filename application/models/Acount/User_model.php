@@ -47,6 +47,11 @@ Class User_model extends CI_Model {
         return $this->db->delete('usuarios');
     }
 
+    public function delete_vechicle($id){
+        $this->db->where('id',$id);
+        return $this->db->delete('usuarios_vehiculos');
+    }
+
     public function validate_user($value,$field){
         $this->db->select($field);
 		$this->db->from("usuarios");

@@ -1,26 +1,80 @@
 <script> 
 (function ($) {
-    "use strict";    
-    $('.send_form').on('click', function () {                           	
-        var name = $(this).data("function");           
-        self[name]();  
-    });    
+    "use strict"; 
+    
+    if($(".inputnumber")){
+        $(".inputnumber").keydown(function(event) {
+                if(event.shiftKey)
+                {
+                        event.preventDefault();
+                }
 
-    $('.reset_form').on('click', function () {                           	
-        var name = $(this).data("reset");           
-        self[name]();  
-    });    
+                if (event.keyCode == 46 || event.keyCode == 8)    {
+                }
+                else {
+                        if (event.keyCode < 95) {
+                        if (event.keyCode < 48 || event.keyCode > 57) {
+                                event.preventDefault();
+                        }
+                        } 
+                        else {
+                            if (event.keyCode < 96 || event.keyCode > 105) {
+                                event.preventDefault();
+                            }
+                        }
+                    }
+        });
+    }
 
-    $('#example').DataTable({
-        dom: 'Bfrtip', 
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ],                
-        responsive: true,
-        ajax: '<?=$include["body"]["table"]?>'
-    });  
+    
+
+    if($('.send_form')){
+        $('.send_form').on('click', function () {                           	
+            var name = $(this).data("function");           
+            self[name]();   
+        });
+    }
+ 
+    if($('.reset_form')){
+        $('.reset_form').on('click', function () {                           	
+            var name = $(this).data("reset");           
+            self[name]();  
+        });
+    }
+
+    var table_list = '<?=$include["body"]["table"]?>';
+    if(table_list){
+        if($('#example')){
+            $('#example').DataTable({
+                dom: 'Bfrtip', 
+                            buttons: [
+                                'copy', 'csv', 'excel', 'pdf', 'print'
+                            ],                
+                responsive: true,
+                ajax: '<?=$include["body"]["table"]?>'
+            });  
+        }
+    }
+
 })(jQuery);
+ 
 
+function velidate_form(form,type = "config"){    
+    $("#"+form).addClass('was-validated');    
+    if ($("#"+form)[0].checkValidity() === false) {                
+        return false;
+    } 
+    else{                   	
+        if(type == "new"){insert_newrow();}
+        if(type == "config"){save_configform();}
+    }    
+} 
+
+//Show config form
+function general_formtoggle(){
+    $('#general-content').toggleClass('form-hide');
+    $('#general-forms').toggleClass('form-hide');  
+}
 
 //Show config form
 function acount_formtoggle(){
@@ -36,7 +90,7 @@ function insert_newrow(){
             url: "<?=$include["body"]["add_url"]?>",
         success: function (response) { 
             if (response == "true") {
-                // location.reload();                     
+                location.reload();                     
             } else {                            
                 alert(response); 
             }
@@ -63,7 +117,7 @@ function save_configform(){
    
 // Delete list element
 function list_delete(id){
-    $.ajax({
+    $.ajax({ 
         type: "POST",
         data: {id:id},
         url: "<?=$include["body"]["deleteit"]?>", 
@@ -141,11 +195,11 @@ function office_formedit(id,company){
         data: {id:id,id_company:company},
         url: "/Acount/office/view_officeconfig",
         success: function (response) {        
-            $("#acount-forms").html(response);
+            $("#general-forms").html(response);
             acount_formtoggle();
         } 
     });
-}
+} 
 
 
 
@@ -212,6 +266,18 @@ function rol_formedit(id){
 
             acount_formtoggle();
 
+        }
+    });
+}
+
+function vehicle_formedit(id){
+    $.ajax({
+        type: "POST",
+        data: {id:id},
+        url: "/Config/Vehicles/view_vehicleconfig",
+        success: function (response) {
+            $("#general-forms").html(response);
+            general_formtoggle();
         }
     });
 }

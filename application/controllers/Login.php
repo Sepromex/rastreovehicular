@@ -30,13 +30,21 @@ class Login extends CI_Controller {
         //If user exist, save and return true
         if($user){            
             $this->init($user);
+            $this->load_system_data();
             echo "true";             
         }else{ 
             echo "false";
-        }
+        }        
+    }
+
+    private function load_system_data(){       
+        $data["vehicle_status"] = $this->main_model->vehicle_status();
+
+        $_SESSION["catalog"]    = $data;
+        
     }
     
-    //Save user in session
+    //Save user in session 
     private function init($user){
         $login = array("id"      => $user["id_usuario"],
                        "usuario" => $user["usuario"],
@@ -44,7 +52,9 @@ class Login extends CI_Controller {
                        "company" => $user["id_empresa"],
                        "estatus" => $user["estatus"]);
         $_SESSION["user"]  = $login;
+        
     }
+
     //Close session
     public function cerrar_session(){
         session_destroy();

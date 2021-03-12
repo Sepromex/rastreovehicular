@@ -23,6 +23,11 @@
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/ionicons/css/ionicons.min.css">  
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/lightpick@latest/css/lightpick.css">        
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+        <script src="<?=base_url()?>/dist/vendors/jquery/jquery-3.3.1.min.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/jquery-ui/jquery-ui.min.js"></script>
+        
         <!-- END: Page CSS-->  
 
         <!-- <script src="socket.io.js"></script> -->
@@ -154,8 +159,7 @@
         <!-- End Sidebar -->
          
         <!-- START: Template JS-->
-        <script src="<?=base_url()?>/dist/vendors/jquery/jquery-3.3.1.min.js"></script>
-        <script src="<?=base_url()?>/dist/vendors/jquery-ui/jquery-ui.min.js"></script>
+        
         <script src="<?=base_url()?>/dist/vendors/moment/moment.js"></script>
         <script src="<?=base_url()?>/dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="<?=base_url()?>/dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
@@ -188,15 +192,16 @@
                 foreach($include["scriptend"] as $incl){ 
                     $this->load->view($incl);
                 }
-            }
-
-            
+            }  
         ?>  
 
         <?php if(isset($include["scriptendfile"])){ foreach($include["scriptendfile"] as $incl){  ?>                    
             <script src="<?php echo base_url().$incl?>"></script>
         <?php } } ?> 
-         
+
+
+    
+
     </body>
     <!-- END: Body-->
 </html> 

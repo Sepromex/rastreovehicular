@@ -44,7 +44,7 @@ class Rol extends CI_Controller {
 	}
 
 
-	public function new(){ 
+	public function new(){  
 			$rol    = ["rol"         => $_POST["rol_name"],
 					   "descripcion" => $_POST["rol_description"],
 					   "fecha_reg"   => date('Y-m-d'),
@@ -66,16 +66,16 @@ class Rol extends CI_Controller {
 				"descripcion" => $_POST["conf_roldescription"], 
 				"estatus"     => $_POST["conf_rolstatus"]];				
 		$rol  = $this->rol_model->update_rol($rol,$_POST["conf_rolid"]);    
-		$access = $this->rol_model->set_access($_POST["rolcheck"],$_POST["conf_rolid"]);
+		if(isset($_POST["rolcheck"])){
+			$access = $this->rol_model->set_access($_POST["rolcheck"],$_POST["conf_rolid"]);
+		}
+		else{ $access = true;}		
 		if($rol && $access): echo "true"; else: echo "No se edito el rol de usuario"; endif;
-
 	}
  
-	public function delete(){
-		$user = $this->rol_model->delete_user($_POST["id"]);    
+	public function delete(){ 
+		$user = $this->rol_model->delete_rol($_POST["id"]);    
 		if($user): echo "true"; else: echo "No se elimino el usuario"; endif;	
 	}
-
-	 
-  
+ 
 }

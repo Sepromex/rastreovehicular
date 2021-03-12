@@ -2,8 +2,7 @@
 <div class="row mt-3">        
     <div class="col-xl-12">
         <div class="card">
-            <form class="add-contact-form needs-validation" id="user_configform" novalidate>
-
+            <form method="POST" id="user_configform">
                 <div class="card-header d-flex justify-content-between align-items-center">                                
                     <h4 class="card-title">Datos Generales</h4>
                     <div class="align-self-center ml-auto text-center text-sm-right">  
@@ -90,18 +89,19 @@
                             <label for="conf_usersepromex">Usuario Sepromex</label>
                             <select class="form-control select-form" id="conf_usersepromex" name="conf_usersepromex">
                             <option value="0">Selecciona un usuario</option>
-                                <?php foreach($usersep as $us): ?>
+                                <?php if(isset($usersep)): foreach($usersep as $us): ?>
                                 <option <?=(isset($user["id_sepro"]) && $user["id_sepro"] == $us->id_usuario)?'selected':''?> value="<?=$us->id_usuario?>"><?=$us->nombre?></option>
-                                <?php endforeach; ?>                   
+                                <?php endforeach; endif; ?>
                             </select> 
                             <div class="invalid-feedback" id="feedback-confusersepromex"></div>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="conf_usercompany">Empresa</label>
-                            <select class="form-control select-form" id="conf_usercompany" name="conf_usercompany" onchange="validate_select('#conf_usercompany','#feedback-confusercompany')">
+                            <select class="form-control select-form" id="conf_usercompany" name="conf_usercompany" onchange="validate_select('#conf_usercompany','#feedback-confusercompany');changeselectveh(this.value)">
                                 <option value="0">Selecciona una empresa</option>
                                 <?php foreach($companylist as $comp): ?>
-                                <option <?=(isset($user["id_empresa"]) && $user["id_empresa"] == $comp->id_empresa)?'selected':''?> value="<?=$comp->id_empresa?>"><?=$comp->razon_social?></option>                               <?php endforeach; ?>
+                                <option <?=(isset($user["id_empresa"]) && $user["id_empresa"] == $comp->id_empresa)?'selected':''?> value="<?=$comp->id_empresa?>"><?=$comp->razon_social?></option>
+                                <?php endforeach; ?>
                             </select>
                             <div class="invalid-feedback" id="feedback-confusercompany"></div>
                         </div> 
@@ -122,28 +122,4 @@
             </form>    
         </div>
     </div>  
-</div>
-
-<script>
-    //Plugin documentation 
-    //https://wakirin.github.io/Lightpick/
-    // demo-11
-    var datepicker = new Lightpick({
-        field: document.getElementById('conf_userfechainicio'),
-        secondField: document.getElementById('conf_userfechafin'),
-        repick: true,
-        dropdowns:{
-            years: {
-                min: '2010',
-                max: '2035'
-            }
-        },
-        onSelect: function(start, end){
-            document.getElementById('fecha_desc').innerHTML = rangeText(start, end);
-        }
-    });
-
-    
-
-    $('.select-form').select2();
-</script>
+</div> 

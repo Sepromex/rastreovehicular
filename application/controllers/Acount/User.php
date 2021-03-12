@@ -7,8 +7,7 @@ class User extends CI_Controller {
 		parent::__construct();
 		$this->load->model('acount/user_model');
 		$this->load->model('acount/rol_model');
-		$this->load->model('main_model');
-		$this->load->helper('acount');
+ 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	} 
  
@@ -49,33 +48,63 @@ class User extends CI_Controller {
 	}  
 
 
+
 	public function new(){
 		if($_POST["password"] == $_POST["confirmpassword"]){
 			$user = ["usuario"   => $_POST["user"],
-					"nombre"    => $_POST["name"],
-					"apellido"  => $_POST["lastname"],
-					"email"     => $_POST["email"],
-					"fecha_reg" => date('Y-m-d'),
-					"id_rol"    => $_POST["rolid"],
-					"password"  => $_POST["password"],
-					"estatus"   => "1"];
+					"nombre"     => $_POST["name"],
+					"apellido"   => $_POST["lastname"],
+					"email"      => $_POST["email"],
+					"fecha_reg"  => date('Y-m-d'),
+					"id_rol"     => $_POST["rolid"],
+					"password"   => $_POST["password"],
+					"estatus"    => "1"];
 			$user_id = $this->user_model->add_user($user);    
 			if($user_id): echo "true"; else: echo "No se inserto el usuario"; endif;
 		}else{
 			echo "Las contraseñas no coinciden";
 		}
-	}
-	 
-	public function view_userconfig(){	
-		$data["user"]         = $this->user_model->user_byid($_POST["id"]);	 //user info
-		$data["rollist"]      = $this->rol_model->rol_list();   // User rol list
-		$data["companylist"]  = $this->main_model->company_list();  //companys
-		$data["usersep"]      = $this->main_model->users_sepromex();  //sepromex users
-		$data["vehiclelist"]  = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
-		 
+	} 
+
+	public function view_userconfig(){
+		$data["user"]             = $this->user_model->user_byid($_POST["id"]); //user info
+		$data["rollist"]          = $this->rol_model->rol_list();   // User rol list
+		$data["companylist"]      = $this->main_model->company_list();  //companys
+		$data["usersep"]          = $this->main_model->users_sepromex();  //sepromex users
+		$data["vehiclelist"]      = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
+		$data["assignedvehicles"] = $this->main_model->assigned_vehicles($_POST["id"]);
 		//Load view
 		$this->load->view("acount/users/user_configform",$data);
 	}
+
+	public function uservehicles(){
+		$data[0]  = ["id_vehiculo" => 0, "vehiculo" => "Selecciona un vehiculo", "placas" => "", "modelo" => ""];
+		$options  = $this->main_model->vehicle_list($_POST["company_id"]);
+		foreach($options as $opt){
+			array_push($data,$opt);  
+		}		
+		header("Content-type: application/json");
+        echo json_encode($data);
+	}
+
+	public function assign_vehicles(){		
+		$info             = ["id_vehiculo" => $_POST["id"], "id_usuario" => $_POST["user"]];
+		$data["insert"]   = $this->main_model->assign_vehicles($info); //Check and insert vehicle
+		
+		if($data["insert"] == "true"):		
+			$data["vehicle"]  = $this->main_model->vehicle_list(0,$_POST["id"]);  // Vehicle info
+		endif;
+
+		header("Content-type: application/json");
+        echo json_encode($data);		
+	}
+
+	public function delete_vechilce(){
+		$vehicle = $this->user_model->delete_vechicle($_POST["id"]);    
+		if($vehicle): echo "true"; else: echo "No se elimino el vehiculo"; endif;	
+		
+	}
+
    
 	public function update(){ 
 		if($_POST["conf_userpassword"] == $_POST["conf_userconfirmpassword"]){
@@ -95,7 +124,7 @@ class User extends CI_Controller {
 			$user_id = $this->user_model->update_user($user,$_POST["conf_userid"]);    
 			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;
 			//print_array($_POST);
-		}else{ 
+		}else{
 			echo "Las contraseñas no coinciden";
 		}
 	}
@@ -113,16 +142,19 @@ class User extends CI_Controller {
 							"module"  => $this->headerdata["module"]];   
 		//Files to be included in head, body and footer
 		$data["include"]  = includefiles($data["custom"]["page"]);		
-		$data["rollist"]  = $this->rol_model->rol_list(); 
-		$data["user"]     = $this->user_model->user_byid($_SESSION["user"]["id"]);
+		$data["user"]             = $this->user_model->user_byid($_SESSION["user"]["id"]); //user info
+		$data["rollist"]          = $this->rol_model->rol_list();   // User rol list
+		$data["companylist"]      = $this->main_model->company_list();  //companys
+		$data["usersep"]          = $this->main_model->users_sepromex();  //sepromex users		
+		$data["vehiclelist"]      = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
+		$data["assignedvehicles"] = $this->main_model->assigned_vehicles($_SESSION["user"]["id"]);
 		
 		//Load view
-		$this->load->view('layouts/admin',$data);	
+		$this->load->view('layouts/admin',$data);
 	}
-
 	
  
-	public function validate_name(){				
+	public function validate_name(){
 		$user = $this->user_model->validate_user($_POST["name"],"usuario");
 		if($user): echo "false"; else: echo "true"; endif;			
 	} 

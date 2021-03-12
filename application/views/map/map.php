@@ -10,10 +10,40 @@
     }
     .font-tab{ font-size: 1.55rem !important; }
     .padding-tab{ padding: .5rem .6rem !important; }
+    .speed-icon{ margin-bottom: .5rem; font-weight: 500; line-height: 1.2; width:20px; }
+.bg-orange{ background-color: orange; }
+  #map {    
+    width: 100%;
+    height: 690px;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
 </style>
+
+<script>
+    let map;
+
+    function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 20.721827087454802, lng:  -103.37155710393355 },
+        zoom: 10,
+    });
+    }
+</script>
+
 <div class="container-fluid "> 
     <!-- START: Card Data-->
     <div class="row">
+
+<!--  <li class="nav-item" style="padding: 5px 2px !important;">
+                                    <a href="#" data-mailtype="inbox" class="nav-link padding-tab active"> 
+                                        <i class="mdi mdi-car font-tab"></i> 
+                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span>
+                                    </a>
+                                </li>-->
 
         <div class="col-2 mt-3"> 
             <div class="card">
@@ -23,19 +53,19 @@
                         <div class="col-12 col-lg-12 col-xl-12 pr-lg-0 flip-menu ">                                                    
                             <ul class="list-unstyled nav inbox-nav  mb-0 mail-menu" style="margin-top:0px !important;">
                                 <li class="nav-item" style="padding: 5px 2px !important;">
-                                    <a href="#" data-mailtype="inbox" class="nav-link padding-tab active"> 
+                                    <a href="#" class="nav-link padding-tab active" data-list="vehicle_list"> 
                                         <i class="mdi mdi-car font-tab"></i> 
-                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=count($vehicle_list)?></span>
+                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span>
                                     </a>
                                 </li>
                                 <li class="nav-item" style="padding: 5px 2px !important;">
-                                    <a href="#" data-mailtype="sent" class="nav-link padding-tab">
-                                        <i class="mdi mdi-map-marker font-tab"></i>
+                                    <a href="#" class="nav-link padding-tab"  data-list="site_list">
+                                        <i class="mdi mdi-map-marker font-tab"></i> 
                                         <span class="ml-auto badge badge-pill badge-success bg-success car-num">9</span>
                                     </a>
                                 </li> 
                                 <li class="nav-item"  style="padding: 5px 2px !important;">
-                                    <a href="#" data-mailtype="sent" class="nav-link padding-tab">
+                                    <a href="#" class="nav-link padding-tab"  data-list="geoc_list">
                                         <i class="mdi mdi-map-marker-circle font-tab"></i>
                                         <span class="ml-auto badge badge-pill badge-success bg-success car-num">10</span>
                                     </a>
@@ -47,145 +77,266 @@
                 <!-- END TABS -->
 
                 <!-- ####### VEHICULOS LIST##############  -->
-                <div class="card-body p-0">                    
-                    <!-- VER VEHICULO -->
-                    <div class="view-email">
-                                <div class="card-body">
-                                    <a href="#" class="bg-primary float-left mr-3  py-1 px-2 rounded text-white back-to-email" >
-                                        Back
-                                    </a>
-                                    <h5 class="view-subject mb-3">Mail Subject</h5>
-                                    <div class="media mb-5 mt-5">
-                                        <div class="align-self-center">
-                                            <img src="dist/images/author1.jpg" alt="" class="img-fluid rounded-circle d-flex mr-3" width="40">
-                                        </div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0 view-author">Jeanette R. Brooks</h6>  
-                                            <small class="view-date">Today at 10:31 Pm</small>
-                                        </div>
-                                    </div>                                    
-                                    <p>VehiculoT</p>
-                                    <div class="eagle-divider my-3"></div>
-                                    <p><i class="fa fa-paperclip pr-2"></i> Información del vehiculo</p>
-                                    <div class="row megnify-popup">                                        
-                                        <div class="col-12 col-sm-12 col-xl-12">
-                                            <div class="card eagle-border-light text-center">
-                                                <a class="btn-gallery" href="dist/images/post2.jpg"><img src="dist/images/post2.jpg" alt="" class="img-fluid rounded-top"></a>
-                                                <div class="card-body py-2">
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="card-body p-0">                          
+                    <div id="vehicle_list" class="mainmap_list">
+                        <?php $this->load->view("map/vehicle_list"); ?>
                     </div>
-
-                    <!-- Busqueda -->
-                    <div class="card-header border-bottom p-2 d-flex">
-                                    <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
-                                    <input type="text" class="form-control border-0  w-100 h-100 mail-search" placeholder="Search ...">
-                    </div>         
-
-
-                    <!--  VEHICULO MENU LISTADO-->
-                    <div class="row m-0 border-bottom theme-border">
-                            <div class="col-12 px-2 py-3 d-flex mail-toolbar">
-                                <div class="check d-inline-block mr-3">
-                                    <label class="chkbox">All
-                                        <input name="all" value="" type="checkbox" class="checkall">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div> 
-
-                                <!-- Filtrar por Etiquetas -->
-                                <a href="#" class="ml-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-bell"></i></a>
-                                <div class="dropdown-menu p-0 m-0 dropdown-menu-right bulk-mail-type">
-                                    <a class="dropdown-item" href="#" data-mailtype="business-mail" ><span class="dot bg-primary"></span>  Motocicleta </a>
-                                    <a class="dropdown-item" href="#" data-mailtype="private-mail"><span class="dot bg-danger"></span> Automovil </a>
-                                    <a class="dropdown-item" href="#" data-mailtype="personal-mail"><span class="dot bg-success"></span> Truck </a>
-                                    <a class="dropdown-item" href="#" data-mailtype="social-mail"><span class="dot bg-warning"></span> Custodios </a>
-                                </div>
-                                
-                                <a href="#" class="bulk-star"><i class="icon-star"></i></a>  
-                                
-                                <div>
-                                    <a href="#" class="mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
-                                    <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">
-                                        <a class="dropdown-item mailread" href="#" ><i class="icon-book-open"></i> Marcar </a>
-                                        <a class="dropdown-item mailunread" href="#"><i class="icon-notebook"></i> Eliminar </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item delete" href="#"  data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-trash"></i>  Nuevo Sitio </a>
-                                        <a class="dropdown-item delete" href="#"  data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-trash"></i>  Nueva Ruta </a>
-                                        <a class="dropdown-item delete" href="#"  data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-trash"></i>  Nueva Geocerca </a>
-                                    </div>
-                                </div> 
-
-
-                            </div>
+                    <div id="site_list" class="mainmap_list" style=" display: none;">
+                        <?php $this->load->view("map/sites_list"); ?> 
                     </div>
-
-
-                    <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
-                        <ul class="mail-app list-unstyled">                        
-                            <!-- ITEMS -->
-                            <!--
-                                <i class="mdi mdi-speedometer"></i>
-                                <i class="mdi mdi-power-standby"></i>
-                                <i class="mdi mdi-power-plug-off"></i>
-                                <i class="mdi mdi-power-plug"></i>
-                                <i class="mdi mdi-map-marker"></i>
-                                <i class="mdi mdi-map-marker-off"></i>
-                                <i class="mdi mdi-car-pickupr"></i>
-                                <i class="mdi mdi-car-pickupr"></i>
-                                <i class="mdi mdi-camera-timer"></i>
-                                mdi mdi-gauge-empty
-                            -->                            
-                            <?php foreach($vehicle_list as $v){ ?>
-                            <?php if($v->ID_VEH != ""){ ?>
-                            <li class="py-1 px-2 mail-item inbox sent starred">
-                                <div class="d-flex align-self-center align-middle">
-                                    <label class="chkbox">
-                                        <input type="checkbox" >
-                                        <span class="checkmark small"></span>
-                                    </label>
-                                    <div class="mail-content d-md-flex w-100">                                                    
-                                        <span class="car-name"><?=$v->ID_VEH?></span>                                                     
-                                        <div class="d-flex mt-3 mt-md-0 ml-auto">
-
-                                            <div class="h6 primary mdi mdi-power-plug"></div>
-                                            <div class="h6 primary mdi mdi-speedometer"></div>
-                                            <div class="h6 primary mdi mdi-map-marker"></div>
-
-                                            <a href="#" class="ml-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="icon-options-vertical"></i>
-                                            </a>
-                                            <div class="dropdown-menu p-0 m-0 dropdown-menu-right">
-                                                <a class="dropdown-item single-read" href="#" ><i class="icon-book-open"></i> Marcar </a>
-                                                <a class="dropdown-item single-unread" href="#"  data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-notebook"></i> Editar </a>                                                
-                                                <a class="dropdown-item single-read" href="#" ><i class="icon-book-open"></i> Configurar </a>
-                                                <a class="dropdown-item single-delete" href="#"><i class="icon-trash"></i> Eliminar </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li> 
-                            <?php } } ?>
-                            <!--ITEMS  -->
-                        </ul>
-                    </div> <!-- LISTADO VEHICULOS -->
-
+                    <div id="geoc_list" class="mainmap_list"  style=" display: none;">
+                        <?php $this->load->view("map/geo_list"); ?> 
+                    </div>
                 </div>
+                <!-- ####### END VEHICULOS LIST ##############  -->
 
             </div>  <!-- End card-->              
         </div> <!-- END col-2 -->
+        
 
 
         <div class="col-10 mt-3">
-            <div class="row">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d59725.23520802217!2d-103.3863168!3d20.676608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1611010700088!5m2!1ses-419!2smx" width="100%" height="690px" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>                            
+            <div class="row">                
+                <div id="map"></div>
             </div>
+            <div class="row" id="ubicacion"></div>
+            <div class="row" id="sitios"></div>
         </div>        
                     
                     
     </div>
-</div>                            
+</div>           
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
+<script> 
+
+var timerID = 0;
+var marca,marker,sitios;
+var elim_sitio = new Array();
+//var makingQuery = false;
+var markersArrays=new Array();
+var directionsService;
+var directionsDisplay;
+var childwindows = new Array();
+var al = new Array();
+var nl = new Array();
+
+//founcion de incio de mapas de google.
+var punto;
+var punto2;
+var marca;
+var smov;
+var tipoV;
+var marcaStart,marcaEnd;
+var visitedPages = new  Array();
+var linea = new Array();
+var optSelected = 1;
+var flightPath;
+var arregloDeRecorridos= new Array();
+
+
+function mostrarLinea2(pag){
+	flightPath = new google.maps.Polyline({
+		path: linea,
+		strokeColor: "#cd4224",
+		strokeOpacity: 1.0,
+		strokeWeight: 3,
+		geodesic:true
+	});
+	arregloDeRecorridos.push(flightPath);
+	flightPath.setMap(map);
+	linea = linea.splice(linea.length);
+}
+
+function elimR(){
+	var flightPath = arregloDeRecorridos[0];
+	flightPath.setMap(null);
+	arregloDeRecorridos.length=0;
+}
+
+function crea_recorrido(lat,lon,t,pag){
+	var encontrado = false;
+
+    console.log(visitedPages.length);
+
+	for(i = 0; i < visitedPages.length; i++){
+		if(visitedPages[i] == pag){
+			encontrado= true;
+			break;
+		}
+	}
+	if(!encontrado){
+		tipoV = t;
+		linea.push(new google.maps.LatLng(lat,lon));		
+	}
+}
+	
+//funcion que recibe los datos de la ubicacion y los envia a createMarker
+function MapaCord(la, lo, tv, v) { 
+	if(markersArrays.length!=0){
+	var elim=elimMarcador();}
+	if(al.length!=0){
+	al.splice(al.length);}
+	var miPosicion=new google.maps.LatLng(la,lo);
+	map.setOptions({
+		overviewMapControl:true,
+		center:miPosicion,
+		//overviewMapControl:true,
+		zoom:15
+	});
+	var image = new google.maps.MarkerImage('/dist/images/map/vehicle.png',
+		new google.maps.Size(80, 40),
+		new google.maps.Point(0,0),
+		new google.maps.Point(0, 20));
+	marcador = new google.maps.Marker({
+		position: miPosicion,
+		map: map,
+		icon: image,
+		title: v
+	});
+	markersArrays.push(marcador);
+}
+
+function elimMarcador(){
+		var marker = markersArrays[0]; // find the marker by given id
+		marker.setMap(null);
+		markersArrays.length=0;
+}	 
+
+function vehicle_ubication(id,company) {
+	/*document.getElementById("cont_mapa_sepro").style.visibility = "hidden";
+	document.getElementById('cuerpo_medio').innerHTML='<img src="img2/loader.gif" width="15px" height="15px" />';
+	xajax_posicion(id);*/ 
+    $.ajax({ 
+        type: "POST",
+        data: {id:id,company:company},
+        url: "/MainMap/get_ubication",
+        success: function (response) {  
+            //console.log();
+            var last = response.last;                        
+            $("#ubicacion").html(response.table);
+            //console.log(response.route);
+            MapaCord(last.lat, last.lon, last.tipov, response.veh);            
+            $.each(response.route, function(i, item) {
+                crea_recorrido(item.lat,item.lon,item.tipoveh,0);
+            });   
+            mostrarLinea2(0);
+        }
+    }); 
+}
+
+
+function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0){
+    imagenes = '/dist/images/map/vehicle.png';
+	if(imagenes != ""){
+		var image = new google.maps.MarkerImage(imagenes,
+		new google.maps.Size(20, 20),
+		new google.maps.Point(0,0),
+		new google.maps.Point(0, 20));
+	}
+	tipoGeo = tipoGeo.toUpperCase();
+	var datosSitio="<u>Sitio de Interes</u><br/>"+
+	"Nombre: "+nombre+"<br/>Contacto: "+contacto+"<br /> Tel: "+tel1+"<br /> Tel: "+tel2+"<br /> Lat: "+lat+"<br /> Long: "+lon+
+	"<br /><img src='"+imagenes+"'  width='20' height='20' /> - "+tipoGeo+" - <img src='"+imagenes+"'  width='18' height='18' />";
+	var infowindow = new google.maps.InfoWindow({
+		content: datosSitio
+	});
+
+	var point = new google.maps.LatLng(lat,lon);
+	marcador = new google.maps.Marker({
+		position: point,
+		map: map,
+		icon: image,
+		title:nombre
+	});
+	google.maps.event.addListener(marcador, 'click', function() {
+		infowindow.open(map,this);
+	});
+	elim_sitio.push(marcador);
+    if(zoom == 1){
+        var posicion=new google.maps.LatLng(lat,lon);
+                map.setOptions({
+                center:posicion,
+                zoom:17
+        });
+    }
+}
+
+function ver_sitio(id){
+	if($("#check"+id).is(':checked')){
+		xajax_ver_sitio(id);
+	}
+	else{
+		for(var i=0; i<elim_sitio.length;i++){
+			var marker = elim_sitio[i];
+			marker.setMap(null);
+		}
+		sitios_seleccionados();
+	}
+}
+function sitios_seleccionados(){
+	var los_sitios=document.getElementsByName("sitio");
+	for(var i=0; i<los_sitios.length; i++){
+		if(los_sitios[i].checked==true){
+			ver_sitio(los_sitios[i].value);
+		}
+	}
+}
+
+function show_site(id){
+    $.ajax({ 
+        type: "POST",
+        data: {id:id}, 
+        url: "/MainMap/show_sites",
+        success: function (response) {             
+            var s = response;
+            //if(s.nombre){
+              crea_sitios(s.nombre,s.latitud,s.longitud,s.contacto,s.tel1,s.tel2,s.imagen,s.descripcion,1);
+              //console.log(s.nombre+' '+s.latitud+' '+s.longitud+' '+s.contacto+' '+s.tel1+' '+s.tel2+' '+s.imagen+' '+s.descripcion);
+           // }
+        }
+    });  
+}
+
+function load_geo(){ 
+    $.ajax({ 
+        type: "POST", 
+        url: "/MainMap/load_geo",
+        success: function (response) {             
+            $("#geo_list").html(response);
+        }
+    });  
+}
+
+
+function load_vehicles(){ 
+    $.ajax({ 
+        type: "POST", 
+        url: "/MainMap/mostrar_vehiculos_act",
+        success: function (response) {             
+            $("#vehicles_list").html(response);
+        }
+    });  
+}
+
+function load_sites(){ 
+    $.ajax({ 
+        type: "POST",         
+        url: "/MainMap/load_sites",
+        success: function (response) {             
+            $("#sites_list").html(response);
+        } 
+    });  
+
+}
+
+load_vehicles();
+load_sites(); 
+load_geo();
+
+/*$(document).ready(function(){
+    "use strict";     
+    setInterval(load_vehicles(),8000);  
+});*/
+//var load_v = setInterval( function() { load_vehicles(); }, 30000);
+</script> 

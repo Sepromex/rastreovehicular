@@ -4,12 +4,104 @@
     var primarycolor = getComputedStyle(document.body).getPropertyValue('--primarycolor');
 
 
-    $('.scrollertodo').slimScroll({
+    /*$('.scrollertodo').slimScroll({
         height: '475px', 
         color: '#fff'
-    });
+    });*/ 
 
 ////////////////////////////// Quill Editor ////////////////////////
+//Menu tabs list
+$('.mail-menu li a').on('click', function () {
+    $('.mail-menu li a').removeClass('active');
+    $(this).addClass('active');
+    $('.mainmap_list').css("display","none");
+    $('#' + $(this).data("list")).css("display","block");
+    return false; 
+});
+
+$('.bulk-mail-type a').on('click', function () {
+    var speedclass = $(this).data("speed");
+    console.log(speedclass);
+    $('#vehicles_list .mail-item').hide();    
+    $('#vehicles_list .'+speedclass).show(500);
+    
+});
+
+/*
+$('.bulk-mail-type a').on('click', function () {
+    var speedclass = $(this).data("speed");
+
+    $('.' + $('.mail-menu li a.active').data("mailtype")).each(function () {
+        if ($(this).find('input').is(':checked')) {
+            $(this).removeClass('business-mail');
+            $(this).removeClass('private-mail');
+            $(this).removeClass('social-mail');
+            $(this).removeClass('personal-mail');
+            $(this).removeClass('work-mail');
+            $(this).addClass(mailclass);
+            $(".dropdown.show").toggle();
+            $(this).find('input').prop('checked', false);
+        }
+    });
+});
+
+*/
+
+$(".vehicle-search").on("keyup", function () {
+    var v = $(".vehicle-search").val().toLowerCase();
+    var rows = $('#vehicles_list li');
+    for (var i = 0; i < rows.length; i++) {
+        var fullname = rows[i].getElementsByClassName("mail-content");
+        fullname = fullname[0].innerHTML.toLowerCase();
+        if (fullname) {
+            if (v.length == 0 || (v.length < 1 && fullname.indexOf(v) == 0) || (v.length >= 1 && fullname.indexOf(v) > -1)) {
+                rows[i].style.animation = 'fadein 7s';
+                rows[i].style.display = "block";
+            } else {
+                rows[i].style.display = "none";
+                rows[i].style.animation = 'fadeout 7s';
+            }
+        }
+    }
+});
+
+$(".site-search").on("keyup", function () {
+    var v = $(".site-search").val().toLowerCase();
+    var rows = $('#sites_list li');
+    for (var i = 0; i < rows.length; i++) { 
+        var fullname = rows[i].getElementsByClassName("mail-content");
+        fullname = fullname[0].innerHTML.toLowerCase();
+        if (fullname) {
+            if (v.length == 0 || (v.length < 1 && fullname.indexOf(v) == 0) || (v.length >= 1 && fullname.indexOf(v) > -1)) {
+                rows[i].style.animation = 'fadein 7s';
+                rows[i].style.display = "block";
+            } else {
+                rows[i].style.display = "none";
+                rows[i].style.animation = 'fadeout 7s';
+            }
+        }
+    }
+});
+
+$(".geo-search").on("keyup", function () {
+    var v = $(".geo-search").val().toLowerCase();
+    var rows = $('#geoc_list li');
+    for (var i = 0; i < rows.length; i++) { 
+        var fullname = rows[i].getElementsByClassName("mail-content");
+        fullname = fullname[0].innerHTML.toLowerCase();
+        if (fullname) {
+            if (v.length == 0 || (v.length < 1 && fullname.indexOf(v) == 0) || (v.length >= 1 && fullname.indexOf(v) > -1)) {
+                rows[i].style.animation = 'fadein 7s';
+                rows[i].style.display = "block";
+            } else {
+                rows[i].style.display = "none";
+                rows[i].style.animation = 'fadeout 7s';
+            }
+        }
+    }
+});
+
+
     if ($("#snow-container").length > 0)
     {
         var quill = new Quill('#snow-container', {
@@ -24,30 +116,11 @@
         return false;
     });
 
-    $('.mail-menu li a').on('click', function () {
-        $('.mail-menu li a').removeClass('active');
-        $(this).addClass('active');
-        $('.mail-app .mail-item').hide();
-        $('.' + $(this).data("mailtype")).show(500);
-        return false;
-    });
+
+    
 
 
-    $('.bulk-mail-type a').on('click', function () {
-        var mailclass = $(this).data("mailtype");
-        $('.' + $('.mail-menu li a.active').data("mailtype")).each(function () {
-            if ($(this).find('input').is(':checked')) {
-                $(this).removeClass('business-mail');
-                $(this).removeClass('private-mail');
-                $(this).removeClass('social-mail');
-                $(this).removeClass('personal-mail');
-                $(this).removeClass('work-mail');
-                $(this).addClass(mailclass);
-                $(".dropdown.show").toggle();
-                $(this).find('input').prop('checked', false);
-            }
-        });
-    });
+ 
 
     $('.bulk-star').on('click', function () {
         $('.' + $('.mail-menu li a.active').data("mailtype")).each(function () {
@@ -100,24 +173,7 @@
         });
     });
 
-    $(".mail-search").on("keyup", function () {
-        var v = $(".mail-search").val().toLowerCase();
-        var rows = $('.' + $('.mail-menu li a.active').data("mailtype"));
 
-        for (var i = 0; i < rows.length; i++) {
-            var fullname = rows[i].getElementsByClassName("mail-content");
-            fullname = fullname[0].innerHTML.toLowerCase();
-            if (fullname) {
-                if (v.length == 0 || (v.length < 1 && fullname.indexOf(v) == 0) || (v.length >= 1 && fullname.indexOf(v) > -1)) {
-                    rows[i].style.animation = 'fadein 7s';
-                    rows[i].style.display = "block";
-                } else {
-                    rows[i].style.display = "none";
-                    rows[i].style.animation = 'fadeout 7s';
-                }
-            }
-        }
-    });
 
     $(".car-name").on("click", function () {
         $('.view-subject').html($(this).html());
