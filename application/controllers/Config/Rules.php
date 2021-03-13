@@ -12,10 +12,10 @@ class Rules extends CI_Controller {
   
 	public function index()
 	{  	
-		$data["custom"]   = ["title"   => "Catálogo de Vehiculos",
-                             "header"  => "Vehiculos",
-                             "page"    => "Vehicles",
-							 "prefix"  => "veh",
+		$data["custom"]   = ["title"   => "Reglas de configuración",
+                             "header"  => "Reglas de configuración",
+                             "page"    => "Rules",
+							 "prefix"  => "rule",
 							 "section" => "Vehicles",                             
                              "module"  => $this->headerdata["module"]];
         
@@ -26,7 +26,7 @@ class Rules extends CI_Controller {
 		
         //Load view 
 		$this->load->view('layouts/admin',$data);         
-	} 
+	}  
 	// Vehicle status DB sepromex
     private function vehicle_status($id){
         $status_list = $_SESSION["catalog"]["vehicle_status"];
