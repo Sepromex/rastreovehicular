@@ -6,9 +6,12 @@
         <a class="nav-link  py-2 px-4 px-lg-4 <?=($custom['page'] == 'Speeds')?'active':''?>" href="/Config/Speeds"> Velocidades </a>
     </li>
     <li class="nav-item ml-0">
-        <a class="nav-link  py-2 px-4 px-lg-4 <?=($custom['page'] == 'Rules')?'active':''?>" href="/Config/Rules"> Reglas </a>
+        <a class="nav-link  py-2 px-4 px-lg-4 text-muted"> Reglas </a>
     </li>    
     <li class="nav-item ml-0">
-        <a class="nav-link  py-2 px-4 px-lg-4 <?=($custom['page'] == 'Alerts')?'active':''?>" href="/Config/Alerts"> Alertas </a>
+        <a class="nav-link  py-2 px-4 px-lg-4 text-muted"> Alertas </a>
     </li>
 </ul>
+
+<!-- <?=($custom['page'] == 'Rules')?'active':''?>" href="/Config/Rules" -->
+<!-- <?=($custom['page'] == 'Alerts')?'active':''?>" href="/Config/Alerts" -->

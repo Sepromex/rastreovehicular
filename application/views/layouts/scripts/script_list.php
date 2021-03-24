@@ -58,15 +58,20 @@
 
 })(jQuery);
  
-
-function velidate_form(form,type = "config"){    
+ 
+function validate_form(form,type = "config",func = "0"){    
     $("#"+form).addClass('was-validated');    
     if ($("#"+form)[0].checkValidity() === false) {                
         return false;
-    } 
+    }  
     else{                   	
-        if(type == "new"){insert_newrow();}
-        if(type == "config"){save_configform();}
+        if(func != "0"){
+            console.log(func);
+           // self[func]();  
+        }else{
+            if(type == "new"){insert_newrow();}
+            if(type == "config"){save_configform();}
+        }        
     }    
 } 
 
@@ -200,7 +205,6 @@ function office_formedit(id,company){
         } 
     });
 } 
-
 
 
 

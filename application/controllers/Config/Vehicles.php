@@ -75,6 +75,12 @@ class Vehicles extends CI_Controller {
 		if($vehicle_id): echo "true"; else: echo "No se inserto el Vehiculo"; endif;
 	}
 	 
+	public function vehicle_edit(){
+		$data["vehicle"]     = $this->main_model->vehicle_byid($_POST["id"]); 
+		
+		$this->load->view("config/vehicle/vehicle_edit",$data);
+	}
+
 	public function view_vehicleconfig(){
 		$data["vehicle"]    = $this->vehicle_model->vehicle_byid($_POST["id"]);
         $data["companylist"] = $this->main_model->company_list();  //companys
@@ -82,8 +88,17 @@ class Vehicles extends CI_Controller {
 		
         $this->load->view("config/vehicle/vehicle_configform",$data);	
 	}
+
+	public function vehicle_update(){
+		$vehicle  = ["modelo"     => $_POST["vehedit_model"],
+                     "placas"     => $_POST["vehedit_plate"],                    
+                     "detalle"    => $_POST["vehedit_detail"]];
+					 //print_array($vehicle);
+		$vehicle  = $this->vehicle_model->update_vehicle($vehicle,$_POST["vehedit_vehid"]);		
+		if($vehicle): echo "true"; else: echo "No se edito el vehiculo"; endif;
+	}
  
-	public function update(){ 
+	public function update(){
 		$vehicle  = ["vehiculo"   => $_POST["conf_vehname"],
                      "modelo"     => $_POST["conf_vehmodel"],
                      "placas"     => $_POST["conf_vehplate"],

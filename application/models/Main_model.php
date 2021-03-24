@@ -2,6 +2,25 @@
 
 Class Main_model extends CI_Model {
     
+    public function vehicle_byid($vehid){	 
+		$this->dbweb->select("v.num_veh, v.id_veh, v.ID_SISTEMA, v.ID_EMPRESA, v.ID_FLOTILLA,
+			v.TIPOVEH, v.ESTATUS, v.economico, v.placas, v.modelo, v.detalle, v.MARCA, v.COLOR, v.FOTO,
+			ev.DESCRIPCION as estatus_desc, sis.DESCRIPCION as sistemadesc, emp.NOMBRE as empresanom, tp.descripcion as tipoequipo");
+		$this->dbweb->from("vehiculos v", "left");	
+		$this->dbweb->join("estveh ev","v.estatus = ev.estatus","left");	
+		$this->dbweb->join("sistemas sis","sis.id_sistema = v.id_sistema","left");	
+		$this->dbweb->join("empresas emp","v.ID_EMPRESA = emp.ID_EMPRESA","left");
+		$this->dbweb->join("tipo_equipo tp","v.TIPOVEH = tp.id","left");	
+		$this->dbweb->where("v.num_veh",$vehid);
+		$query = $this->dbweb->get();         
+		if($query->num_rows()>0){            
+			return $query->row_array();
+		}else{			
+			return false; 			
+		}
+	}
+
+    
     // Contact user list
     public function contactuser_list()
 	{
@@ -95,7 +114,7 @@ Class Main_model extends CI_Model {
 		}else{
 			return false;
         }
-    }
+    } 
 
     public function assigned_vehicles($id_usuario){
         $this->db->select("uv.id, uv.id_usuario, v.id_vehiculo, v.vehiculo, v.placas, v.modelo");

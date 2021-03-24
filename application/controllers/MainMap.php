@@ -7,9 +7,7 @@ class MainMap extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Mainmap_model');		
 		$this->load->helper('map');
-		$this->headerdata["module"] = "Maps";
-		if(!isset($_SESSION["messages"])):$this->Mainmap_model->load_messages();endif;		
-		if(!isset($_SESSION["speeds"])):$this->Mainmap_model->load_speeds(1029);endif;
+		$this->headerdata["module"] = "Maps";		
 	}
 
 	public function index()
@@ -20,16 +18,18 @@ class MainMap extends CI_Controller {
 				"section" => "Map",
 				"module"  => $this->headerdata["module"]];
 
-		//Archivos que se incluiran en head, body y footer 
-		$data["include"]      = includefiles($data["custom"]["page"]);		
-		//$data["vehicle_list"] = $this->Mainmap_model->vehicle_list();
-		//$data["vehicle_list"] = $this->Mainmap_model->vehicle_list();
-
-		//Cargar vista
+		//Files in head, body y footer 
+		$data["include"]   = includefiles($data["custom"]["page"]);		
+		$data["site_type"] = $this->Mainmap_model->load_sitestype(15);
+		$data["vehicles"]  = $this->Mainmap_model->mainvehiclelist();
+		$data["geoc"]      = $this->Mainmap_model->load_geo(15,1029);
+		$data["sites"]     = $this->Mainmap_model->load_sites(15);		
+		
+		//Load view
 		$this->load->view('layouts/admin',$data);
 		//$this->output->enable_profiler(TRUE);
     }
-
+ 
 	public function test(){
 		$data  = array();
 		$this->load->view('map',$data);
@@ -40,7 +40,8 @@ class MainMap extends CI_Controller {
 		$geoc = $this->Mainmap_model->load_geo(15,1029);		
 		$li = '';
 		foreach($geoc as $geo){
-			$li.='<li class="py-1 px-2 mail-item inbox sent starred ">
+			$icon = ($geo->tipo==0)?'circle':'polig';
+			$li.='<li class="py-1 px-2 mail-item inbox sent g-'.$icon.' ">
 						<div class="d-flex align-self-center align-middle">
 							<label class="chkbox">
 								<input type="checkbox">
@@ -49,7 +50,8 @@ class MainMap extends CI_Controller {
 							<div class="mail-content d-md-flex w-100">                                                    
 								<span class="car-name">'.$geo->nombre.'</span>                                                     
 								<div class="d-flex mt-3 mt-md-0 ml-auto"> 
-									<div class="h6 primary mdi mdi-power-plug"></div>	 
+									<!-- <div class="h6 primary mdi mdi-power-plug"></div>	 -->
+									<img src="/dist/images/map/geo/'.$icon.'.png" width="20px" height="18px">
 								</div>
 							</div>
 						</div>
@@ -69,29 +71,47 @@ class MainMap extends CI_Controller {
 		$sites = $this->Mainmap_model->load_sites($company_id);		
 		$li = '';
 		foreach($sites as $site){
-			$li.='<li class="py-1 px-2 mail-item inbox sent starred">
+			$icon_class = ($site->id_tipo>0)?$site->id_tipo:0;			
+			$iconimg    = ($site->imagen!="")?substr($site->imagen,14):"defaul_marker.png";
+
+			$li.='<li class="py-1 px-2 mail-item inbox sitetype-'.$icon_class.'"> 
 						<div class="d-flex align-self-center align-middle">
 							<label class="chkbox">
 								<input type="checkbox">
 								<span class="checkmark small"></span>
 							</label>
-							<div class="mail-content d-md-flex w-100">
-								<span class="car-name" onclick="show_site('.$site->id_sitio.')">'.$site->nombre.'</span>                                                     
+							<div class="mail-content d-md-flex w-100">								
+								<span class="car-name" onclick="show_site('.$site->id_sitio.')"> '.$site->nombre.'</span>                                                     
 								<div class="d-flex mt-3 mt-md-0 ml-auto"> 
-									<div class="h6 primary mdi mdi-power-plug"></div>
+									<img src="/dist/images/map/site_type/'.$iconimg.'" width="25px" height="22px" class="toltip" data-placement="top" title="'.$site->descripcion.'">
+									<a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="icon-options-vertical"></i>
+									</a>									
+									<div class="dropdown-menu p-0 m-0 dropdown-menu-right">										
+										<a class="dropdown-item single-delete" href="#" onclick="edit_vehiclelist('.$site->id_sitio.')"><i class="icon-trash"></i> Editar </a>
+										<a class="dropdown-item single-delete" href="#"><i class="icon-trash"></i> Eliminar </a>
+									</div>
 								</div>
-							</div>
+							</div> 
 						</div>
 					</li>'; 
+
+					//onclick="edit_vehiclelist('.$vehid.')"
 		}
 		echo $li;
 	}
 
 	public function mostrar_vehiculos_act(){ 
+
+		unset($_SESSION["messages"]); unset($_SESSION["speeds"]);
+		if(!isset($_SESSION["messages"])):$this->Mainmap_model->load_messages();endif;
+		if(!isset($_SESSION["speeds"])):$this->Mainmap_model->load_speeds(1029);endif;
+
 		$id_user = "1029"; 
 		//vehicles list 
+		
 		$vehicles = $this->Mainmap_model->main_vehiclelist();		
-		if(is_array($vehicles)){
+		if(is_array($vehicles)){			
 			foreach($vehicles as $index => $veh){ 	
 			  //echo " ///////////////////////// </br></br>";				
  		  	  //$vehpublicpos    = $veh->publicapos;
@@ -109,27 +129,39 @@ class MainMap extends CI_Controller {
 				$vehdevicetype   = $veh->tipo_equipo;
 				 
 				$vehmotor        = "";	
+				$vehmotortoltip  = "";
 				$vehspeedname    = "";			
 				$accessory       = "";
 				$accessoryname   = "";
 				$messageid       = 0;
-				
+				$prueba = ""; $classmotor = "";
 				/*  Check system type: 23-Portman Movistar,26-Portman Telcel,61-UMini Telcel */
-				if($vehsystemid==23 || $vehsystemid==26){				
+				if($vehsystemid==23 || $vehsystemid==26){
 					//Get terminal and port									
 					if($vehentry1==1 && $vehentry2==0){
-						$vehmotor = "Terminal conectada Y puerta cerrada"; 					
+						$vehmotor       = "mdi mdi-power-plug text-success";
+						$vehmotortoltip = "Terminal conectada Y puerta cerrada";	
+						$classmotor = "term-on";					
+						$prueba .= "135 ";
 					}
 					if($vehentry1==0 && $vehentry2==1){
-						$vehmotor = "Terminal desconectada y puerta abierta";
+						$vehmotor       = "mdi mdi-power-plug-off text-primary term-off";
+						$vehmotortoltip = "Terminal desconectada y puerta abierta";
+						$classmotor = "term-off";
+						$prueba .= "140 ";
 					}
 					if($vehentry1==1 && $vehentry2==1){
-						$vehmotor = "Terminal conectada Y puerta abierta";
+						$vehmotor       = "mdi mdi-power-plug text-orange term-onoff";
+						$vehmotortoltip = "Terminal conectada Y puerta abierta";
+						$classmotor = "term-onoff";
+						$prueba .= "145 ";
 					}
 					if($vehentry1==0 && $vehentry2==0){
-						$vehmotor = "Terminal desconectada y puerta cerrada";
-					}		
-					//echo "vehiculo simple </br></br>";
+						$vehmotor       = "mdi mdi-power-plug-off text-orange term-offon";
+						$vehmotortoltip = "Terminal desconectada y puerta cerrada";
+						$classmotor = "term-offon";
+						$prueba .= "150 ";
+					}					
 				}else{
 					// Entries On
 					if($vehentry1==1 || $vehentry2==1 || $vehentry3==1 || $vehentry4==1){
@@ -138,48 +170,48 @@ class MainMap extends CI_Controller {
 						if($vehentry1==1){ array_push($active,1); }
 						if($vehentry2==1){ array_push($active,2); }
 						if($vehentry3==1){ array_push($active,3); }
-						if($vehentry4==1){ array_push($active,4); }
+						if($vehentry4==1){ array_push($active,4); }						
 						
-						// Get  entries config by vehicle  /* ## */
+						// Get  entries config by vehicle  
 						$entryby_veh = $this->Mainmap_model->entries_config($vehid);
-						if(is_array($entryby_veh) && count($entryby_veh)>0){							
+						if(is_array($entryby_veh) && count($entryby_veh)>0){
 							$data_accesory  = ["active"    => $active,
 											   "datarow"   => $entryby_veh[0],											   
-											   "companyid" => $vehcompanyid];
+											   "companyid" => $vehcompanyid];  $prueba .= "169, ";
 							$result         = $this->Mainmap_model->accesory_title($data_accesory);												
 						}else{							 					
 							$entryby_company = $this->Mainmap_model->entries_configbycompany($vehcompanyid);
 							if(is_array($entryby_company) && count($entryby_company)>0){
 								$data_accesory  = ["active"    => $active,
 											       "datarow"   => $entryby_company[0],
-											       "companyid" => $vehcompanyid];
-								$result         = $this->Mainmap_model->accesory_title($data_accesory);
+											       "companyid" => $vehcompanyid]; $prueba .= "176, ";
+								$result         = $this->Mainmap_model->accesory_title($data_accesory); $prueba .= $result["concat"];
 							}else{
-								$deviceconfig = $this->Mainmap_model->entryconfigby_devicetype($vehdevicetype);
+								$deviceconfig = $this->Mainmap_model->entryconfigby_devicetype($vehdevicetype,1);
 								if(isset($deviceconfig[0])){
 									$data_accesory  = ["active"    => $active,
 											           "datarow"   => $deviceconfig[0],
-											           "companyid" => $vehcompanyid];
-									$result         = $this->Mainmap_model->accesory_title($data_accesory);
-								}
+											           "companyid" => $vehcompanyid]; $prueba .= "183 ";
+									$result         = $this->Mainmap_model->accesory_title($data_accesory); $prueba .= $result["concat"];
+								} 
 							} 					
 						}
 
-						if(isset($result)){
+						if(isset($result)){  $prueba .= " [accesory-188".$result["accessory"]." ] ";
 							$accessory      = $result["accessory"];
 							$accessoryname  = $result["accessoryname"];
 							$messageid      = $result["messaje_id"];
 						}
 
-						if($accessory==1){
-							if($accessoryname==""){ 
+						if($accessory==1){  $prueba .= "195 ";
+							if($accessoryname==""){  $prueba .= " accesory-195 ";
 								echo "entro sin sentido </br></br>";
 								$accessoryname      = isset($_SESSION["messages"][15][$messageid])?$_SESSION["messages"][15][$messageid]:"";
 							}
 						}
-						
-						if(preg_match('/encendido/i',$accessoryname)): $vehmotor = "Motor encendido"; 
-						else: $vehmotor = "Motor apagado"; endif; 
+						$prueba .= " ** ".$accessoryname." ** ";	
+						if(preg_match('/encendido/i',$accessoryname)): $vehmotor = "mdi mdi-engine text-success"; $classmotor = "engine-on"; $prueba .= "200 "; 
+						else: $vehmotor = "mdi mdi-engine-off text-info"; $classmotor = "engine-off"; $prueba .= "201 "; endif; 
 						 
 					} 
 
@@ -187,96 +219,129 @@ class MainMap extends CI_Controller {
 					$accessory = "";
 					if($vehmotor == ""){
 						$sistemas_invalidos = array(10,14,16,17,18,20,22,25,27,28,30,31,32,33,34,35,43);
-						if(!in_array($vehsystemid,$sistemas_invalidos)){							
+						if(!in_array($vehsystemid,$sistemas_invalidos)){	
+							$prueba .= " sistema valido ";						
 							if(isset($vehignition) && $vehignition==1){ //encendido
-								$vehmotor="'Motor encendido";
+								$vehmotor       = "mdi mdi-engine text-success engine-on";
+								$vehmotortoltip = "Motor encendido";
+								$classmotor = "engine-on";
+								$prueba .= "213 ";
 							}else{ //apagado
-								$vehmotor="Motor apagado";
+								$vehmotor       = "mdi mdi-engine-off text-info engine-off";
+								$vehmotortoltip = "Motor apagado";
+								$classmotor = "engine-off";
+								$prueba .= "217 ";
 							}
-						}else{ //incluimos a los spider y x8						
+						}else{ //incluimos a los spider y x8
+							$prueba .= " sistema invalido ";							
 							if($vehspeed>8){
-								$vehmotor="Motor encendido";
+								$vehmotor       = "mdi mdi-engine text-success engine-on";
+								$vehmotortoltip = "Motor encendido";
+								$classmotor = "engine-on";
+								$prueba .= "223 ";
 							}else{//apagado
-								$vehmotor="Motor apagado";
+								$vehmotor       = "mdi mdi-engine-off text-info engine-off";
+								$vehmotortoltip = "Motor apagado";
+								$classmotor = "engine-off";
+								$prueba .= "227 ";
 							}
 						}
 					} 
 					/* ********************************* */
-				}
-				
-				/* *********** END PRIMER ELSE ************  */ 
+				}				
+
+				/* *********** END PRIMER ELSE ************ */ 
+				$speedtoltip = "";
 				if($vehspeed<=8){
 					$vehspeedname="blue";
+					$speedtoltip = "Detenido";
 				}
 
 				if(isset($_SESSION["speeds"][$vehid])){
 					$speeds = $_SESSION["speeds"][$vehid];
 					if($vehspeed<=$speeds["vel1"] && $vehspeed >= 9){
 						$vehspeedname='green';
+						$speedtoltip = "Mínima";
 					}
 					if($vehspeed<=$speeds["vel2"] && $vehspeed > $speeds["vel2"]){
 						$vehspeedname='yellow';
+						$speedtoltip = "Normal";
 					}
 					if($vehspeed<=$speeds["vel3"] && $vehspeed > $speeds["vel3"]){
 						$vehspeedname='orange';
+						$speedtoltip = "Regular";
 					}
 					if($vehspeed>=$speeds["vel4"]){
 						$vehspeedname='red';
+						$speedtoltip = "Máxima";
 					}
 				}else{ 
 					if($vehspeed>8){
 						if($vehspeed<46){
 							$vehspeedname="green";
-						}
+							$speedtoltip = "Mínima";
+						} 
 						if($vehspeed>=46){
 							$vehspeedname="yellow";
+							$speedtoltip = "Normal";
 						}
 						if($vehspeed>=71){
 							$vehspeedname="orange";
+							$speedtoltip = "Regular";
 						}
 						if($vehspeed>=101){
 							$vehspeedname="red";
+							$speedtoltip = "Máxima";
 						}
 					} 
 				}	
 
 				if($vehspeed == ""){
 					$vehspeedname = "blue";
+					$speedtoltip = "Detenido";
 				}
+				// -- '.$prueba.' 
 				 
-				echo '<li class="py-1 px-2 mail-item inbox sent starred speed-'.$vehspeedname.'">
+				echo '<li class="py-1 px-2 mail-item inbox sent starred cursor-pointer speed-'.$vehspeedname.' '.$classmotor.'">
 						<div class="d-flex align-self-center align-middle">
-							<label class="chkbox">
-								<input type="checkbox" >
+							<label class="chkbox" >
+								<input type="checkbox" onclick="vehicle_realtime(this)" id="checkveh_'.$vehid.'">
 								<span class="checkmark small"></span>
 							</label>
 							<div class="mail-content d-md-flex w-100">                                                    
-								<span class="car-name">'.$veh->ID_VEH.'</span>                                                     
+								<span class="car-name" onclick="vehicle_detail('.$vehid.')">'.$veh->ID_VEH.'</span>
+
 								<div class="d-flex mt-3 mt-md-0 ml-auto">
 
-									<div class="h6 primary mdi mdi-power-plug"></div>									
-									<div class="speed-icon">
-                                        <img style="width:100%;" src="/dist/images/config/vehicles/speed_'.$vehspeedname.'.png" alt="" onclick="vehicle_ubication('.$vehid.','.$vehcompanyid.')">
-                                    </div>
-									<div class="h6 primary mdi mdi-map-marker"></div>
+									<div class="h6 mr-1 '.$vehmotor.' toltip" data-placement="top" title="'.$vehmotortoltip.'"></div>									
+									<div class="speed-icon mr-1">
+                                        <img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_'.$vehspeedname.'.png" data-placement="top" title="'.$speedtoltip.'" alt="'.$vehspeedname.'" onclick="vehicle_ubication('.$vehid.','.$vehcompanyid.')">
+                                    </div> 
 
-									<!-- <a href="#" class="ml-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<i class="icon-options-vertical"></i>
-									</a> -->
-									<div class="dropdown-menu p-0 m-0 dropdown-menu-right"> 										
-									</div>
+									</a>
+
+									<div class="dropdown-menu p-0 m-0 dropdown-menu-right"> 
+											<a class="dropdown-item mailread" href="#" onclick="edit_vehiclelist('.$vehid.')"><i class="mdi mdi-playlist-edit"></i> Editar </a>
+ 									</div> 
+
 								</div>
 							</div>
 						</div>
-					</li> '; 
-			}			
+					</li>'; 
+			}
 		} 
-		//$this->output->enable_profiler(TRUE);
+		//$this->output->enable_profiler(TRUE);   <div class="h6 primary mdi mdi-satellite-uplink text-danger"></div>  
 		/*else{echo "else_end";}*/
 		//print_array($vehicles); 
 	}
 
 
+public function vehicle_detail(){
+	$data["vehicle"] = $this->main_model->vehicle_byid($_POST["id"]);
+	$this->load->view("map/vehicle_detail",$data);
+}
 
 public function get_ubication(){
 		$options="";
@@ -290,7 +355,7 @@ public function get_ubication(){
 		if($msg): $company = $msg["id_empresa"]; else: $company = 15; endif;
 
 		/* ************ */
-		if($veh!=0){ 						 
+		if($veh!=0){
 			$max_pos = 0;
 			$idlast_positions   = $this->Mainmap_model->id_pos_date($veh);			
 			if(isset($idlast_positions["id"]) && $idlast_positions["id"]>0){
@@ -323,7 +388,7 @@ public function get_ubication(){
 			$zona=$this->Mainmap_model->get_gtm($veh);
 			if($zona == "0"){
 				$dif="+0";				
-			}else{				
+			}else{
 				$dif=(5)+($zona["gmt"]);
 				$fecha=date("Y-m-d H:i:s",strtotime($fecha." $dif hours"));
 			} 
@@ -374,8 +439,7 @@ public function get_ubication(){
 			}
 			else
 				$img = "&nbsp;";
-
-
+				
 
 			// ERROR EN ESTE IF
 			if((($lat != "") || ($lon != "")) && (($lat != 0) || ($lon != 0))){
@@ -445,8 +509,8 @@ public function get_ubication(){
 
 				//echo "--".$max_pos."--";
 				$data["table"]   = $datos; //mostrar tabla
-				$data["last"]    = ["lat" => $lat, "lon" => $lon, "tipov" => $tipov]; //Ultima posicion "MapaCord"								
-				$data["route"]   = $this->Mainmap_model->get_positiones($veh);	//$objResponse->call("crea_recorrido",			
+				$data["last"]    = ["lat" => $lat, "lon" => $lon, "tipov" => $tipov]; //Ultima posicion "MapaCord"
+				$data["route"]   = $this->Mainmap_model->get_positiones($veh);	//$objResponse->call("crea_recorrido",
 				$data["veh"]     = $veh;
 
 				//$objResponse->script("mostrarLinea2(0);");				

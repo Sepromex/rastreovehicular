@@ -22,6 +22,8 @@ Class Vehicle_model extends CI_Model {
 		return $this->db->insert_id();   
     } 
 
+    
+
     // Get user by ID
     public function vehicle_byid($id)
 	{
@@ -37,10 +39,9 @@ Class Vehicle_model extends CI_Model {
 		}	    
     } 
  
-
     public function update_vehicle($data,$id){
-        $this->db->where('id_vehiculo',$id);
-        return $this->db->update('vehiculos',$data);
+        $this->dbweb->where('num_veh',$id);
+        return $this->dbweb->update('vehiculos',$data);
     } 
 	
     public function delete_vechicle($id){

@@ -2,6 +2,8 @@
 
 Class Mainmap_model extends CI_Model {
 
+	
+
 	public function get_positiones($idveh){		 
 		$this->dbweb->select("v.tipoveh, (p.lat/3600/16) as lat,((p.long & 8388607)/3600/12*-1) as lon");
 		$this->dbweb->from("posiciones p","left");
@@ -17,8 +19,38 @@ Class Mainmap_model extends CI_Model {
 		} 
 	}
 
+	public function site_type($company_id){
+		$this->dbweb->select("id_tipo,imagen,descripcion");
+		$this->dbweb->from("tipo_sitios");		 
+		$this->dbweb->where("id_empresa",$company_id);
+		$this->dbweb->or_where("id_empresa",15);
+		$this->dbweb->order_by("descripcion","ASC");		
+		$query = $this->dbweb->get();         
+		if($query->num_rows()>0){            
+			return $query->result();
+		}else{			
+			return false; 			
+		}
+	}
+	
+	public function load_sitestype($company_id){
+		$this->dbweb->select("distinct(s.id_tipo), t.imagen, t.descripcion");
+		$this->dbweb->from("sitios s");
+		$this->dbweb->join("tipo_sitios t","s.id_tipo = t.id_tipo");
+		$this->dbweb->where("s.nombre !=","");
+		$this->dbweb->where("s.id_empresa",$company_id);
+		$this->dbweb->or_where("s.id_empresa",15);
+		$this->dbweb->order_by("t.descripcion","ASC");	
+		$query = $this->dbweb->get();         
+		if($query->num_rows()>0){            
+			return $query->result();
+		}else{			
+			return false; 			
+		}
+	}
+
 	public function load_sites($company_id){
-		$this->dbweb->select("s.id_sitio,s.nombre,s.latitud,s.longitud");
+		$this->dbweb->select("s.id_sitio,s.nombre,s.latitud,s.longitud,s.id_tipo, t.imagen, t.descripcion");
 		$this->dbweb->from(" sitios s","left outer");
 		$this->dbweb->join("tipo_sitios t","s.id_tipo = t.id_tipo","left");
 		$this->dbweb->where("s.id_empresa",$company_id);
@@ -43,27 +75,31 @@ Class Mainmap_model extends CI_Model {
 			return $query->row_array();
 		}else{			
 			return false; 
-		}	
+		}
+
 		/*
+
 		id='".$rowSit[0]."' 
-	value='".$rowSit[0]."'
-	ver_sitio($rowSit[0])
+		value='".$rowSit[0]."'
+		ver_sitio($rowSit[0])
 					veh_seleccion(".$rowSit[2].",".$rowSit[3].")
 						strtolower(addslashes($rowSit[1]))."
+
 		*/
 
 	}
 
 	
-					
+					 
 
 	public function load_geo($company_id,$user_id){
 		$this->dbweb->select("G.num_geo,G.nombre,G.tipo,G.latitud,G.longitud,T.descripcion");
 		$this->dbweb->from("geo_time AS G");
 		$this->dbweb->join("tipo_geocerca AS T","G.tipo=T.tipo");
-		$this->dbweb->where("id_empresa",$company_id);
-		$this->dbweb->where("g.activo",1);
-		$this->dbweb->where("id_usuario",$user_id);
+		$this->dbweb->where("G.id_empresa",$company_id);
+		$this->dbweb->where("G.activo",1);
+		$this->dbweb->where("G.id_usuario",$user_id);
+		$this->dbweb->where("G.nombre !=","");		
 		$this->dbweb->order_by("G.nombre","ASC");		
 		$query = $this->dbweb->get();         
 		if($query->num_rows()>0){            
@@ -83,11 +119,11 @@ Class Mainmap_model extends CI_Model {
 			return $query->row_array();
 		}else{			
 			return false; 
-		}	
+		}
 	}
 
 	
-
+ 
 	public function vehicle_position($id_pos = 0,$idveh = 0, $company = 0){		 
 		$this->dbweb->select("distinct(v.id_veh),(u.lat/3600/16) as lat,((u.long & 8388607)/3600/12*-1) as lon,u.mensaje,u.velocidad,u.fecha,
 		v.tipoveh,u.t_mensaje,v.id_empresa,u.entradas,u.odometro,u.entradas_a,u.id_tipo,v.id_sistema,
@@ -101,7 +137,6 @@ Class Mainmap_model extends CI_Model {
 		$this->dbweb->where("v.num_veh",$idveh);
 		$this->dbweb->where("s.publicapos","1");
 		if($id_pos != 0){ $this->dbweb->where("p.id_pos>",$id_pos); }
-
 		$query = $this->dbweb->get(); 
 		if($query->num_rows()>0){
 			return $query->row_array();
@@ -117,7 +152,7 @@ Class Mainmap_model extends CI_Model {
         $query = $this->dbweb->get();
 		if($query->num_rows()>0){ 
 			return $query->row_array();
-		}else{			
+		}else{
 			$data = ["num_veh" => $veh, "gmt" => "-5"];
 			$this->db->insert('veh_gmt',$data);			
 			return "0"; 
@@ -146,7 +181,8 @@ Class Mainmap_model extends CI_Model {
 		$datarow    = $data["datarow"];
 		$companyid  = $data["companyid"];
 		$accessoryname = "";
-		 
+		
+		
 		for($a=0;$a<count($active);$a++){
 			$start   = $active[$a]*2;
 			$end     = $start+2; 
@@ -154,13 +190,13 @@ Class Mainmap_model extends CI_Model {
 			for($i=$start;$i<$end;$i++){
 				$menssage_id   = configentrieby_vehicle($datarow,$i); 
 				$message       = isset($_SESSION["messages"][$companyid][$menssage_id])?$_SESSION["messages"][$companyid][$menssage_id]:"";
-
-				if($message = ""){ 
+				
+				if($message == ""){ 
 					$message   = isset($_SESSION["messages"][15][$menssage_id])?$_SESSION["messages"][15][$menssage_id]:"";
 				} 
-
+				
 				if($i==($end-1) && ($menssage_id!=252 && $menssage_id!=0)){
-					$accessoryname.=$message; 
+					$accessoryname.=$message;
 				}else{
 					if($menssage_id!=0 && $i==$start){
 						$accessoryname.=$message;
@@ -189,6 +225,21 @@ Class Mainmap_model extends CI_Model {
 		}
     } 
        
+	public function mainvehiclelist($id_user = "1029"){
+		$this->dbweb->select(" v.ID_VEH, v.NUM_VEH ");
+		$this->dbweb->from("veh_usr vu","left");
+		$this->dbweb->join("vehiculos v", "vu.NUM_VEH = v.NUM_VEH","left");
+		$this->dbweb->where("vu.ID_USUARIO",$id_user);
+		$this->dbweb->where("vu.activo","1");	
+		$this->dbweb->group_by("v.num_veh");
+		$this->dbweb->order_by("v.ID_VEH","asc"); 
+        $query = $this->dbweb->get();
+		if($query->num_rows()>0){         
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
 
 	public function main_vehiclelist($id_user = "1029"){
 		$this->dbweb->select(" v.ID_VEH, v.NUM_VEH,v.estatus,ev.publicapos,ev.descripcion,p.velocidad,v.id_sistema,
@@ -206,7 +257,7 @@ Class Mainmap_model extends CI_Model {
         $query = $this->dbweb->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
-		}else{			
+		}else{
 			return false; 			
 		} 
 	}

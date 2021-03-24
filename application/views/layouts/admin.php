@@ -28,6 +28,18 @@
         <script src="<?=base_url()?>/dist/vendors/jquery/jquery-3.3.1.min.js"></script>
         <script src="<?=base_url()?>/dist/vendors/jquery-ui/jquery-ui.min.js"></script>
         
+
+
+        <script src="<?=base_url()?>/dist/vendors/moment/moment.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="<?=base_url()?>/dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
+        
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/lightpick@latest/lightpick.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+         
         <!-- END: Page CSS-->  
 
         <!-- <script src="socket.io.js"></script> -->
@@ -147,7 +159,7 @@
 
         <!-- Start Sidebar  -->
         <div id="settings">
-            <div class="sidbarchat p-3">
+            <div class="sidbarchat p-3" id="sidebar-content">
                 <!-- Load sidebar content -->
                 <?php 
                     if(isset($include["body"]["sidebar"])): 
@@ -160,14 +172,7 @@
          
         <!-- START: Template JS-->
         
-        <script src="<?=base_url()?>/dist/vendors/moment/moment.js"></script>
-        <script src="<?=base_url()?>/dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="<?=base_url()?>/dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
         
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/lightpick@latest/lightpick.js"></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         
 
     
@@ -182,7 +187,7 @@
         <!-- START: APP JS-->
         <script src="<?=base_url()?>/dist/js/app.js"></script>
         
-        <!-- END: APP JS-->
+        <!-- END: APP JS--> 
         <?php
             if(isset($include["scripts"])){ foreach($include["scripts"] as $incl){  
                 $this->load->view($incl);

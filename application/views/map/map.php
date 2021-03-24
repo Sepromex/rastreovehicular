@@ -1,4 +1,5 @@
 <style>
+
     .mail-app li .car-name{
         min-width:120px;
         font-size: .55rem;
@@ -11,105 +12,140 @@
     .font-tab{ font-size: 1.55rem !important; }
     .padding-tab{ padding: .5rem .6rem !important; }
     .speed-icon{ margin-bottom: .5rem; font-weight: 500; line-height: 1.2; width:20px; }
-.bg-orange{ background-color: orange; }
-  #map {    
-    width: 100%;
-    height: 690px;
-  }
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
+    .bg-orange{ background-color: orange; }    
+    #map { width: 100%; height: 690px; }
+    html, body{ height: 100%; margin: 0; padding: 0; }
+    .text-orange{ color: orange; }
+    .cursor-pointer{ cursor:pointer; }
+
+ 
 </style>
 
 <script>
     let map;
 
     function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 20.721827087454802, lng:  -103.37155710393355 },
-        zoom: 10,
-    });
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 20.721827087454802, lng:  -103.37155710393355 },
+            zoom: 10,
+        });
     }
+
+/*
+    function sitiointeres(id_empresa) {	
+        var request = confirm("Desea crear un sitio de interes");
+        if(request == true){
+            alert("Seleccione un punto en el mapa");
+            jQuery.post('includes/carga_sitios.php','',function(response){ 
+                var opcion=response; 
+                google.maps.event.addListener(map, 'click', function(event) {
+                var myLatLng = event.latLng;
+                addMarker(myLatLng);
+                var lat = myLatLng.lat();
+                var lng = myLatLng.lng();
+                xajax_carga_form_sitio(lat,lng);
+            });
+            });
+        }
+        else{ 
+        }
+    }*/
+
 </script>
 
 <div class="container-fluid "> 
     <!-- START: Card Data-->
     <div class="row">
+        <div class="col-2 mt-3"> 
+                
+            </div>
+        </div>
+    </div>
 
-<!--  <li class="nav-item" style="padding: 5px 2px !important;">
-                                    <a href="#" data-mailtype="inbox" class="nav-link padding-tab active"> 
-                                        <i class="mdi mdi-car font-tab"></i> 
-                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span>
-                                    </a>
-                                </li>-->
+    <div class="row">
+
 
         <div class="col-2 mt-3"> 
-            <div class="card">
+            <div class="card"><?php //print_array($site_type);?>
                 <!-- ##### TABS ##### -->
-                <div class="card-header">                                   
-                    <div class="row m-auto">
-                        <div class="col-12 col-lg-12 col-xl-12 pr-lg-0 flip-menu ">                                                    
-                            <ul class="list-unstyled nav inbox-nav  mb-0 mail-menu" style="margin-top:0px !important;">
-                                <li class="nav-item" style="padding: 5px 2px !important;">
-                                    <a href="#" class="nav-link padding-tab active" data-list="vehicle_list"> 
-                                        <i class="mdi mdi-car font-tab"></i> 
-                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="padding: 5px 2px !important;">
-                                    <a href="#" class="nav-link padding-tab"  data-list="site_list">
-                                        <i class="mdi mdi-map-marker font-tab"></i> 
-                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num">9</span>
-                                    </a>
-                                </li> 
-                                <li class="nav-item"  style="padding: 5px 2px !important;">
-                                    <a href="#" class="nav-link padding-tab"  data-list="geoc_list">
-                                        <i class="mdi mdi-map-marker-circle font-tab"></i>
-                                        <span class="ml-auto badge badge-pill badge-success bg-success car-num">10</span>
-                                    </a>
-                                </li>                                
-                            </ul> 
+                
+                    <div class="card-header" id="maincontrols">                                   
+                        <div class="row m-auto">
+                            <div class="col-12 col-lg-12 col-xl-12 pr-lg-0 flip-menu">                                                    
+                                <ul class="list-unstyled nav inbox-nav  mb-0 mail-menu" style="margin-top:0px !important;">
+                                    <li class="nav-item" style="padding: 5px 2px !important;">
+                                        <a href="#" class="nav-link padding-tab active  toltip" data-list="vehicle_list"  data-placement="top" title="Vehículos"> 
+                                            <i class="mdi mdi-car font-tab"></i> 
+                                            <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" style="padding: 5px 2px !important;">
+                                        <a href="#" class="nav-link padding-tab toltip"  data-list="site_list" data-placement="top" title="Sitios de interéz">
+                                            <i class="mdi mdi-home-map-marker font-tab"></i> 
+                                            <span class="ml-auto badge badge-pill badge-success bg-success car-num">9</span>
+                                        </a>
+                                    </li> 
+                                    <li class="nav-item"  style="padding: 5px 2px !important;">
+                                        <a href="#" class="nav-link padding-tab toltip"  data-list="geoc_list"  data-placement="top" title="Geo-cerca">
+                                            <i class="mdi mdi-map-marker-circle font-tab"></i>
+                                            <span class="ml-auto badge badge-pill badge-success bg-success car-num">10</span>
+                                        </a>
+                                    </li>                                
+                                </ul> 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- END TABS -->
+                    <!-- END TABS -->
 
-                <!-- ####### VEHICULOS LIST##############  -->
-                <div class="card-body p-0">                          
-                    <div id="vehicle_list" class="mainmap_list">
-                        <?php $this->load->view("map/vehicle_list"); ?>
-                    </div>
-                    <div id="site_list" class="mainmap_list" style=" display: none;">
-                        <?php $this->load->view("map/sites_list"); ?> 
-                    </div>
-                    <div id="geoc_list" class="mainmap_list"  style=" display: none;">
-                        <?php $this->load->view("map/geo_list"); ?> 
-                    </div>
-                </div>
-                <!-- ####### END VEHICULOS LIST ##############  -->
+                    <!-- ####### VEHICULOS LIST##############  -->
+                    <div class="card-body p-0">
+                        
+                        <div class="view-email">
+                            <div class="card-body">
+                                <a href="#" class="bg-primary float-left mr-3  py-1 px-2 rounded text-white back-to-email">
+                                    Regresar
+                                </a>                                     
+                                <div id="detail-content"></div>  
+                            </div>
+                        </div>                       
 
+
+                        <div id="vehicle_list" class="mainmap_list">
+                            <?php $this->load->view("map/vehicle_list"); ?>
+                        </div>
+                        <div id="site_list" class="mainmap_list" style=" display: none;">
+                            <?php $this->load->view("map/sites_list"); ?> 
+                        </div>
+                        <div id="geoc_list" class="mainmap_list"  style=" display: none;">
+                            <?php $this->load->view("map/geo_list"); ?> 
+                        </div> 
+
+                    </div>
+                    <!-- ####### END VEHICULOS LIST ##############  -->
+                 
             </div>  <!-- End card-->              
         </div> <!-- END col-2 -->
         
 
 
-        <div class="col-10 mt-3">
-            <div class="row">                
-                <div id="map"></div>
-            </div>
-            <div class="row" id="ubicacion"></div>
-            <div class="row" id="sitios"></div>
-        </div>        
+        <!-- 
+            <div class="col-9 mt-3">
+                <div class="row">                
+                    <div id="map"></div>
+                </div>
+                <div class="row" id="ubicacion"></div>
+                <div class="row" id="sitios"></div>
+            </div> 
+        -->
                     
                     
     </div>
 </div>           
-
+<!--
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
+-->
 <script> 
-
+ $('.toltip').tooltip();
 var timerID = 0;
 var marca,marker,sitios;
 var elim_sitio = new Array();
@@ -304,17 +340,142 @@ function load_geo(){
         url: "/MainMap/load_geo",
         success: function (response) {             
             $("#geo_list").html(response);
+            $('.toltip').tooltip();
         }
     });  
 }
 
+$('.checkall-veh').on('click', function () {
+        $('#vehicles_list input:checkbox').not(this).prop('checked', this.checked);
+});
+
+
+
+function mark_list(e){
+
+    //console.log(  );  
+    $(e).css("background","#d4f8b1");
+}
+
+function vehicle_realtime(e){  
+    if($(e).is(":checked")) {
+
+        console.log("checo");
+
+    }else{
+
+        console.log("no checo");
+
+    } 
+    console.log(e);
+}
+
+
+function edit_vehicle(){
+    $.ajax({
+        type: "POST", 
+        data: $("#vehedit_configform").serialize(),
+            url: "/Config/Vehicles/vehicle_update",
+        success: function (response) { 
+            console.log(response);
+            if (response == "true") {
+                //location.reload();                     
+            } else {                            
+                //alert(response); 
+            }
+        }
+    }); 
+}
+
+
+
+function filtersiteoption(){    
+   if($('#vehicles_list .speed-blue').length > 0){ $(".bulk-mail-type .opt-blue").show(); }else{  $(".bulk-mail-type .opt-blue").hide(); }    
+   if($('#vehicles_list .speed-green').length > 0){ $(".bulk-mail-type .opt-green").show(); }else{  $(".bulk-mail-type .opt-green").hide(); }
+   if($('#vehicles_list .speed-yellow').length > 0){ $(".bulk-mail-type .opt-yellow").show(); }else{  $(".bulk-mail-type .opt-yellow").hide(); }    
+   if($('#vehicles_list .speed-orange').length > 0){ $(".bulk-mail-type .opt-orange").show(); }else{  $(".bulk-mail-type .opt-orange").hide(); }    
+   if($('#vehicles_list .speed-red').length > 0){ $(".bulk-mail-type .opt-red").show(); }else{  $(".bulk-mail-type .opt-red").hide(); }
+
+
+   if($('#vehicles_list .engine-off').length > 0){ $(".status-engine .opt-engineof").show(); }else{  $(".status-engine .opt-engineof").hide(); }
+   if($('#vehicles_list .engine-on').length > 0){ $(".status-engine .opt-engineon").show(); }else{  $(".status-engine .opt-engineon").hide(); }
+
+   if($('#vehicles_list .term-on').length > 0){ $(".status-engine .opt-termon").show(); }else{  $(".status-engine .opt-termon").hide(); }
+   if($('#vehicles_list .term-off').length > 0){ $(".status-engine .opt-termoff").show(); }else{  $(".status-engine .opt-termoff").hide(); }
+   if($('#vehicles_list .term-onoff').length > 0){ $(".status-engine .opt-termonoff").show(); }else{  $(".status-engine .opt-termonoff").hide(); }
+   if($('#vehicles_list .term-offon').length > 0){ $(".status-engine .opt-termoffon").show(); }else{  $(".status-engine .opt-termoffon").hide(); }
+}
+
+
+
+
+function filtervehoption(){    
+   if($('#vehicles_list .speed-blue').length > 0){ $(".bulk-mail-type .opt-blue").show(); }else{  $(".bulk-mail-type .opt-blue").hide(); }    
+   if($('#vehicles_list .speed-green').length > 0){ $(".bulk-mail-type .opt-green").show(); }else{  $(".bulk-mail-type .opt-green").hide(); }
+   if($('#vehicles_list .speed-yellow').length > 0){ $(".bulk-mail-type .opt-yellow").show(); }else{  $(".bulk-mail-type .opt-yellow").hide(); }    
+   if($('#vehicles_list .speed-orange').length > 0){ $(".bulk-mail-type .opt-orange").show(); }else{  $(".bulk-mail-type .opt-orange").hide(); }    
+   if($('#vehicles_list .speed-red').length > 0){ $(".bulk-mail-type .opt-red").show(); }else{  $(".bulk-mail-type .opt-red").hide(); }
+
+
+   if($('#vehicles_list .engine-off').length > 0){ $(".status-engine .opt-engineof").show(); }else{  $(".status-engine .opt-engineof").hide(); }
+   if($('#vehicles_list .engine-on').length > 0){ $(".status-engine .opt-engineon").show(); }else{  $(".status-engine .opt-engineon").hide(); }
+
+   if($('#vehicles_list .term-on').length > 0){ $(".status-engine .opt-termon").show(); }else{  $(".status-engine .opt-termon").hide(); }
+   if($('#vehicles_list .term-off').length > 0){ $(".status-engine .opt-termoff").show(); }else{  $(".status-engine .opt-termoff").hide(); }
+   if($('#vehicles_list .term-onoff').length > 0){ $(".status-engine .opt-termonoff").show(); }else{  $(".status-engine .opt-termonoff").hide(); }
+   if($('#vehicles_list .term-offon').length > 0){ $(".status-engine .opt-termoffon").show(); }else{  $(".status-engine .opt-termoffon").hide(); }
+}
+
+function edit_vehiclelist(id){    
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id},
+        url: "/Config/Vehicles/vehicle_edit",
+        success: function (response) {                              
+            $("#sidebar-content").html(response);                        
+            /* $('.view-email').show();  
+            $('#mainmap_list').hide();  
+            $('#maincontrols').hide();   */
+            $('#settings').toggleClass('active');
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
+            });
+            
+        }
+    });
+}
+function vehicle_detail(id){
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id},
+        url: "/MainMap/vehicle_detail",
+        success: function (response) {                              
+            $("#detail-content").html(response);                        
+            $('.view-email').show();  
+            $('#mainmap_list').hide();  
+            $('#maincontrols').hide();   
+        }
+    });     
+}
+
+$(".back-to-email").on("click", function () {
+    $("#detail-content").html("");
+    $('.view-email').hide();  
+    $('#mainmap_list').show();  
+    $('#maincontrols').show();   
+});
 
 function load_vehicles(){ 
     $.ajax({ 
         type: "POST", 
         url: "/MainMap/mostrar_vehiculos_act",
-        success: function (response) {             
+        success: function (response) { 
             $("#vehicles_list").html(response);
+            
+            filtervehoption();
+            load_sites(); 
+           
         }
     });  
 }
@@ -325,18 +486,24 @@ function load_sites(){
         url: "/MainMap/load_sites",
         success: function (response) {             
             $("#sites_list").html(response);
+            load_geo();
         } 
-    });  
-
+    }); 
 }
 
+$(".back-to-vlist").on("click", function () {
+    $('#idss').show();
+    $('#idsx').fadeOut();
+});
+
+
 load_vehicles();
-load_sites(); 
-load_geo();
+
 
 /*$(document).ready(function(){
     "use strict";     
     setInterval(load_vehicles(),8000);  
 });*/
 //var load_v = setInterval( function() { load_vehicles(); }, 30000);
+console.log(localStorage);
 </script> 

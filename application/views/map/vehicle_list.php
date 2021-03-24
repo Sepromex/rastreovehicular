@@ -1,35 +1,3 @@
-<!-- VER VEHICULO -->
-<div class="view-email">
-    <div class="card-body">
-        <a href="#" class="bg-primary float-left mr-3  py-1 px-2 rounded text-white back-to-email" >
-            Back
-        </a>
-        <h5 class="view-subject mb-3">Mail Subject</h5>
-        <div class="media mb-5 mt-5">
-            <div class="align-self-center">
-                <img src="dist/images/author1.jpg" alt="" class="img-fluid rounded-circle d-flex mr-3" width="40">
-            </div>
-            <div class="media-body">
-                <h6 class="mb-0 view-author">Jeanette R. Brooks</h6>  
-                <small class="view-date">Today at 10:31 Pm</small>
-            </div>
-        </div>                                    
-        <p>VehiculoT</p>
-        <div class="eagle-divider my-3"></div>
-        <p><i class="fa fa-paperclip pr-2"></i> Información del vehiculo</p>
-        <div class="row megnify-popup">                                        
-            <div class="col-12 col-sm-12 col-xl-12">
-                <div class="card eagle-border-light text-center">
-                    <a class="btn-gallery" href="dist/images/post2.jpg"><img src="dist/images/post2.jpg" alt="" class="img-fluid rounded-top"></a>
-                    <div class="card-body py-2">
-                    
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!--  Detalle del vehiculo  --> 
-
 <!--  Busqueda  -->
 <div class="card-header border-bottom p-2 d-flex">
     <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
@@ -39,38 +7,58 @@
 <!--  VEHICULO MENU LISTADO  -->
 <div class="row m-0 border-bottom theme-border">
         <div class="col-12 px-2 py-3 d-flex mail-toolbar">
+
             <div class="check d-inline-block mr-3">
                 <label class="chkbox">All 
-                    <input name="all" value="" type="checkbox" class="checkall">
+                    <input name="all" value="" type="checkbox" class="checkall checkall-veh">
                     <span class="checkmark"></span>
                 </label>
             </div> 
-
-            <!-- Filtrar por Etiquetas -->
-            <a href="#" class="ml-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-speedometer"></i></a>
+ 
+            <!-- Filter by speed -->
+            <a href="#" class="ml-auto toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Velocidades"><i class="mdi mdi-speedometer"></i></a>
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right bulk-mail-type">
-                <a class="dropdown-item" href="#" data-speed="speed-blue">Todas las velocidades</a>
-                <a class="dropdown-item" href="#" data-speed="speed-blue"><span class="dot bg-primary"></span> Detenido</a>
-                <a class="dropdown-item" href="#" data-speed="speed-green"><span class="dot bg-success"></span> Minima</a>                
-                <a class="dropdown-item" href="#" data-speed="speed-yellow"><span class="dot bg-warning"></span> Normal</a>
-                <a class="dropdown-item" href="#" data-speed="speed-orange"><span class="dot bg-orange"></span> Regular</a>
-                <a class="dropdown-item" href="#" data-speed="speed-red"><span class="dot bg-danger"></span> Máxima</a>
-            </div>
-            
-            <!-- <a href="#" class="bulk-star"><i class="icon-star"></i></a>  
+                <a class="dropdown-item" href="#" data-speed="mail-item">Todas las velocidades</a>
+                <a class="dropdown-item opt-blue" href="#" data-speed="speed-blue"><span class="dot bg-primary"></span> Detenido</a>
+                <a class="dropdown-item opt-green" href="#" data-speed="speed-green"><span class="dot bg-success"></span> Minima</a>
+                <a class="dropdown-item opt-yellow" href="#" data-speed="speed-yellow"><span class="dot bg-warning"></span> Normal</a>
+                <a class="dropdown-item opt-orange" href="#" data-speed="speed-orange"><span class="dot bg-orange"></span> Regular</a>
+                <a class="dropdown-item opt-red" href="#" data-speed="speed-red"><span class="dot bg-danger"></span> Máxima</a>
+            </div> 
+ 
+            <div>
+                <a href="#" class="mr-2 toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Estado de motor" ><i class="mdi mdi-engine"></i></a>
+                <div class="dropdown-menu p-0 m-0 dropdown-menu-left status-engine">
+                    <a class="dropdown-item opt-engineof" href="#" data-engine="mail-item">Todos</a>
+                    <a class="dropdown-item" href="#" data-engine="engine-on">
+                        <h4 class="mdi mdi-engine text-success d-inline"></h5> Motor Encendido 
+                    </a>
+                    <a class="dropdown-item opt-engineon" href="#" data-engine="engine-off">
+                        <h5 class="mdi mdi-engine text-primary d-inline"></h5> Motor apagado 
+                    </a>
+                    <a class="dropdown-item opt-termon" href="#" data-engine="term-on">
+                        <h5 class="mdi mdi-power-plug text-success d-inline"></h5> Terminal conectada y puerta cerrada
+                    </a>
+                    <a class="dropdown-item opt-termoff" href="#" data-engine="term-off">
+                        <h5 class="mdi mdi-power-plug-off text-primary  d-inline"></h5> Terminal desconectada y puerta abierta 
+                    </a>
+                    <a class="dropdown-item opt-termonoff" href="#" data-engine="term-onoff">
+                        <h5 class="mdi mdi-power-plug text-orange  d-inline"></h5> Terminal conectada y puerta abierta
+                    </a>
+                    <a class="dropdown-item opt-termoffon" href="#" data-engine="term-offon">
+                        <h5 class="mdi mdi-power-plug-off text-orange d-inline"></h5> Terminal desconectada y puerta cerrada 
+                    </a>
+                </div>
+            </div> 
+ 
             
             <div>
                 <a href="#" class="mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">
-                    <a class="dropdown-item mailread" href="#" ><i class="icon-book-open"></i> Marcar </a>
-                    <a class="dropdown-item mailunread" href="#"><i class="icon-notebook"></i> Eliminar </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item delete" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-trash"></i>  Nuevo Sitio </a>
-                    <a class="dropdown-item delete" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-trash"></i>  Nueva Ruta </a>
-                    <a class="dropdown-item delete" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="icon-trash"></i>  Nueva Geocerca </a>
+                    <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>
+                    <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>
                 </div>
-            </div> 
-             -->
+            </div>           
 
 
         </div>
@@ -78,36 +66,40 @@
 
 
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
-    <ul class="mail-app list-unstyled" id="vehicles_list"> 
 
-    <li class="py-1 px-2 mail-item inbox sent starred">
-        <div class="d-flex align-self-center align-middle">
-            <label class="chkbox">
-                <input type="checkbox" >
-                <span class="checkmark small"></span>
-            </label>
-            <div class="mail-content d-md-flex w-100">                                                    
-                <span class="car-name">Vehiculo</span>                                                     
-                <div class="d-flex mt-3 mt-md-0 ml-auto">
+    <ul class="mail-app list-unstyled" id="vehicles_list">
 
-                    <div class="h6 primary mdi mdi-power-plug"></div>
-                    
-                    <div class="speed-icon">
-                        <img style="width:100%;" src="/dist/images/config/vehicles/speed_red.png" alt="">
+        <?php foreach($vehicles as $veh): $vehid = $veh->NUM_VEH; ?>
+        <li class="py-1 px-2 mail-item inbox sent starred cursor-pointer">
+                <div class="d-flex align-self-center align-middle">
+                    <label class="chkbox" >
+                        <input type="checkbox" onclick="vehicle_realtime(this)" id="checkveh_<?=$vehid?>">
+                        <span class="checkmark small"></span>
+                    </label>
+                    <div class="mail-content d-md-flex w-100">                                                    
+                        <span class="car-name" onclick="vehicle_detail(<?=$vehid?>)"><?=$veh->ID_VEH?></span>
+
+
+                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>">                           
+                                <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
+                                <div class="speed-icon mr-1">
+                                    <img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_blue.png">
+                                </div>                             
+                        </div>
+
+                        <div class="d-flex mt-3 mt-md-0">       
+                            <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-options-vertical"></i>
+                            </a>                             
+                            <div class="dropdown-menu p-0 m-0 dropdown-menu-right"> 
+                                    <a class="dropdown-item mailread" href="#" onclick="edit_vehiclelist(<?=$vehid?>)"><i class="mdi mdi-playlist-edit"></i> Editar </a>
+                            </div>  
+                        </div>
+
                     </div>
-                    
-                    <div class="h6 primary mdi mdi-map-marker"></div>
-
-                    <a href="#" class="ml-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-options-vertical"></i>
-                    </a>
-                    <!--<div class="dropdown-menu p-0 m-0 dropdown-menu-right"></div>-->
                 </div>
-            </div>
-        </div>
-    </li> 
+            </li>
+        <?php endforeach; ?>
 
-    
-        <!-- ITEMS <div id="vehicles_list"></div> --> 
     </ul>
 </div> <!-- LISTADO VEHICULOS -->

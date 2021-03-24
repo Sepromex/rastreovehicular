@@ -4,10 +4,10 @@
     var primarycolor = getComputedStyle(document.body).getPropertyValue('--primarycolor');
 
 
-    /*$('.scrollertodo').slimScroll({
+    $('.scrollertodo').slimScroll({
         height: '475px', 
-        color: '#fff'
-    });*/ 
+        color: '#8f8f8f' 
+    });
 
 ////////////////////////////// Quill Editor ////////////////////////
 //Menu tabs list

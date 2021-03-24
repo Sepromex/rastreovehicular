@@ -8,7 +8,7 @@
         $(".se-pre-con").fadeOut("slow");
         ;
     });
- 
+  
 ///////////////// Flip Menu ///////////
 
     $(".flip-menu-toggle").on("click", function () {
@@ -53,9 +53,10 @@
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
 
-    $('.checkall').on('click', function () {
+    /*$('.checkall').on('click', function () {
         $('.mail-app input:checkbox').not(this).prop('checked', this.checked);
-    });
+    });*/
+    
     /**************** Menu **********************/
     $('.sidebar-menu .dropdown>a').on('click', function () {
         if ($(this).parent().hasClass('active'))
@@ -72,26 +73,12 @@
         return false;
     });
 
-
-    /**************** Chat Pop Up **********************/
-    $('.chatbutton').on('click', function () {
-        $('.chatwindow').toggle();
-        return false;
-
-    });
+ 
     /*==============================================================
      Sidebar 
      ============================================================= */
 
-    $('.sidebarCollapse').on('click', function () {
-        $('body').toggleClass('compact-menu');
-        $('.sidebar').toggleClass('active');
-    });
-
-    $('.mobilesearch').on('click', function () {
-        $('.search-form').toggleClass('d-none');
-
-    });
+   
 
     /////////////////////////// Datepicker ////////////////////////
     if (typeof $.fn.datepicker !== "undefined") {
@@ -109,11 +96,9 @@
         var nextId = $(this).parents('.tab-pane').prev().attr("id");
         $('[href="#' + nextId + '"]').tab('show');
     });
+
     /********************************** Image Background *************************/
-    $('.background-image-maker').each(function () {
-        var imgURL = $(this).next('.holder-image').find('img').attr('src');
-        $(this).css('background-image', 'url(' + imgURL + ')');
-    });
+    
 
     /********************************** Top Scroll *************************/
     $('.scrollup').on('click', function () {
@@ -163,110 +148,16 @@
     });
 
 
-    var uri = window.location.href.toString();
-    if (uri.indexOf("?") > 0) {
-        delete_cookie('menulayout');
-        delete_cookie('themecolor');
-        delete_cookie('sidebarstyle');
-        delete_cookie('horizontal');
-        delete_cookie('menuicon');
-    }
-
+   
 
 ////////////////////////////// TEMPLATE Color /////////////////////////
       
-    $('input.sidebar').on('click', function () {
-        if ($(this).is(':checked')) {
-            $('body').addClass('compact-menu');
-            $('.smail-icon').hide();
-
-            createCookie('sidebarstyle', 'compact-menu');
-        } else
-        {
-            $('body').removeClass('compact-menu');
-            delete_cookie('sidebarstyle');
-        }
-    });
-
-    var sidebarstyle = getUrlParameter('sidebarstyle');
-    if (sidebarstyle != null && sidebarstyle != '')
-    {
-        createCookie('sidebarstyle', sidebarstyle);
-    }
-
-    var sidebarstyle = getCookie("sidebarstyle");
-    if (sidebarstyle != null && sidebarstyle != '') {
-        $('body').addClass(sidebarstyle);
-        $('.smail-icon').hide();
-        $(".sidebar").prop('checked', true);
-    }
-
+   
 ///////////////////////////// horizontal Layout /////////////////////////////
 
-    $('.horizontallayout').on('click', function () {
-        if ($(this).is(':checked')) {
-            $('body').addClass('horizontal-menu');
-            createCookie('horizontal', 'horizontal-menu');
-            $('.compact').hide();
-        } else
-        {
-            $('body').removeClass('horizontal-menu');
-            delete_cookie('horizontal');
-            $('.compact').show();
-        }
-    });
+   
 
-    var horizontalstyle = getUrlParameter('horizontal');
-    if (horizontalstyle != null && horizontalstyle != '')
-    {
-        createCookie('horizontal', horizontalstyle);
-    }
-
-    var horizontalstyle = getCookie("horizontal");
-    if (horizontalstyle != null && horizontalstyle != '') {
-        $('body').addClass(horizontalstyle);
-        $(".horizontallayout").prop('checked', true);
-        $('.compact').hide();
-    }
-
+    
 
 })(jQuery);
-
-function createCookie(name, value) {
-    var now = new Date();
-    now.setTime(now.getTime() + 1 * 3600 * 1000);
-    document.cookie = name + "=" + value + ";expires=" + now.toUTCString() + "; path=/pick";
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function delete_cookie(name) {
-    document.cookie = name + '=; Path=/pick; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-            sURLVariables = sPageURL.split('&'),
-            sParameterName,
-            i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
-    }
-}
+ 

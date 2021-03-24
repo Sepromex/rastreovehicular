@@ -60,7 +60,7 @@ function speed_formedit(id){
             
         }
     });
-}
+} 
 
 function reset_speed(){
     $("#btn_addspeed").removeClass('form-hide');
