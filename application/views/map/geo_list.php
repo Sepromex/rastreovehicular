@@ -38,7 +38,6 @@
                     <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>
                     <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>
                     <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Nueva Geocerca </a>
-
                 </div>
             </div> 
 
@@ -59,10 +58,23 @@
                     <span class="car-name"><?=$geo->nombre?></span>                                                     
                     <div class="d-flex mt-3 mt-md-0 ml-auto">                         
                         <img src="/dist/images/map/geo/<?=$icon?>.png" width="20px" height="18px">
+
+                        <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-options-vertical"></i>
+                        </a>
+
+                        <div class="dropdown-menu p-0 m-0 dropdown-menu-right">										
+                            <a class="dropdown-item" href="#" onclick="edit_sitelist(<?=0?>)"><i class="mdi mdi-playlist-edit"></i> Editar </a>
+                            <a class="dropdown-item" href="#" onclick="delete_mainsite(<?=0?>)"><i class="icon-trash"></i> Eliminar </a>
+                        </div>
+                        
                     </div>
                 </div>
+
+
+
             </div>
-        </li>
+        </li>        
         <?php endforeach; ?>
     </ul>
 </div> <!-- LISTADO VEHICULOS -->

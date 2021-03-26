@@ -4,8 +4,7 @@
     <input type="text" class="form-control border-0  w-100 h-100 site-search" placeholder="Search ..."> </br>    
 </div>
 
-<div class="card-header border-bottom p-2 d-flex">
-    
+<div class="card-header border-bottom p-2 d-flex">    
     <select class="form-control select-form" id="site_tipe" style="display:block;">
         <option value="0" data-icon="iconos_sitios/defaul_marker.png"> Todos los sitios </option>   
         <?php foreach($site_type as $site): ?>
@@ -39,7 +38,7 @@
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">                
                 <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>                    
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item mailread" href="#" ><i class="icon-plus"></i> Nuevo Sitio de interes </a>                    
+                <a class="dropdown-item mailread" href="#" onclick="new_mainsite()"><i class="icon-plus"></i> Nuevo sitio de interés </a>                    
             </div>
         </div>
 
@@ -55,22 +54,22 @@
                 $iconimg    = ($site->imagen!="")?substr($site->imagen,14):"defaul_marker.png";    
                 $idsite     = $site->id_sitio;
         ?>
-        <li class="py-1 px-2 mail-item inbox sitetype-'.$icon_class.'"> 
+        <li class="py-1 px-2 mail-item inbox sitetype-<?=$icon_class?>" id="sitelist_<?=$idsite?>"> 
             <div class="d-flex align-self-center align-middle">
                 <label class="chkbox">
                     <input type="checkbox">
                     <span class="checkmark small"></span>
                 </label>
                 <div class="mail-content d-md-flex w-100">								
-                    <span class="car-name" onclick="show_site(<?=$idsite?>)"><?=$site->nombre?></span>                                                     
+                    <span class="car-name" id="sitename_<?=$idsite?>" onclick="show_site(<?=$idsite?>)"><?=$site->nombre?></span>                                                     
                     <div class="d-flex mt-3 mt-md-0 ml-auto"> 
-                        <img src="/dist/images/map/site_type/<?=$iconimg?>" width="25px" height="22px" class="toltip" data-placement="top" title="<?=$site->descripcion?>">
+                        <div id="siteicon_<?=$idsite?>"><img src="/dist/images/map/site_type/<?=$iconimg?>" width="25px" height="22px" class="toltip" data-placement="top" title="<?=$site->descripcion?>"></div>
                         <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-options-vertical"></i>
-                        </a>									
+                        </a>
                         <div class="dropdown-menu p-0 m-0 dropdown-menu-right">										
-                            <a class="dropdown-item single-delete" href="#" onclick="edit_vehiclelist(<?=$idsite?>)"><i class="icon-trash"></i> Editar </a>
-                            <a class="dropdown-item single-delete" href="#"><i class="icon-trash"></i> Eliminar </a>
+                            <a class="dropdown-item" href="#" onclick="edit_sitelist(<?=$idsite?>)"><i class="mdi mdi-playlist-edit"></i> Editar </a>
+                            <a class="dropdown-item" href="#" onclick="delete_mainsite(<?=$idsite?>)"><i class="icon-trash"></i> Eliminar </a>
                         </div>
                     </div>
                 </div> 

@@ -8,7 +8,7 @@
         color: '#8f8f8f' 
     });
 
-////////////////////////////// Quill Editor ////////////////////////
+////////////////////////////// Main Controls  ////////////////////////
 // Map control - menu tabs 
 $('.mail-menu li a').on('click', function () {
     $('.mail-menu li a').removeClass('active');
@@ -18,13 +18,12 @@ $('.mail-menu li a').on('click', function () {
     return false; 
 });
 
-// Filter Speed
-  
+// Filter Speed  
 $(".back-to-vlist").on("click", function () {
     $('.view-vehicle').fadeOut();
 });
 
-// Filter Speed
+// Filter Motor
 $('.bulk-mail-type a').on('click', function () {
     var speedclass = $(this).data("speed");    
     $('#vehicles_list .mail-item').hide();    
@@ -53,9 +52,11 @@ $("#site_tipe").on("change", function () {
 
 // Filter engine
 $('.status-engine a').on('click', function () {
-    var engineclass = $(this).data("engine");    
-    console.log(engineclass);
-    
+    var engineclass = $(this).data("engine");     
+
+    $('#vehicles_list .mail-item').hide();    
+    $('#vehicles_list .'+engineclass).show(500);
+
 });
 
 $(".vehicle-search").on("keyup", function () {
@@ -129,7 +130,6 @@ $('.bulk-mail-type a').on('click', function () {
         }
     });
 });
-
 */
 
     if ($("#snow-container").length > 0)
@@ -158,6 +158,9 @@ $('.bulk-mail-type a').on('click', function () {
     });
 
  
+
+
+
     $('.mail-bulk-action .mailread').on('click', function () {
         $('.' + $('.mail-menu li a.active').data("mailtype")).each(function () {
             if ($(this).find('input').is(':checked')) {
@@ -167,6 +170,8 @@ $('.bulk-mail-type a').on('click', function () {
         });
     });
 
+
+
     $('.mail-bulk-action .mailunread').on('click', function () {
         $('.' + $('.mail-menu li a.active').data("mailtype")).each(function () {
             if ($(this).find('input').is(':checked')) {
@@ -175,6 +180,9 @@ $('.bulk-mail-type a').on('click', function () {
             }
         });
     });
+
+
+
 
     $('.mail-bulk-action .delete').on('click', function () {
         $('.' + $('.mail-menu li a.active').data("mailtype")).each(function () {
@@ -186,6 +194,8 @@ $('.bulk-mail-type a').on('click', function () {
             }
         });
     });
+
+
 
     $(".single-read").on("click", function () {
         $(this).closest('.mail-item').removeClass('unread');
@@ -201,9 +211,6 @@ $('.bulk-mail-type a').on('click', function () {
     });
 
 
-
-    
-    
 
 
 })(jQuery);

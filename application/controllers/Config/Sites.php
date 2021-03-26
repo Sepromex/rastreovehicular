@@ -6,6 +6,9 @@ class Sites extends CI_Controller {
 	public function __construct(){
 		parent::__construct();		
 		$this->load->helper('config');
+		$this->load->model('config/site_model');
+		$this->load->model('acount/contact_model');	
+		$this->load->model('Mainmap_model');
 		$this->headerdata["module"] = "Config";
 	}
   
@@ -25,6 +28,55 @@ class Sites extends CI_Controller {
 		
         //Load view 
 		$this->load->view('layouts/admin',$data);    
-	}  	
-    
-}
+	} 
+
+	public function new_site(){		
+		$data["site_type"]    = $this->Mainmap_model->site_type(15);
+		$data["sitet_form"]   = "1";
+		$this->load->view("config/sites/site_edit",$data);
+	} 
+	
+	public function site_edit(){
+		$data["site"]         = $this->site_model->site_byid($_POST["id"]);
+		$data["site_type"]    = $this->Mainmap_model->site_type(15);
+		$data["sitet_form"]   = "0";
+//		$data["contact_list"] = $this->contact_model->contact_list(15);
+
+		$this->load->view("config/sites/site_edit",$data);
+	} 
+
+
+	public function site_update(){
+		$site     = ["nombre"   => $_POST["edit_sitename"],
+                     "id_tipo"  => $_POST["edit_sitetype"],
+                     "contacto" => $_POST["edit_sitecontact"],
+					 "tel1"     => $_POST["edit_sitephone"],
+					 "tel2"     => $_POST["edit_sitephone2"]];
+					 
+		$site    = $this->site_model->update_site($site,$_POST["edit_siteid"]);
+		if($site): echo "true"; else: echo "No se editó el sitio de Interés"; endif;		
+	}	
+
+	public function insert_site(){
+		$site     = ["nombre"     => $_POST["edit_sitename"],
+                     "id_tipo"    => $_POST["edit_sitetype"],
+                     "contacto"   => $_POST["edit_sitecontact"],
+					 "tel1"       => $_POST["edit_sitephone"],
+					 "tel2"       => $_POST["edit_sitephone2"],
+					 "activo"     => "1",
+					 "id_empresa" => 15];
+					 
+		$idsite  = $this->site_model->insert_site($site);
+ 		//$idsite = 12007;					
+		$data["idsite"]   = $idsite;	
+
+		if($idsite>0): echo $idsite; else: echo "false"; endif;	 
+	}
+
+	public function delete_mainsite(){		
+		$site = ["activo" => 0];
+		$idsite = $this->site_model->delete_site($site,$_POST["id"]);
+		if($idsite>0): echo "true"; else: echo "false"; endif;
+	}
+ 
+} 

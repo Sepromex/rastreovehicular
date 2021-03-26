@@ -1822,7 +1822,7 @@ footer.site-footer {
     top: 0px;
     right: 0px;
     background: var(--mainbackground);
-    z-index: 10000;
+    z-index: 1000;
     margin-right: -450px;
     transition: all 0.3s;
     box-shadow: 0px 0px 38px 0px rgba(0, 0, 0, 0.11);

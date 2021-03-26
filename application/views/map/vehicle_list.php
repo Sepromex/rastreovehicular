@@ -3,7 +3,7 @@
     <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
     <input type="text" class="form-control border-0  w-100 h-100 vehicle-search" placeholder="Search ...">
 </div>
-
+ 
 <!--  VEHICULO MENU LISTADO  -->
 <div class="row m-0 border-bottom theme-border">
         <div class="col-12 px-2 py-3 d-flex mail-toolbar">
@@ -68,25 +68,23 @@
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
 
     <ul class="mail-app list-unstyled" id="vehicles_list">
-
         <?php foreach($vehicles as $veh): $vehid = $veh->NUM_VEH; ?>
-        <li class="py-1 px-2 mail-item inbox sent starred cursor-pointer">
+            <li class="py-1 px-2 mail-item inbox  cursor-pointer" id="vehiclelist_<?=$vehid?>">
                 <div class="d-flex align-self-center align-middle">
-                    <label class="chkbox" >
+                    <label class="chkbox">
                         <input type="checkbox" onclick="vehicle_realtime(this)" id="checkveh_<?=$vehid?>">
                         <span class="checkmark small"></span>
                     </label>
                     <div class="mail-content d-md-flex w-100">                                                    
                         <span class="car-name" onclick="vehicle_detail(<?=$vehid?>)"><?=$veh->ID_VEH?></span>
 
-
-                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>">                           
+                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>" onclick="vehicle_ubication('<?=$vehid?>','<?=$veh->id_empresa?>')">                           
                                 <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
                                 <div class="speed-icon mr-1">
                                     <img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_blue.png">
-                                </div>                             
+                                </div>
                         </div>
-
+ 
                         <div class="d-flex mt-3 mt-md-0">       
                             <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-options-vertical"></i>
@@ -100,6 +98,6 @@
                 </div>
             </li>
         <?php endforeach; ?>
-
     </ul>
+
 </div> <!-- LISTADO VEHICULOS -->

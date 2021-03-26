@@ -49,7 +49,8 @@
         }
         else{ 
         }
-    }*/
+
+ }*/
 
 </script>
 
@@ -69,9 +70,9 @@
             <div class="card"><?php //print_array($site_type);?>
                 <!-- ##### TABS ##### -->
                 
-                    <div class="card-header" id="maincontrols">                                   
+                    <div class="card-header" id="maincontrols">
                         <div class="row m-auto">
-                            <div class="col-12 col-lg-12 col-xl-12 pr-lg-0 flip-menu">                                                    
+                            <div class="col-12 col-lg-12 col-xl-12 pr-lg-0 flip-menu">
                                 <ul class="list-unstyled nav inbox-nav  mb-0 mail-menu" style="margin-top:0px !important;">
                                     <li class="nav-item" style="padding: 5px 2px !important;">
                                         <a href="#" class="nav-link padding-tab active  toltip" data-list="vehicle_list"  data-placement="top" title="Vehículos"> 
@@ -90,7 +91,7 @@
                                             <i class="mdi mdi-map-marker-circle font-tab"></i>
                                             <span class="ml-auto badge badge-pill badge-success bg-success car-num">10</span>
                                         </a>
-                                    </li>                                
+                                    </li>
                                 </ul> 
                             </div>
                         </div>
@@ -310,6 +311,7 @@ function ver_sitio(id){
 		sitios_seleccionados();
 	}
 }
+
 function sitios_seleccionados(){
 	var los_sitios=document.getElementsByName("sitio");
 	for(var i=0; i<los_sitios.length; i++){
@@ -317,6 +319,117 @@ function sitios_seleccionados(){
 			ver_sitio(los_sitios[i].value);
 		}
 	}
+}
+
+
+function  new_mainsite(){
+    //colocar punto en el mapa
+    $.ajax({ 
+        type: "POST", 
+         url: "/Config/Sites/new_site",
+        success: function (response) {  
+            $("#sidebar-content").html(response); 
+            $('#settings').addClass('active');
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
+            });
+        }
+    });
+
+}
+
+
+function savenew_site(){    
+    $.ajax({ 
+        type: "POST", 
+        data: $("#edit_mainsite").serialize(),
+        url: "/Config/Sites/insert_site",
+        success: function (response) {  
+            if(response > 0){
+                
+                var idsite = response;
+                var icon  = $("#edit_sitetype option:selected").data("icon");
+                var desc  = $("#edit_sitetype option:selected").text();
+                var name  = $("#edit_sitename").val();
+                var type  = $("#edit_sitetype option:selected").val();
+
+                var baseUrl  = "/dist/images/map/site_type/";               
+                var icon     = baseUrl+icon.substr(14);
+            
+               var template = "<li class='py-1 px-2 mail-item inbox sitetype-"+type+"' id='sitelist_"+type+"'><div class='d-flex align-self-center align-middle'><label class='chkbox'><input type='checkbox'><span class='checkmark small'></span></label><div class='mail-content d-md-flex w-100'><span class='car-name' id='sitename_"+idsite+"' onclick='show_site("+idsite+")'>"+name+"</span><div class='d-flex mt-3 mt-md-0 ml-auto'><div id='siteicon_"+idsite+"'><img src='"+icon+"' width='25px' height='22px' class='toltip' data-placement='top' title='"+desc+"'></div><a href='#' class='ml-3 mark-list' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='icon-options-vertical'></i></a><div class='dropdown-menu p-0 m-0 dropdown-menu-right'><a class='dropdown-item' href='#' onclick='edit_sitelist("+idsite+")'><i class='mdi mdi-playlist-edit'></i> Editar </a> <a class='dropdown-item single-delete' href='#' onclick='delete_mainsite("+idsite+")'><i class='icon-trash'></i> Eliminar </a>  </div></div></div></div></li>";
+               console.log(icon);
+               $("#sites_list").prepend(template);
+               $('#settings').removeClass('active');  
+
+                console.log(desc);
+            }
+             
+        }
+    });
+}
+
+
+function edit_site(){    
+    $.ajax({ 
+        type: "POST", 
+        data: $("#edit_mainsite").serialize(),
+        url: "/Config/Sites/site_update",
+        success: function (response) {  
+             if (response == "true") {
+                var id      = $("#edit_siteid").val();
+                var name    = $("#edit_sitename").val();
+
+                var icon    = $("#edit_sitetype option:selected").data("icon");
+                var title   = $("#edit_sitetype option:selected").val();                
+                var baseUrl = "/dist/images/map/site_type/"; 
+
+                var icon = baseUrl+icon.substr(14);                
+                var src  = '<img src="'+icon+'" width="25px" height="22px" class="toltip" data-placement="top" title="'+title+'">';
+
+                $("#sites_list li #sitename_"+id).html(name);
+                $("#sites_list li #siteicon_"+id).html(src);
+
+                $('#settings').removeClass('active');  
+            } else {                            
+                alert(response); 
+                //console.log("error");
+            }
+        }
+    });
+} 
+
+
+function delete_mainsite(id){    
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id},
+        url: "/Config/Sites/delete_mainsite",
+        success: function (response) {             
+            var idsite = "#sitelist_"+id;
+            $(idsite).addClass('bg-danger');
+            $(idsite).slideUp(550, function () {
+                $(idsite).remove();
+            });
+        }
+    });
+}
+
+
+function edit_sitelist(id){    
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id},
+        url: "/Config/Sites/site_edit",
+        success: function (response) { 
+            $("#sidebar-content").html(response);  
+            $('#settings').addClass('active');
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
+            });
+        }
+    });
 }
 
 function show_site(id){
@@ -431,8 +544,8 @@ function edit_vehiclelist(id){
         type: "POST", 
         data: {id:id},
         url: "/Config/Vehicles/vehicle_edit",
-        success: function (response) {                              
-            $("#sidebar-content").html(response);                        
+        success: function (response) { 
+            $("#sidebar-content").html(response);
             /* $('.view-email').show();  
             $('#mainmap_list').hide();  
             $('#maincontrols').hide();   */
@@ -445,13 +558,14 @@ function edit_vehiclelist(id){
         }
     });
 }
+
 function vehicle_detail(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
         url: "/MainMap/vehicle_detail",
-        success: function (response) {                              
-            $("#detail-content").html(response);                        
+        success: function (response) {
+            $("#detail-content").html(response);
             $('.view-email').show();  
             $('#mainmap_list').hide();  
             $('#maincontrols').hide();   
@@ -466,44 +580,74 @@ $(".back-to-email").on("click", function () {
     $('#maincontrols').show();   
 });
 
+var vehicleslist_info = [];
+
 function load_vehicles(){ 
     $.ajax({ 
         type: "POST", 
         url: "/MainMap/mostrar_vehiculos_act",
         success: function (response) { 
-            $("#vehicles_list").html(response);
-            
-            filtervehoption();
-            load_sites(); 
-           
+            var old_motorclass = "";
+            var old_speedclass = "";
+            var icons     = "";
+
+            $.each(response, function(i, item) {   
+                var speed = "speed-"+item.speed;
+                var motor = item.class_motor;
+                if(vehicleslist_info[i]){
+                    old_motorclass = vehicleslist_info[i].class_motor;
+                    old_speedclass = vehicleslist_info[i].class_speed;                                   
+
+                    //Replace old class
+                    $("#vehiclelist_"+item.idveh).addClass(motor).removeClass(old_motorclass);
+                    $("#vehiclelist_"+item.idveh).addClass(speed).removeClass(old_speedclass);
+
+                    //Add actual class
+                    vehicleslist_info[i].class_motor = motor;
+                    vehicleslist_info[i].class_speed = item.speed;
+                }else{
+                    //console.log("new class: "+old_class);
+                    $("#vehiclelist_"+item.idveh).addClass(motor);
+                    $("#vehiclelist_"+item.idveh).addClass(speed);
+                }
+
+                vehicleslist_info[i] = {"class_motor": motor, "class_speed": speed}; 
+
+                var icons = '<div class="h6 mr-1 '+item.icon_motor+' toltip" data-placement="top" title="'+item.toltip_motor+'"></div>'+
+							'<div class="speed-icon mr-1"><img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_'+item.speed+'.png" data-placement="top" title="'+item.speed_tooltip+'" ></div>';
+                $("#vehicles_list #vehicle-element"+item.idveh).html(icons);
+            });  
+
+            filtervehoption();            
         }
     });  
 }
 
+/*
 function load_sites(){ 
     $.ajax({ 
         type: "POST",         
         url: "/MainMap/load_sites",
-        success: function (response) {             
+        success: function (response) {
             $("#sites_list").html(response);
             load_geo();
         } 
     }); 
-}
+}*/
+
 
 $(".back-to-vlist").on("click", function () {
     $('#idss').show();
     $('#idsx').fadeOut();
 });
 
-
+//load_sites(); 
 load_vehicles();
-
 
 /*$(document).ready(function(){
     "use strict";     
     setInterval(load_vehicles(),8000);  
 });*/
-//var load_v = setInterval( function() { load_vehicles(); }, 30000);
+//var load_v = setInterval( function() { load_vehicles(); }, 10000);
 console.log(localStorage);
 </script> 

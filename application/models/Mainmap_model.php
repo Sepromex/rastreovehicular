@@ -226,15 +226,17 @@ Class Mainmap_model extends CI_Model {
     } 
        
 	public function mainvehiclelist($id_user = "1029"){
-		$this->dbweb->select(" v.ID_VEH, v.NUM_VEH ");
+		$this->dbweb->select(" v.ID_VEH, v.NUM_VEH, v.id_empresa ");
 		$this->dbweb->from("veh_usr vu","left");
 		$this->dbweb->join("vehiculos v", "vu.NUM_VEH = v.NUM_VEH","left");
+		$this->dbweb->join("estveh ev", "v.estatus = ev.estatus","left"); 
 		$this->dbweb->where("vu.ID_USUARIO",$id_user);
-		$this->dbweb->where("vu.activo","1");	
+		$this->dbweb->where("vu.activo","1");
+		$this->dbweb->where("ev.publicapos","1");	
 		$this->dbweb->group_by("v.num_veh");
 		$this->dbweb->order_by("v.ID_VEH","asc"); 
         $query = $this->dbweb->get();
-		if($query->num_rows()>0){         
+		if($query->num_rows()>0){
 			return $query->result();
 		}else{
 			return false;

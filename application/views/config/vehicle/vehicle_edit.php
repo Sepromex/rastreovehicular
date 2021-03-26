@@ -23,7 +23,7 @@
             <div class="text-muted w-100 mb-2">Estatus</div>
             <div class="d-block h6 small"><?=$vehicle["estatus_desc"]?></div>
         </div> 
-
+ 
         <div class="row mb-2"> 
             <div class="text-muted w-100 mb-2">Empresa</div>
             <div class="d-block h6 small"><?=$vehicle["empresanom"]?></div>
@@ -49,7 +49,7 @@
     
     <div class="modal-footer">
         <button type="button" class="btn btn-danger openside reset_form" data-reset="reset_user" >Cancelar</button>
-        <button type="button" class="btn btn-primary" onclick="edit_vehicle()">Editar Vehículo</button>
+        <button type="button" class="btn btn-primary openside" onclick="edit_vehicle()">Editar Vehículo</button>
     </div>
 
 </form>  

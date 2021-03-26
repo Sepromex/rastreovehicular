@@ -2,11 +2,12 @@
 
 Class Contact_model extends CI_Model {
     // Contact list
-    public function contact_list()
+    public function contact_list($company = 0)
 	{
-        $this->db->select("*");
-		$this->db->from("contactos");        
-        $query = $this->db->get();         
+        $this->dbweb->select("*");
+		$this->dbweb->from("contactos_web");
+        $query = $this->dbweb->get();  
+        if($company != 0) { $this->dbweb->where("id_empresa",$company);}     
 		if($query->num_rows()>0){            
 			return $query->result();
 		}else{			

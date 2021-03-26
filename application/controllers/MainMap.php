@@ -101,15 +101,15 @@ class MainMap extends CI_Controller {
 		echo $li;
 	}
 
-	public function mostrar_vehiculos_act(){ 
+	public function mostrar_vehiculos_act(){
 
-		unset($_SESSION["messages"]); unset($_SESSION["speeds"]);
+//		unset($_SESSION["messages"]); unset($_SESSION["speeds"]);
 		if(!isset($_SESSION["messages"])):$this->Mainmap_model->load_messages();endif;
 		if(!isset($_SESSION["speeds"])):$this->Mainmap_model->load_speeds(1029);endif;
 
 		$id_user = "1029"; 
 		//vehicles list 
-		
+		$jsondata = [];
 		$vehicles = $this->Mainmap_model->main_vehiclelist();		
 		if(is_array($vehicles)){			
 			foreach($vehicles as $index => $veh){ 	
@@ -142,25 +142,24 @@ class MainMap extends CI_Controller {
 						$vehmotor       = "mdi mdi-power-plug text-success";
 						$vehmotortoltip = "Terminal conectada Y puerta cerrada";	
 						$classmotor = "term-on";					
-						$prueba .= "135 ";
+					
 					}
 					if($vehentry1==0 && $vehentry2==1){
 						$vehmotor       = "mdi mdi-power-plug-off text-primary term-off";
 						$vehmotortoltip = "Terminal desconectada y puerta abierta";
 						$classmotor = "term-off";
-						$prueba .= "140 ";
+					
 					}
 					if($vehentry1==1 && $vehentry2==1){
 						$vehmotor       = "mdi mdi-power-plug text-orange term-onoff";
 						$vehmotortoltip = "Terminal conectada Y puerta abierta";
 						$classmotor = "term-onoff";
-						$prueba .= "145 ";
+					
 					}
 					if($vehentry1==0 && $vehentry2==0){
 						$vehmotor       = "mdi mdi-power-plug-off text-orange term-offon";
 						$vehmotortoltip = "Terminal desconectada y puerta cerrada";
 						$classmotor = "term-offon";
-						$prueba .= "150 ";
 					}					
 				}else{
 					// Entries On
@@ -177,22 +176,22 @@ class MainMap extends CI_Controller {
 						if(is_array($entryby_veh) && count($entryby_veh)>0){
 							$data_accesory  = ["active"    => $active,
 											   "datarow"   => $entryby_veh[0],											   
-											   "companyid" => $vehcompanyid];  $prueba .= "169, ";
+											   "companyid" => $vehcompanyid];  
 							$result         = $this->Mainmap_model->accesory_title($data_accesory);												
 						}else{							 					
 							$entryby_company = $this->Mainmap_model->entries_configbycompany($vehcompanyid);
 							if(is_array($entryby_company) && count($entryby_company)>0){
 								$data_accesory  = ["active"    => $active,
 											       "datarow"   => $entryby_company[0],
-											       "companyid" => $vehcompanyid]; $prueba .= "176, ";
-								$result         = $this->Mainmap_model->accesory_title($data_accesory); $prueba .= $result["concat"];
+											       "companyid" => $vehcompanyid]; 
+								$result         = $this->Mainmap_model->accesory_title($data_accesory); 
 							}else{
 								$deviceconfig = $this->Mainmap_model->entryconfigby_devicetype($vehdevicetype,1);
 								if(isset($deviceconfig[0])){
 									$data_accesory  = ["active"    => $active,
 											           "datarow"   => $deviceconfig[0],
-											           "companyid" => $vehcompanyid]; $prueba .= "183 ";
-									$result         = $this->Mainmap_model->accesory_title($data_accesory); $prueba .= $result["concat"];
+											           "companyid" => $vehcompanyid]; 
+									$result         = $this->Mainmap_model->accesory_title($data_accesory); 
 								} 
 							} 					
 						}
@@ -203,15 +202,15 @@ class MainMap extends CI_Controller {
 							$messageid      = $result["messaje_id"];
 						}
 
-						if($accessory==1){  $prueba .= "195 ";
-							if($accessoryname==""){  $prueba .= " accesory-195 ";
-								echo "entro sin sentido </br></br>";
+						if($accessory==1){  
+							if($accessoryname==""){ 
+								//echo "entro sin sentido </br></br>";
 								$accessoryname      = isset($_SESSION["messages"][15][$messageid])?$_SESSION["messages"][15][$messageid]:"";
 							}
 						}
 						$prueba .= " ** ".$accessoryname." ** ";	
-						if(preg_match('/encendido/i',$accessoryname)): $vehmotor = "mdi mdi-engine text-success"; $classmotor = "engine-on"; $prueba .= "200 "; 
-						else: $vehmotor = "mdi mdi-engine-off text-info"; $classmotor = "engine-off"; $prueba .= "201 "; endif; 
+						if(preg_match('/encendido/i',$accessoryname)): $vehmotor = "mdi mdi-engine text-success"; $classmotor = "engine-on"; 
+						else: $vehmotor = "mdi mdi-engine-off text-info"; $classmotor = "engine-off"; endif; 
 						 
 					} 
 
@@ -220,30 +219,28 @@ class MainMap extends CI_Controller {
 					if($vehmotor == ""){
 						$sistemas_invalidos = array(10,14,16,17,18,20,22,25,27,28,30,31,32,33,34,35,43);
 						if(!in_array($vehsystemid,$sistemas_invalidos)){	
-							$prueba .= " sistema valido ";						
 							if(isset($vehignition) && $vehignition==1){ //encendido
 								$vehmotor       = "mdi mdi-engine text-success engine-on";
 								$vehmotortoltip = "Motor encendido";
 								$classmotor = "engine-on";
-								$prueba .= "213 ";
+								
 							}else{ //apagado
 								$vehmotor       = "mdi mdi-engine-off text-info engine-off";
 								$vehmotortoltip = "Motor apagado";
 								$classmotor = "engine-off";
-								$prueba .= "217 ";
+								
 							}
 						}else{ //incluimos a los spider y x8
-							$prueba .= " sistema invalido ";							
 							if($vehspeed>8){
 								$vehmotor       = "mdi mdi-engine text-success engine-on";
 								$vehmotortoltip = "Motor encendido";
 								$classmotor = "engine-on";
-								$prueba .= "223 ";
+								
 							}else{//apagado
 								$vehmotor       = "mdi mdi-engine-off text-info engine-off";
 								$vehmotortoltip = "Motor apagado";
 								$classmotor = "engine-off";
-								$prueba .= "227 ";
+								
 							}
 						}
 					} 
@@ -301,37 +298,49 @@ class MainMap extends CI_Controller {
 					$speedtoltip = "Detenido";
 				}
 				// -- '.$prueba.' 
-				 
-				echo '<li class="py-1 px-2 mail-item inbox sent starred cursor-pointer speed-'.$vehspeedname.' '.$classmotor.'">
-						<div class="d-flex align-self-center align-middle">
-							<label class="chkbox" >
-								<input type="checkbox" onclick="vehicle_realtime(this)" id="checkveh_'.$vehid.'">
-								<span class="checkmark small"></span>
-							</label>
-							<div class="mail-content d-md-flex w-100">                                                    
-								<span class="car-name" onclick="vehicle_detail('.$vehid.')">'.$veh->ID_VEH.'</span>
+				$jsondata[] = ["speed"         => $vehspeedname,
+							   "class_motor"   => $classmotor,
+							   "icon_motor"    => $vehmotor,
+							   "toltip_motor"  => $vehmotortoltip,
+							   "speed_tooltip" => $speedtoltip,
+							   "idveh"         => $vehid,
+							   "company"       => $vehcompanyid];
 
-								<div class="d-flex mt-3 mt-md-0 ml-auto">
 
-									<div class="h6 mr-1 '.$vehmotor.' toltip" data-placement="top" title="'.$vehmotortoltip.'"></div>									
-									<div class="speed-icon mr-1">
-                                        <img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_'.$vehspeedname.'.png" data-placement="top" title="'.$speedtoltip.'" alt="'.$vehspeedname.'" onclick="vehicle_ubication('.$vehid.','.$vehcompanyid.')">
-                                    </div> 
+							/*echo '<li class="py-1 px-2 mail-item inbox sent starred cursor-pointer speed-'.$vehspeedname.' '.$classmotor.'">
+									<div class="d-flex align-self-center align-middle">
+										<label class="chkbox" >
+											<input type="checkbox" onclick="vehicle_realtime(this)" id="checkveh_'.$vehid.'">
+											<span class="checkmark small"></span>
+										</label>
+										<div class="mail-content d-md-flex w-100">                                                    
+											<span class="car-name" onclick="vehicle_detail('.$vehid.')">'.$veh->ID_VEH.'</span>
 
-									<a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="icon-options-vertical"></i>
-									</a>
+											<div class="d-flex mt-3 mt-md-0 ml-auto">
 
-									<div class="dropdown-menu p-0 m-0 dropdown-menu-right"> 
-											<a class="dropdown-item mailread" href="#" onclick="edit_vehiclelist('.$vehid.')"><i class="mdi mdi-playlist-edit"></i> Editar </a>
- 									</div> 
+												<div class="h6 mr-1 '.$vehmotor.' toltip" data-placement="top" title="'.$vehmotortoltip.'"></div>									
+												<div class="speed-icon mr-1">
+													<img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_'.$vehspeedname.'.png" data-placement="top" title="'.$speedtoltip.'" alt="'.$vehspeedname.'" onclick="vehicle_ubication('.$vehid.','.$vehcompanyid.')">
+												</div> 
 
-								</div>
-							</div>
-						</div>
-					</li>'; 
+												<a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<i class="icon-options-vertical"></i>
+												</a>
+
+												<div class="dropdown-menu p-0 m-0 dropdown-menu-right"> 
+														<a class="dropdown-item mailread" href="#" onclick="edit_vehiclelist('.$vehid.')"><i class="mdi mdi-playlist-edit"></i> Editar </a>
+												</div> 
+
+											</div>
+										</div>
+									</div>
+								</li>'; */
 			}
 		} 
+
+		header("Content-type: application/json");        	
+		echo json_encode($jsondata);
+
 		//$this->output->enable_profiler(TRUE);   <div class="h6 primary mdi mdi-satellite-uplink text-danger"></div>  
 		/*else{echo "else_end";}*/
 		//print_array($vehicles); 
