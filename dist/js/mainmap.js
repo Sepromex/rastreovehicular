@@ -43,6 +43,20 @@ $("#site_tipe").on("change", function () {
 });
 
 
+// Filter geo-type
+$('.fgeo-type a').on('click', function () {
+    var geoclass = $(this).data("type");     
+    $('#geo_list .mail-item').hide();    
+    $('#geo_list .'+geoclass).show(500); 
+});
+
+// Filter geo-user
+$('.fcompany_type a').on('click', function () {
+    var geoclass = $(this).data("filter");     
+    $('#geo_list .mail-item').hide();    
+    $('#geo_list .'+geoclass).show(500); 
+});
+
 /*$('#vehicles_list mail-content a .mark-list').on('click', function () {
     console.log( "checo" );   
     //.mail-app li 

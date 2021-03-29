@@ -78,53 +78,46 @@ Class Mainmap_model extends CI_Model {
 		}
 
 		/*
-
 		id='".$rowSit[0]."' 
 		value='".$rowSit[0]."'
 		ver_sitio($rowSit[0])
 					veh_seleccion(".$rowSit[2].",".$rowSit[3].")
 						strtolower(addslashes($rowSit[1]))."
-
 		*/
 
 	}
 
-	
-					 
-
 	public function load_geo($company_id,$user_id){
-		$this->dbweb->select("G.num_geo,G.nombre,G.tipo,G.latitud,G.longitud,T.descripcion");
+		$this->dbweb->select("G.num_geo,G.nombre,G.tipo,G.latitud,G.longitud, G.id_usuario, G.id_empresa, T.descripcion");
 		$this->dbweb->from("geo_time AS G");
 		$this->dbweb->join("tipo_geocerca AS T","G.tipo=T.tipo");
 		$this->dbweb->where("G.id_empresa",$company_id);
 		$this->dbweb->where("G.activo",1);
-		$this->dbweb->where("G.id_usuario",$user_id);
-		$this->dbweb->where("G.nombre !=","");		
-		$this->dbweb->order_by("G.nombre","ASC");		
-		$query = $this->dbweb->get();         
-		if($query->num_rows()>0){            
+		// $this->dbweb->where("G.id_usuario",$user_id);
+		$this->dbweb->where("G.nombre !=","");
+		$this->dbweb->order_by("G.nombre","ASC");
+		$query = $this->dbweb->get();
+		if($query->num_rows()>0){
 			return $query->result();
-		}else{			
-			return false; 			
+		}else{
+			return false;
 		}
 	}
 
-
-    public function company_messages($company){		
+    public function company_messages($company){
 		$this->dbweb->select("id_empresa");
 		$this->dbweb->from("c_mensajes");
 		$this->dbweb->where("id_empresa",$company);	
         $query = $this->dbweb->get(); 
 		if($query->num_rows()>0){ 
 			return $query->row_array();
-		}else{			
+		}else{
 			return false; 
 		}
 	}
-
 	
  
-	public function vehicle_position($id_pos = 0,$idveh = 0, $company = 0){		 
+	public function vehicle_position($id_pos = 0,$idveh = 0, $company = 0){
 		$this->dbweb->select("distinct(v.id_veh),(u.lat/3600/16) as lat,((u.long & 8388607)/3600/12*-1) as lon,u.mensaje,u.velocidad,u.fecha,
 		v.tipoveh,u.t_mensaje,v.id_empresa,u.entradas,u.odometro,u.entradas_a,u.id_tipo,v.id_sistema,
 		pm.descripcion,cm.mensaje,p.obsoleto,p.satelites,p.hdop");

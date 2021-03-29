@@ -17,19 +17,13 @@
     html, body{ height: 100%; margin: 0; padding: 0; }
     .text-orange{ color: orange; }
     .cursor-pointer{ cursor:pointer; }
+    .bg-control{ background-color: #d3f5c9 !important; }
 
  
 </style>
 
 <script>
-    let map;
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 20.721827087454802, lng:  -103.37155710393355 },
-            zoom: 10,
-        });
-    }
+    
 
 /*
     function sitiointeres(id_empresa) {	
@@ -129,22 +123,22 @@
         
 
 
-        <!-- 
-            <div class="col-9 mt-3">
-                <div class="row">                
-                    <div id="map"></div>
-                </div>
-                <div class="row" id="ubicacion"></div>
-                <div class="row" id="sitios"></div>
-            </div> 
-        -->
+        
+        <div class="col-9 mt-3">
+            <div class="row">                
+                <div id="map"></div>
+            </div>
+            <div class="row" id="ubicacion"></div>
+            <div class="row" id="sitios"></div>
+        </div> 
+        
                     
                     
     </div>
 </div>           
-<!--
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
--->
+ 
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
+<!--  -->
 <script> 
  $('.toltip').tooltip();
 var timerID = 0;
@@ -170,6 +164,80 @@ var linea = new Array();
 var optSelected = 1;
 var flightPath;
 var arregloDeRecorridos= new Array();
+
+var origin = null;
+var destination = null;
+var inter = null;
+var waypoints = [];
+var markers = [];
+var markers_rutas = [];
+var directionsVisible = false;
+var currentId = 0;
+var uniqueId = function() {
+    return ++currentId;
+}
+
+function clearMarkers() {
+for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+}
+for (var i = 0; i < markers_rutas.length; i++) {
+    markers_rutas[i].setMap(null);
+}
+}
+
+function clearWaypoints() {
+markers = [];
+origin = null;
+destination = null;
+waypoints = [];
+directionsVisible = false;
+}
+
+function reset() {
+var rendererOptions = {
+    draggable: true
+};
+clearMarkers();
+clearWaypoints();
+directionsDisplay.setMap(null);
+directionsDisplay.setPanel(null);
+directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+directionsDisplay.setMap(map);
+directionsDisplay.setPanel(document.getElementById("directionsPanel"));    
+nC("#fin_ruta").attr("disabled",false);
+nC("#inicio_ruta").attr("disabled",false);
+nC("#r_inicio").html('');
+nC("#r_inter").html('');
+nC("#r_fin").html('');
+}
+function clear_ruta(){
+nC("#inicio_ruta").val(0);
+nC("#inter_ruta").val(0);
+nC("#fin_ruta").val(0);
+}
+let map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 21.9518, lng: -100.9397 },
+            zoom: 6,
+            streetViewControl: true,//true= "monito"
+            disableDoubleClickZoom:true,
+            overviewMapControl:true,
+            panControl: true,
+            zoomControl: true,  
+            zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.SMALL
+            },
+            scaleControl: true,
+            scaleControlOptions: {
+                position: google.maps.ControlPosition.LEFT_CENTER
+            },
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+        });
+    }
+
 
 
 function mostrarLinea2(pag){
@@ -248,16 +316,19 @@ function vehicle_ubication(id,company) {
         type: "POST",
         data: {id:id,company:company},
         url: "/MainMap/get_ubication",
-        success: function (response) {  
-            //console.log();
-            var last = response.last;                        
-            $("#ubicacion").html(response.table);
-            //console.log(response.route);
-            MapaCord(last.lat, last.lon, last.tipov, response.veh);            
-            $.each(response.route, function(i, item) {
-                crea_recorrido(item.lat,item.lon,item.tipoveh,0);
-            });   
-            mostrarLinea2(0);
+        success: function (response) {              
+            if(response.error){
+                alert(response.error);
+            }else{
+                var last = response.last;                        
+                $("#ubicacion").html(response.table);
+                //console.log(response.route);
+                MapaCord(last.lat, last.lon, last.tipov, response.veh);            
+                $.each(response.route, function(i, item) {
+                    crea_recorrido(item.lat,item.lon,item.tipoveh,0);
+                });   
+                mostrarLinea2(0);
+            }
         }
     }); 
 }
@@ -358,11 +429,12 @@ function savenew_site(){
                 var icon     = baseUrl+icon.substr(14);
             
                var template = "<li class='py-1 px-2 mail-item inbox sitetype-"+type+"' id='sitelist_"+type+"'><div class='d-flex align-self-center align-middle'><label class='chkbox'><input type='checkbox'><span class='checkmark small'></span></label><div class='mail-content d-md-flex w-100'><span class='car-name' id='sitename_"+idsite+"' onclick='show_site("+idsite+")'>"+name+"</span><div class='d-flex mt-3 mt-md-0 ml-auto'><div id='siteicon_"+idsite+"'><img src='"+icon+"' width='25px' height='22px' class='toltip' data-placement='top' title='"+desc+"'></div><a href='#' class='ml-3 mark-list' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='icon-options-vertical'></i></a><div class='dropdown-menu p-0 m-0 dropdown-menu-right'><a class='dropdown-item' href='#' onclick='edit_sitelist("+idsite+")'><i class='mdi mdi-playlist-edit'></i> Editar </a> <a class='dropdown-item single-delete' href='#' onclick='delete_mainsite("+idsite+")'><i class='icon-trash'></i> Eliminar </a>  </div></div></div></div></li>";
-               console.log(icon);
-               $("#sites_list").prepend(template);
-               $('#settings').removeClass('active');  
-
-                console.log(desc);
+               if($("#sites_list").prepend(template)){
+                    $("#sitelist_"+type).animate({opacity: 1}, 700, function() {                        
+                        $("#sitelist_"+type).removeClass('bg-success',1000);                        
+                    });                    
+               }   
+               $('#settings').removeClass('active');   
             }
              
         }
@@ -410,6 +482,89 @@ function delete_mainsite(id){
             $(idsite).addClass('bg-danger');
             $(idsite).slideUp(550, function () {
                 $(idsite).remove();
+            });
+        }
+    });
+}
+
+
+
+function edit_geoside(id){    
+    $.ajax({ 
+        type: "POST", 
+        data: $("#side_maingeo").serialize(),
+        url: "/Config/Geo/geo_update",
+        success: function (response) {  
+            if(response == "true"){ 
+                var icon  = $("#geo_list li #geoname_"+id).html($("#side_maingeo #geoside_name").val());
+                $('#settings').removeClass('active');
+                console.log("true");
+            }else{
+                alert("response");
+            }            
+        }
+    });
+}
+
+
+/*
+   
+
+*/
+
+function save_newgeo(){
+    $.ajax({ 
+        type: "POST", 
+        data: $("#side_maingeo").serialize(),
+        url: "/Config/Geo/insert_site",
+        success: function (response) {            
+            if(response > 0){
+                var idgeo = response;
+                var icon  = ($("#maingeo_tipo").val()==0)?'circle':'polig';
+                var icon_usr = "mdi mdi-account-outline text-success"; 
+                var classusr = "user";
+                var nombre   = $("#geoside_name").val();               
+               
+               var template = '<li class="py-1 px-2 mail-item inbox bg-control sent g-'+icon+' geo_'+classusr+'"  id="geolist_'+idgeo+'" style="opacity:0;"><div class="d-flex align-self-center align-middle"><label class="chkbox"><input type="checkbox"><span class="checkmark small"></span></label><div class="mail-content d-md-flex w-100"><span class="car-name" id="geoname_'+idgeo+'">'+nombre+'</span><div class="d-flex mt-3 mt-md-0 ml-auto"><div class="'+icon_usr+' h5"></div><img src="/dist/images/map/geo/'+icon+'.png" class="mt-1" width="20px" height="18px"><a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a><div class="dropdown-menu p-0 m-0 dropdown-menu-right"><a class="dropdown-item" href="#" onclick="edit_geolist('+idgeo+')"><i class="mdi mdi-playlist-edit"></i> Editar </a><a class="dropdown-item" href="#" onclick="delete_mainsite('+idgeo+')"><i class="icon-trash"></i> Eliminar </a></div></div></div></div></li>';               
+               if($("#geo_list").prepend(template)){
+                    $("#geolist_"+idgeo).animate({opacity: 1}, 700, function() {                        
+                        $("#geolist_"+idgeo).removeClass('bg-control',700);
+                    });                    
+               } 
+
+            }else{
+                alert("response");
+            }           
+        }
+    });
+}
+
+function geonew(){
+    $.ajax({ 
+        type: "POST", 
+        data: {type:0},
+        url: "/Config/Geo/geo_sideform",
+        success: function (response) {  
+            $("#sidebar-content").html(response);  
+            $('#settings').addClass('active');
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
+            });
+        }
+    });  
+}
+function edit_geolist(id){    
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id,type:1},
+        url: "/Config/Geo/geo_sideform",
+        success: function (response) { 
+            $("#sidebar-content").html(response);  
+            $('#settings').addClass('active');
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
             });
         }
     });
@@ -472,13 +627,9 @@ function mark_list(e){
 
 function vehicle_realtime(e){  
     if($(e).is(":checked")) {
-
         console.log("checo");
-
     }else{
-
         console.log("no checo");
-
     } 
     console.log(e);
 }
@@ -520,8 +671,6 @@ function filtersiteoption(){
 }
 
 
-
-
 function filtervehoption(){    
    if($('#vehicles_list .speed-blue').length > 0){ $(".bulk-mail-type .opt-blue").show(); }else{  $(".bulk-mail-type .opt-blue").hide(); }    
    if($('#vehicles_list .speed-green').length > 0){ $(".bulk-mail-type .opt-green").show(); }else{  $(".bulk-mail-type .opt-green").hide(); }
@@ -539,6 +688,7 @@ function filtervehoption(){
    if($('#vehicles_list .term-offon').length > 0){ $(".status-engine .opt-termoffon").show(); }else{  $(".status-engine .opt-termoffon").hide(); }
 }
 
+
 function edit_vehiclelist(id){    
     $.ajax({ 
         type: "POST", 
@@ -553,8 +703,7 @@ function edit_vehiclelist(id){
             $('.openside').on('click', function () {
                 $('#settings').toggleClass('active');
                 return false;
-            });
-            
+            });            
         }
     });
 }
@@ -643,6 +792,7 @@ $(".back-to-vlist").on("click", function () {
 
 //load_sites(); 
 load_vehicles();
+
 
 /*$(document).ready(function(){
     "use strict";     

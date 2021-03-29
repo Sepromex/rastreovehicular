@@ -19,6 +19,7 @@ class MainMap extends CI_Controller {
 				"module"  => $this->headerdata["module"]];
 
 		//Files in head, body y footer 
+		$data["user_id"]   = 1029;
 		$data["include"]   = includefiles($data["custom"]["page"]);		
 		$data["site_type"] = $this->Mainmap_model->load_sitestype(15);
 		$data["vehicles"]  = $this->Mainmap_model->mainvehiclelist();
@@ -37,7 +38,7 @@ class MainMap extends CI_Controller {
 
 	public function load_geo(){
 		//$data = ["user_id" => 1029, "company_id" => 15];
-		$geoc = $this->Mainmap_model->load_geo(15,1029);		
+		$geoc = $this->Mainmap_model->load_geo(15,1029);
 		$li = '';
 		foreach($geoc as $geo){
 			$icon = ($geo->tipo==0)?'circle':'polig';
@@ -47,8 +48,8 @@ class MainMap extends CI_Controller {
 								<input type="checkbox">
 								<span class="checkmark small"></span>
 							</label>
-							<div class="mail-content d-md-flex w-100">                                                    
-								<span class="car-name">'.$geo->nombre.'</span>                                                     
+							<div class="mail-content d-md-flex w-100">
+								<span class="car-name">'.$geo->nombre.'</span>
 								<div class="d-flex mt-3 mt-md-0 ml-auto"> 
 									<!-- <div class="h6 primary mdi mdi-power-plug"></div>	 -->
 									<img src="/dist/images/map/geo/'.$icon.'.png" width="20px" height="18px">

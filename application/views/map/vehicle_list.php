@@ -8,12 +8,12 @@
 <div class="row m-0 border-bottom theme-border">
         <div class="col-12 px-2 py-3 d-flex mail-toolbar">
 
-            <div class="check d-inline-block mr-3">
+            <!-- <div class="check d-inline-block mr-3">
                 <label class="chkbox">All 
                     <input name="all" value="" type="checkbox" class="checkall checkall-veh">
                     <span class="checkmark"></span>
                 </label>
-            </div> 
+            </div>  -->
  
             <!-- Filter by speed -->
             <a href="#" class="ml-auto toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Velocidades"><i class="mdi mdi-speedometer"></i></a>
