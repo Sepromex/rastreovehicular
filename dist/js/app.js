@@ -54,7 +54,7 @@
     $('[data-toggle="popover"]').popover();
 
     /*$('.checkall').on('click', function () {
-        $('.mail-app input:checkbox').not(this).prop('checked', this.checked);
+        
     });*/
     
     /**************** Menu **********************/
@@ -149,6 +149,10 @@
 
 
    
+    
+    
+    
+    
 
 ////////////////////////////// TEMPLATE Color /////////////////////////
       

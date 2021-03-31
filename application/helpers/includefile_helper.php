@@ -47,7 +47,8 @@ function includefiles($page){
             $head        = ["dist/vendors/quill/quill.snow.css"];
             $body        = ["template" => ["map/map"]];
             //$scripts     = ["layouts/scripts/script_map"];
-            $footer      = ["/dist/vendors/quill/quill.min.js","/dist/js/mainmap.js"];
+            $footer      = ["/dist/vendors/quill/quill.min.js","/dist/js/mainmap.js","/dist/js/validate.js"]; 
+            
         break; 
         // ###### CONFIG FILES ###### //        
         case "Vehicles":  

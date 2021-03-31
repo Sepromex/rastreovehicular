@@ -1,5 +1,4 @@
 <style>
-
     .mail-app li .car-name{
         min-width:120px;
         font-size: .55rem;
@@ -17,36 +16,8 @@
     html, body{ height: 100%; margin: 0; padding: 0; }
     .text-orange{ color: orange; }
     .cursor-pointer{ cursor:pointer; }
-    .bg-control{ background-color: #d3f5c9 !important; }
-
- 
+    .bg-control{ background-color: #d3f5c9 !important; } 
 </style>
-
-<script>
-    
-
-/*
-    function sitiointeres(id_empresa) {	
-        var request = confirm("Desea crear un sitio de interes");
-        if(request == true){
-            alert("Seleccione un punto en el mapa");
-            jQuery.post('includes/carga_sitios.php','',function(response){ 
-                var opcion=response; 
-                google.maps.event.addListener(map, 'click', function(event) {
-                var myLatLng = event.latLng;
-                addMarker(myLatLng);
-                var lat = myLatLng.lat();
-                var lng = myLatLng.lng();
-                xajax_carga_form_sitio(lat,lng);
-            });
-            });
-        }
-        else{ 
-        }
-
- }*/
-
-</script>
 
 <div class="container-fluid "> 
     <!-- START: Card Data-->
@@ -75,7 +46,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item" style="padding: 5px 2px !important;">
-                                        <a href="#" class="nav-link padding-tab toltip"  data-list="site_list" data-placement="top" title="Sitios de interéz">
+                                        <a href="#" class="nav-link padding-tab toltip" data-list="site_list" data-placement="top" title="Sitios de interéz">
                                             <i class="mdi mdi-home-map-marker font-tab"></i> 
                                             <span class="ml-auto badge badge-pill badge-success bg-success car-num">9</span>
                                         </a>
@@ -121,33 +92,32 @@
             </div>  <!-- End card-->              
         </div> <!-- END col-2 -->
         
-
-
-        
         <div class="col-9 mt-3">
             <div class="row">                
                 <div id="map"></div>
             </div>
             <div class="row" id="ubicacion"></div>
             <div class="row" id="sitios"></div>
-        </div> 
-        
-                    
+        </div>      
                     
     </div>
-</div>           
- 
+</div>
+
+<!--
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
-<!--  -->
+   -->
+
 <script> 
- $('.toltip').tooltip();
+
+$('.toltip').tooltip();
 var timerID = 0;
 var marca,marker,sitios;
 var elim_sitio = new Array();
 //var makingQuery = false;
-var markersArrays=new Array();
+var markersArrays = new Array();
 var directionsService;
 var directionsDisplay;
+
 var childwindows = new Array();
 var al = new Array();
 var nl = new Array();
@@ -177,6 +147,188 @@ var uniqueId = function() {
     return ++currentId;
 }
 
+function ejecutar_geocercas(){
+	var request = confirm("Deseas agregar una geocerca cirular");
+	if(request==true){
+       // cancelgeo();
+		alert("Seleccione un punto en el mapa");
+		quitar();
+		//limpiar_mapa();
+		var bounds = map.getBounds();		
+        //alert();
+		var lat=bounds.getCenter().lat().toPrecision(7);
+		var lng=bounds.getCenter().lng().toPrecision(7);		
+        //alert(lat+","+lng+","+map.getZoom());		
+		google.maps.event.addListenerOnce(map, 'click', function(event) {
+			dibujaGeoCircular(event.latLng);
+		});
+	}			
+}
+
+var colores = ["#FE9A2E","#4B8A08","#084B8A","#DF0101","#01DF01","#8181F7","#FFFF00","#58FAF4","#F78181","#8A0886"];
+
+
+function cancelgeo() {
+    cityCircle.setMap(null);
+    jQuery(this).dialog("close");
+}			
+
+
+function validate_form_geoside(){
+    var geoname = validate_name("#geoside_name","#feedback-geoside_name");
+    var band = 1;
+    if(geoname == "false"){ band = 0; }    
+    if(band == 1){
+       return "true";
+    }else{
+        return "false";
+    }
+}
+
+function edit_geoside(id){
+    if(validate_form_geoside() == "true"){    
+        $.ajax({ 
+            type: "POST", 
+            data: $("#side_maingeo").serialize(),
+            url: "/Config/Geo/geo_update",
+            success: function (response) {  
+                if(response == "true"){ 
+                    $("#geo_list li #geoname_"+id).html($("#side_maingeo #geoside_name").val());
+                    $('#settings').removeClass('active');
+
+                    $("#geo_list #geolist_"+id).addClass('bg-control');
+                    $("#geo_list #geolist_"+id).css('opacity','.1');
+                    
+                    $("#geo_list #geolist_"+id).animate({opacity: 1}, 700, function() {                        
+                        $("#geo_list #geolist_"+id).removeClass('bg-control',700);
+                    });                     
+
+                    console.log("true");
+                }else{
+                    alert("response");
+                }            
+            }
+        });
+    }
+}
+
+function save_newgeo(){
+    if(validate_form_geoside() == "true"){
+        $.ajax({ 
+            type: "POST", 
+            data: $("#side_maingeo").serialize(),
+            url: "/Config/Geo/insert_site",
+            success: function (response) {            
+                if(response > 0){
+                    var idgeo = response;
+                    var icon  = ($("#maingeo_tipo").val()==0)?'circle':'polig';
+                    var icon_usr = "mdi mdi-account-outline text-success"; 
+                    var classusr = "user";
+                    var nombre   = $("#geoside_name").val();            
+
+                    $('#settings').removeClass('active');
+                
+                var template = '<li class="py-1 px-2 mail-item inbox bg-control sent g-'+icon+' geo_'+classusr+'"  id="geolist_'+idgeo+'" style="opacity:0;"><div class="d-flex align-self-center align-middle"><label class="chkbox"><input type="checkbox"><span class="checkmark small"></span></label><div class="mail-content d-md-flex w-100"><span class="car-name" id="geoname_'+idgeo+'">'+nombre+'</span><div class="d-flex mt-3 mt-md-0 ml-auto"><div class="'+icon_usr+' h5"></div><img src="/dist/images/map/geo/'+icon+'.png" class="mt-1" width="20px" height="18px"><a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a><div class="dropdown-menu p-0 m-0 dropdown-menu-right"><a class="dropdown-item" href="#" onclick="edit_geolist('+idgeo+')"><i class="mdi mdi-playlist-edit"></i> Editar </a><a class="dropdown-item" href="#" onclick="delete_mainsite('+idgeo+')"><i class="icon-trash"></i> Eliminar </a></div></div></div></div></li>';               
+                if($("#geo_list").prepend(template)){
+                        $("#geolist_"+idgeo).animate({opacity: 1}, 700, function() {                        
+                            $("#geolist_"+idgeo).removeClass('bg-control',700);
+                        });                    
+                }
+                
+                }else{
+                    alert("response");
+                }        
+            }
+        });
+    }
+}
+
+
+
+function edit_geolist(id){        
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id,type:1},
+        url: "/Config/Geo/geo_sideform",
+        success: function (response) { 
+            $("#sidebar-content").html(response);  
+            $('#settings').addClass('active');
+            $("#geo_lis #geolist_"+id).html($("#side_maingeo #geoside_name").val());  
+            
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
+            });
+        }
+    });
+}
+
+function dibujaGeoCircular(centro){	
+	var citymap = { 
+        center:new google.maps.LatLng(41.878113, -87.629798),
+	    population: 2842518 };
+
+	var num_alt=Math.floor(Math.random()*11);
+	var color=colores[num_alt];
+	var populationOptions = {
+		strokeColor: color,
+		strokeOpacity: 0.8,
+		strokeWeight: 2,
+		fillColor: color,
+		fillOpacity: 0.35,
+		map: map,
+		center: centro,
+		radius: 5000 / 20,
+		editable: true
+	};
+    cityCircle = new google.maps.Circle(populationOptions);
+	google.maps.event.addListener(cityCircle, 'click', function(event) {
+		resp = confirm("Desea registrar su Geocerca");
+		if(resp == true){
+		//alert(cityCircle.getCenter());
+		radio = cityCircle.getRadius();
+		cerrandoModificacion={editable:false};
+		
+		//var tag = jQuery("#g-geo-pol");
+		//var url='registrar_geocerca_rebe.php?lat='+centro.lat()+'&lon='+centro.lng()+'&rad='+radio+'&ide='+ide+'&idu='+idu;
+        //console.log(url);
+
+        $.ajax({ 
+            type: "POST",             
+            data: {type:0, lat:centro.lat(), lon:centro.lng(), radio:radio},
+            url: "/Config/Geo/geo_sideform",
+            success: function (response) {  
+                $("#sidebar-content").html(response);  
+                $('#settings').addClass('active');
+                $('.openside').on('click', function () {
+                    $('#settings').toggleClass('active');
+                    return false;
+                });
+            }
+        });  
+		
+		cityCircle.setOptions(cerrandoModificacion);
+		//google.maps.event.clearListeners(map, 'click');
+		}
+		else cityCircle.setMap(null);
+	});	
+	google.maps.event.addListener(cityCircle, 'rightclick', function(event) {
+		//alert(cityCircle.getCenter());
+		cityCircle.setMap(null);
+		google.maps.event.clearListeners(map, 'click');
+	});
+	
+}
+
+
+
+
+function quitar(){
+	google.maps.event.clearListeners(map,'click');
+	//google.maps.event.clearInstanceListeners(map);
+}
+
+
 function clearMarkers() {
 for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
@@ -194,23 +346,153 @@ waypoints = [];
 directionsVisible = false;
 }
 
-function reset() {
-var rendererOptions = {
-    draggable: true
-};
-clearMarkers();
-clearWaypoints();
-directionsDisplay.setMap(null);
-directionsDisplay.setPanel(null);
-directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-directionsDisplay.setMap(map);
-directionsDisplay.setPanel(document.getElementById("directionsPanel"));    
-nC("#fin_ruta").attr("disabled",false);
-nC("#inicio_ruta").attr("disabled",false);
-nC("#r_inicio").html('');
-nC("#r_inter").html('');
-nC("#r_fin").html('');
+ 
+var infowindow;
+var nombreGeo;
+var impresos = Array();
+var arrayInfo = Array();
+var ultimo = Array();
+function mostrar_circular(latit,longi,radio,nombre){
+	var num_alt=Math.floor(Math.random()*11);
+	var color=colores[num_alt];
+	var centro= new google.maps.LatLng(latit,longi);
+	var populationOptions = {
+      strokeColor: color,
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: color,
+      fillOpacity: 0.35,
+      map: map,
+      center: centro,
+      radius: radio / 1
+    };
+    cityCircle = new google.maps.Circle(populationOptions);
+	impresos.push(cityCircle);
+	infowindow = new google.maps.InfoWindow();
+	var string="<div style='min-width:100px;height:20px;max-width:250px;'>"+nombre+"</div>";
+	infowindow.setContent(string);
+	infowindow.setPosition(centro);
+	infowindow.open(map);
+	arrayInfo.push(infowindow);
+	google.maps.event.addListener(cityCircle,'click',function(event) {
+	//alert(cityCircle.getRadius());
+	});
 }
+
+function mostrar_poligonal(data){
+    //arregloLt,arregloLo,nombre
+
+	var geoPoligonal;
+	var punto;
+	var numeroPuntos = data.length;
+	var lt,lo;
+	var coordenadasPoligono = [];
+	
+    $.each(data, function(i, point) {
+        console.log(point.latitud+" "+point.longitud);
+        lt=parseFloat(point.latitud);
+		lo=parseFloat(point.longitud);
+		punto = new google.maps.LatLng(lt,lo)
+		coordenadasPoligono.push(punto);
+    });    
+
+	var num_alt=Math.floor(Math.random()*11);
+	var color=colores[num_alt];
+	var puntoinfo=new google.maps.LatLng(data[0].latitud,data[0].longitud);
+	var opcionesPoligono={
+        paths: coordenadasPoligono,
+        strokeColor: color,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: color,
+        fillOpacity: 0.35
+    };
+
+	geoPoligonal = new google.maps.Polygon(opcionesPoligono);
+	nombreGeo=data[0].nombre;
+	geoPoligonal.setMap(map);
+	impresos.push(geoPoligonal);
+	infowindow = new google.maps.InfoWindow();
+	var string="<div style='min-width:100px;height:20px;max-width:250px;'>"+data[0].nombre+"</div>";
+	infowindow.setContent(string);
+	infowindow.setPosition(puntoinfo);
+	infowindow.open(map);
+	arrayInfo.push(infowindow);
+}
+
+function contar(){
+	//alert(impresos.length);
+	for(var j=0; j < impresos.length; j++){
+		var geoCer = impresos[j]; // find the marker by given id
+		geoCer.setMap(null);		
+		//markersArrays.length=0;
+	}
+	
+	for(var f=0; f < impresos.length; f++){
+		var info = arrayInfo[f]; // find the marker by given id
+		info.setMap(null);
+	}
+
+	impresos = impresos.splice(impresos.length);
+	arrayInfo = arrayInfo.splice(arrayInfo.length);
+
+	//var checkboxes = document.getElementById("form1").ejec;
+    
+    $("#form_geolist input:checkbox:checked").each(function() {
+        var check = $(this).val();
+            ultimo.push(check);
+			//ver_geo(check);  
+            if($(this).data("type") == 0 ){
+
+               var lat  = $(this).data("lat");
+               var lon  = $(this).data("lon");
+               var rad  = $(this).data("radio");
+               var name = $(this).data("name");
+
+                console.log("circular");
+                mostrar_circular(lat,lon,rad,name);
+
+            }else{
+                $.ajax({ 
+                type: "POST", 
+                data: {id:check},
+                url: "/Config/Geo/info_geo",
+                success: function (response) {   
+                    /*$("#sidebar-content").html(response); 
+                    $('#settings').addClass('active');
+                    $('.openside').on('click', function () {
+                        $('#settings').toggleClass('active');
+                        return false;
+                    });*/                    
+                    console.log(response);
+                    mostrar_poligonal(response);
+
+                    }
+                });  
+            }
+
+    });
+
+	
+}
+
+
+function reset() {
+
+    clearMark();
+   /* clearMarkers();
+    clearWaypoints(); 
+        
+    directionsDisplay.setMap(null);
+    directionsDisplay.setPanel(null);
+    directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById("directionsPanel"));   
+   */
+     
+}
+
+//Sin uso
 function clear_ruta(){
 nC("#inicio_ruta").val(0);
 nC("#inter_ruta").val(0);
@@ -222,7 +504,7 @@ let map;
         map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: 21.9518, lng: -100.9397 },
             zoom: 6,
-            streetViewControl: true,//true= "monito"
+            streetViewControl: true, //true= "monito"
             disableDoubleClickZoom:true,
             overviewMapControl:true,
             panControl: true,
@@ -236,8 +518,16 @@ let map;
             },
             mapTypeId:google.maps.MapTypeId.ROADMAP
         });
+                
+        //directionsService = new google.maps.DirectionsService();
+        //directionsDisplay = new google.maps.DirectionsRenderer();
     }
-
+ 
+var no_win = 0;
+var time_live;
+var time_pan;
+var ml = new Array();
+var lis = new Array();
 
 
 function mostrarLinea2(pag){
@@ -261,9 +551,7 @@ function elimR(){
 
 function crea_recorrido(lat,lon,t,pag){
 	var encontrado = false;
-
-    console.log(visitedPages.length);
-
+    //console.log(visitedPages.length);
 	for(i = 0; i < visitedPages.length; i++){
 		if(visitedPages[i] == pag){
 			encontrado= true;
@@ -273,24 +561,23 @@ function crea_recorrido(lat,lon,t,pag){
 	if(!encontrado){
 		tipoV = t;
 		linea.push(new google.maps.LatLng(lat,lon));		
-	}
+	}   
 }
 	
 //funcion que recibe los datos de la ubicacion y los envia a createMarker
 function MapaCord(la, lo, tv, v) { 
-	if(markersArrays.length!=0){
-	var elim=elimMarcador();}
-	if(al.length!=0){
-	al.splice(al.length);}
+	if(markersArrays.length!=0){var elim=elimMarcador();}
+
+	if(al.length!=0){al.splice(al.length);}
+
 	var miPosicion=new google.maps.LatLng(la,lo);
 	map.setOptions({
 		overviewMapControl:true,
-		center:miPosicion,
-		//overviewMapControl:true,
+		center:miPosicion,		
 		zoom:15
 	});
-	var image = new google.maps.MarkerImage('/dist/images/map/vehicle.png',
-		new google.maps.Size(80, 40),
+	var image = new google.maps.MarkerImage('/dist/images/map/veh/veh_type/'+tv+'.png',
+        new google.maps.Size(50, 20),
 		new google.maps.Point(0,0),
 		new google.maps.Point(0, 20));
 	marcador = new google.maps.Marker({
@@ -308,34 +595,73 @@ function elimMarcador(){
 		markersArrays.length=0;
 }	 
 
-function vehicle_ubication(id,company) {
-	/*document.getElementById("cont_mapa_sepro").style.visibility = "hidden";
-	document.getElementById('cuerpo_medio').innerHTML='<img src="img2/loader.gif" width="15px" height="15px" />';
-	xajax_posicion(id);*/ 
+function mark_list(e){
+//console.log(  );  
+    $(e).css("background","#d4f8b1");
+}
+
+function vehicle_realtime(id,company,e){  
+    if($(e).is(":checked")) {
+        console.log("checo");        
+        vehicle_ubication(id,company,1);
+    }else{
+        console.log("no checo");
+    } 
+    
+}
+
+function vehicle_ubication(id,company,check) {    
     $.ajax({ 
         type: "POST",
-        data: {id:id,company:company},
+        data: {id:id,company:company,check:check},
         url: "/MainMap/get_ubication",
         success: function (response) {              
             if(response.error){
                 alert(response.error);
             }else{
-                var last = response.last;                        
+                var last = response.last;                
                 $("#ubicacion").html(response.table);
-                //console.log(response.route);
-                MapaCord(last.lat, last.lon, last.tipov, response.veh);            
+                MapaCord(last.lat, last.lon, last.tipov, response.veh);                   
+                elimR();
                 $.each(response.route, function(i, item) {
                     crea_recorrido(item.lat,item.lon,item.tipoveh,0);
-                });   
+                });                   
                 mostrarLinea2(0);
             }
         }
     }); 
 }
 
+function geo_go(lat,lon,type,id){
+    if(type==1){
+        $.ajax({ 
+            type: "POST",
+            data: {id:id}, 
+            url: "/Config/Geo/info_geo_po",
+            success: function (p) {                    
+                veh_seleccion(p.latitud,p.longitud);
+            }
+        });
+    }else{
+        veh_seleccion(lat,lon);
+    }        
+}
 
-function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0){
-    imagenes = '/dist/images/map/vehicle.png';
+function veh_seleccion(lat,lon){ 
+    var posicion=new google.maps.LatLng(lat,lon);
+    map.setOptions({
+        center:posicion,
+        zoom:17
+    });
+}
+
+//crea_sitios(s.nombre,s.latitud,s.longitud,s.contacto,s.tel1,s.tel2,s.imagen,s.descripcion,1);
+function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0){    
+  //  console.log(imagenes);
+    var baseUrl   = "/dist/images/map/site_type/";               
+    var imagenes  = baseUrl+imagenes.substr(14);
+  //  console.log(imagenes);
+
 	if(imagenes != ""){
 		var image = new google.maps.MarkerImage(imagenes,
 		new google.maps.Size(20, 20),
@@ -357,22 +683,36 @@ function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0
 		icon: image,
 		title:nombre
 	});
+
 	google.maps.event.addListener(marcador, 'click', function() {
 		infowindow.open(map,this);
 	});
 	elim_sitio.push(marcador);
-    if(zoom == 1){
+
+    /*if(zoom == 1){
         var posicion=new google.maps.LatLng(lat,lon);
                 map.setOptions({
                 center:posicion,
                 zoom:17
         });
-    }
+    }*/
 }
 
-function ver_sitio(id){
-	if($("#check"+id).is(':checked')){
-		xajax_ver_sitio(id);
+function show_site(e,id){
+    if($(e).is(":checked")) {    
+        $.ajax({ 
+            type: "POST",
+            data: {id:id}, 
+            url: "/MainMap/show_sites",
+            success: function (response) {             
+                var s = response;
+                if(s.nombre){
+                    crea_sitios(s.nombre,s.latitud,s.longitud,s.contacto,s.tel1,s.tel2,s.imagen,s.descripcion,1);
+                //console.log(s.nombre+' '+s.latitud+' '+s.longitud+' '+s.contacto+' '+s.tel1+' '+s.tel2+' '+s.imagen+' '+s.descripcion);
+                }
+            }
+        });    
+        //console.log("checo");
 	}
 	else{
 		for(var i=0; i<elim_sitio.length;i++){
@@ -381,96 +721,182 @@ function ver_sitio(id){
 		}
 		sitios_seleccionados();
 	}
+
+    
+} 
+ 
+function clearMark() {      
+    for(var i=0; i<elim_sitio.length;i++){
+        var marker = elim_sitio[i];
+        marker.setMap(null); 
+        markersArrays.setMap(null);    
+    }    
+    $('#form_sitelist input:checkbox').prop('checked', false);
+    elimMarcador();
 }
+
 
 function sitios_seleccionados(){
-	var los_sitios=document.getElementsByName("sitio");
-	for(var i=0; i<los_sitios.length; i++){
-		if(los_sitios[i].checked==true){
-			ver_sitio(los_sitios[i].value);
-		}
-	}
+
+    $("#form_sitelist input[type=checkbox]:checked").each(function(){
+        //cada elemento seleccionado
+        //console.log($(this).val());
+        show_site(this,$(this).val());
+    });
+	
 }
 
 
+
+ 
+function addMarker(location) {
+    marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+  markersArrays.push(marker);
+  google.maps.event.clearListeners(map, 'click');
+}        
+
+function validate_form_newsite(){
+    var sitename = validate_name("#edit_sitename","#feedback-edit_sitename");
+    var sitetype = validate_sitetype("#edit_sitetype","#feedback-edit_sitetype");
+    var contact  = validate_namenotreq("#edit_sitecontact","#feedback-edit_sitecontact");
+    var phone    = validate_phonemask("#edit_sitephone","#feedback-edit_sitephone",1);
+    var phone2   = validate_phonemask("#edit_sitephone2","#feedback-edit_sitephone2",1);
+    var band = 1;
+    if(sitename == "false"){ band = 0; }
+    if(sitetype == "false"){ band = 0; } 
+    if(contact == "false"){ band = 0; } 
+    if(phone == "false"){ band = 0; } 
+    if(phone2 == "false"){ band = 0; }
+    
+    if(band == 1){
+       return "true";
+    }else{
+        return "false";
+    }
+}
+
 function  new_mainsite(){
-    //colocar punto en el mapa
+  var request = confirm("Desea crear un sitio de interes");
+    if(request == true){
+        alert("Seleccione un punto en el mapa");
+        google.maps.event.addListener(map, 'click', function(event) {
+            var myLatLng = event.latLng;
+            addMarker(myLatLng);
+            var lat = myLatLng.lat();
+            var lng = myLatLng.lng();
+
+            $.ajax({ 
+                type: "POST", 
+                data: {lat: lat, lon: lng},
+                url: "/Config/Sites/new_site",
+                success: function (response) {   
+                    $("#sidebar-content").html(response); 
+                    $('#settings').addClass('active');
+                    $('.openside').on('click', function () {
+                        $('#settings').toggleClass('active');
+                        return false;
+                    });
+                }
+            });  
+
+        });        
+    } 
+}
+
+
+function savenew_site(){
+    if(validate_form_newsite() == "true"){
+        $.ajax({ 
+            type: "POST", 
+            data: $("#edit_mainsite").serialize(),
+            url: "/Config/Sites/insert_site",
+            success: function (response) {  
+                if(response > 0){
+                    
+                    var idsite = response;
+                    var icon  = $("#edit_sitetype option:selected").data("icon");
+                    var desc  = $("#edit_sitetype option:selected").text();
+                    var name  = $("#edit_sitename").val();
+                    var type  = $("#edit_sitetype option:selected").val();
+
+                    var baseUrl  = "/dist/images/map/site_type/";               
+                    var icon     = baseUrl+icon.substr(14);
+                
+                var template = "<li class='py-1 px-2 mail-item inbox sitetype-"+type+" bg-control' id='sitelist_"+type+"'><div class='d-flex align-self-center align-middle'><label class='chkbox'><input type='checkbox'><span class='checkmark small'></span></label><div class='mail-content d-md-flex w-100'><span class='car-name' id='sitename_"+idsite+"' onclick='show_site("+idsite+")'>"+name+"</span><div class='d-flex mt-3 mt-md-0 ml-auto'><div id='siteicon_"+idsite+"'><img src='"+icon+"' width='25px' height='22px' class='toltip' data-placement='top' title='"+desc+"'></div><a href='#' class='ml-3 mark-list' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='icon-options-vertical'></i></a><div class='dropdown-menu p-0 m-0 dropdown-menu-right'><a class='dropdown-item' href='#' onclick='edit_sitelist("+idsite+")'><i class='mdi mdi-playlist-edit'></i> Editar </a> <a class='dropdown-item single-delete' href='#' onclick='delete_mainsite("+idsite+")'><i class='icon-trash'></i> Eliminar </a>  </div></div></div></div></li>";
+                if($("#sites_list").prepend(template)){
+                        $("#sitelist_"+type).animate({opacity: 1}, 700, function() {                        
+                            $("#sitelist_"+type).removeClass('bg-control',1000);                        
+                        });                    
+                }   
+                $('#settings').removeClass('active');   
+                marker = [];
+                }
+                
+            }
+        });
+    }else{
+        console.log("no valido");
+    }
+}
+
+
+function edit_site(){  
+    if(validate_form_newsite() == "true"){  
+        $.ajax({ 
+            type: "POST", 
+            data: $("#edit_mainsite").serialize(),
+            url: "/Config/Sites/site_update",
+            success: function (response) {  
+                if (response == "true") {
+                    var id      = $("#edit_siteid").val();
+                    var name    = $("#edit_sitename").val();
+
+                    var icon    = $("#edit_sitetype option:selected").data("icon");
+                    var title   = $("#edit_sitetype option:selected").val();                
+                    var baseUrl = "/dist/images/map/site_type/"; 
+
+                    var icon = baseUrl+icon.substr(14);                
+                    var src  = '<img src="'+icon+'" width="25px" height="22px" class="toltip" data-placement="top" title="'+title+'">';
+
+                    $("#sites_list li #sitename_"+id).html(name);
+                    $("#sites_list li #siteicon_"+id).html(src);
+
+                    $('#settings').removeClass('active');  
+
+
+                    $("#sites_list #sitelist_"+id).addClass('bg-control');
+                    $("#sites_list #sitelist_"+id).css('opacity','.1');
+                        
+                    $("#sites_list #sitelist_"+id).animate({opacity: 1}, 700, function() {                        
+                        $("#sites_list #sitelist_"+id).removeClass('bg-control',700);
+                    }); 
+
+                } else {                            
+                    alert(response); 
+                    //console.log("error");
+                }
+            }
+        });
+    }
+} 
+
+function delete_maingeo(id){    
     $.ajax({ 
         type: "POST", 
-         url: "/Config/Sites/new_site",
-        success: function (response) {  
-            $("#sidebar-content").html(response); 
-            $('#settings').addClass('active');
-            $('.openside').on('click', function () {
-                $('#settings').toggleClass('active');
-                return false;
+        data: {id:id},
+        url: "/Config/Geo/delete_maingeo",
+        success: function (response) {             
+            var idgeo = "#geolist_"+id;
+            $(idgeo).addClass('bg-danger');
+            $(idgeo).slideUp(550, function () {
+                $(idgeo).remove();
             });
         }
     });
-
 }
-
-
-function savenew_site(){    
-    $.ajax({ 
-        type: "POST", 
-        data: $("#edit_mainsite").serialize(),
-        url: "/Config/Sites/insert_site",
-        success: function (response) {  
-            if(response > 0){
-                
-                var idsite = response;
-                var icon  = $("#edit_sitetype option:selected").data("icon");
-                var desc  = $("#edit_sitetype option:selected").text();
-                var name  = $("#edit_sitename").val();
-                var type  = $("#edit_sitetype option:selected").val();
-
-                var baseUrl  = "/dist/images/map/site_type/";               
-                var icon     = baseUrl+icon.substr(14);
-            
-               var template = "<li class='py-1 px-2 mail-item inbox sitetype-"+type+"' id='sitelist_"+type+"'><div class='d-flex align-self-center align-middle'><label class='chkbox'><input type='checkbox'><span class='checkmark small'></span></label><div class='mail-content d-md-flex w-100'><span class='car-name' id='sitename_"+idsite+"' onclick='show_site("+idsite+")'>"+name+"</span><div class='d-flex mt-3 mt-md-0 ml-auto'><div id='siteicon_"+idsite+"'><img src='"+icon+"' width='25px' height='22px' class='toltip' data-placement='top' title='"+desc+"'></div><a href='#' class='ml-3 mark-list' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='icon-options-vertical'></i></a><div class='dropdown-menu p-0 m-0 dropdown-menu-right'><a class='dropdown-item' href='#' onclick='edit_sitelist("+idsite+")'><i class='mdi mdi-playlist-edit'></i> Editar </a> <a class='dropdown-item single-delete' href='#' onclick='delete_mainsite("+idsite+")'><i class='icon-trash'></i> Eliminar </a>  </div></div></div></div></li>";
-               if($("#sites_list").prepend(template)){
-                    $("#sitelist_"+type).animate({opacity: 1}, 700, function() {                        
-                        $("#sitelist_"+type).removeClass('bg-success',1000);                        
-                    });                    
-               }   
-               $('#settings').removeClass('active');   
-            }
-             
-        }
-    });
-}
-
-
-function edit_site(){    
-    $.ajax({ 
-        type: "POST", 
-        data: $("#edit_mainsite").serialize(),
-        url: "/Config/Sites/site_update",
-        success: function (response) {  
-             if (response == "true") {
-                var id      = $("#edit_siteid").val();
-                var name    = $("#edit_sitename").val();
-
-                var icon    = $("#edit_sitetype option:selected").data("icon");
-                var title   = $("#edit_sitetype option:selected").val();                
-                var baseUrl = "/dist/images/map/site_type/"; 
-
-                var icon = baseUrl+icon.substr(14);                
-                var src  = '<img src="'+icon+'" width="25px" height="22px" class="toltip" data-placement="top" title="'+title+'">';
-
-                $("#sites_list li #sitename_"+id).html(name);
-                $("#sites_list li #siteicon_"+id).html(src);
-
-                $('#settings').removeClass('active');  
-            } else {                            
-                alert(response); 
-                //console.log("error");
-            }
-        }
-    });
-} 
-
 
 function delete_mainsite(id){    
     $.ajax({ 
@@ -489,22 +915,7 @@ function delete_mainsite(id){
 
 
 
-function edit_geoside(id){    
-    $.ajax({ 
-        type: "POST", 
-        data: $("#side_maingeo").serialize(),
-        url: "/Config/Geo/geo_update",
-        success: function (response) {  
-            if(response == "true"){ 
-                var icon  = $("#geo_list li #geoname_"+id).html($("#side_maingeo #geoside_name").val());
-                $('#settings').removeClass('active');
-                console.log("true");
-            }else{
-                alert("response");
-            }            
-        }
-    });
-}
+
 
 
 /*
@@ -512,63 +923,9 @@ function edit_geoside(id){
 
 */
 
-function save_newgeo(){
-    $.ajax({ 
-        type: "POST", 
-        data: $("#side_maingeo").serialize(),
-        url: "/Config/Geo/insert_site",
-        success: function (response) {            
-            if(response > 0){
-                var idgeo = response;
-                var icon  = ($("#maingeo_tipo").val()==0)?'circle':'polig';
-                var icon_usr = "mdi mdi-account-outline text-success"; 
-                var classusr = "user";
-                var nombre   = $("#geoside_name").val();               
-               
-               var template = '<li class="py-1 px-2 mail-item inbox bg-control sent g-'+icon+' geo_'+classusr+'"  id="geolist_'+idgeo+'" style="opacity:0;"><div class="d-flex align-self-center align-middle"><label class="chkbox"><input type="checkbox"><span class="checkmark small"></span></label><div class="mail-content d-md-flex w-100"><span class="car-name" id="geoname_'+idgeo+'">'+nombre+'</span><div class="d-flex mt-3 mt-md-0 ml-auto"><div class="'+icon_usr+' h5"></div><img src="/dist/images/map/geo/'+icon+'.png" class="mt-1" width="20px" height="18px"><a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a><div class="dropdown-menu p-0 m-0 dropdown-menu-right"><a class="dropdown-item" href="#" onclick="edit_geolist('+idgeo+')"><i class="mdi mdi-playlist-edit"></i> Editar </a><a class="dropdown-item" href="#" onclick="delete_mainsite('+idgeo+')"><i class="icon-trash"></i> Eliminar </a></div></div></div></div></li>';               
-               if($("#geo_list").prepend(template)){
-                    $("#geolist_"+idgeo).animate({opacity: 1}, 700, function() {                        
-                        $("#geolist_"+idgeo).removeClass('bg-control',700);
-                    });                    
-               } 
 
-            }else{
-                alert("response");
-            }           
-        }
-    });
-}
 
-function geonew(){
-    $.ajax({ 
-        type: "POST", 
-        data: {type:0},
-        url: "/Config/Geo/geo_sideform",
-        success: function (response) {  
-            $("#sidebar-content").html(response);  
-            $('#settings').addClass('active');
-            $('.openside').on('click', function () {
-                $('#settings').toggleClass('active');
-                return false;
-            });
-        }
-    });  
-}
-function edit_geolist(id){    
-    $.ajax({ 
-        type: "POST", 
-        data: {id:id,type:1},
-        url: "/Config/Geo/geo_sideform",
-        success: function (response) { 
-            $("#sidebar-content").html(response);  
-            $('#settings').addClass('active');
-            $('.openside').on('click', function () {
-                $('#settings').toggleClass('active');
-                return false;
-            });
-        }
-    });
-}
+
 
 
 function edit_sitelist(id){    
@@ -587,20 +944,7 @@ function edit_sitelist(id){
     });
 }
 
-function show_site(id){
-    $.ajax({ 
-        type: "POST",
-        data: {id:id}, 
-        url: "/MainMap/show_sites",
-        success: function (response) {             
-            var s = response;
-            //if(s.nombre){
-              crea_sitios(s.nombre,s.latitud,s.longitud,s.contacto,s.tel1,s.tel2,s.imagen,s.descripcion,1);
-              //console.log(s.nombre+' '+s.latitud+' '+s.longitud+' '+s.contacto+' '+s.tel1+' '+s.tel2+' '+s.imagen+' '+s.descripcion);
-           // }
-        }
-    });  
-}
+
 
 function load_geo(){ 
     $.ajax({ 
@@ -619,20 +963,7 @@ $('.checkall-veh').on('click', function () {
 
 
 
-function mark_list(e){
 
-    //console.log(  );  
-    $(e).css("background","#d4f8b1");
-}
-
-function vehicle_realtime(e){  
-    if($(e).is(":checked")) {
-        console.log("checo");
-    }else{
-        console.log("no checo");
-    } 
-    console.log(e);
-}
 
 
 function edit_vehicle(){
@@ -799,5 +1130,5 @@ load_vehicles();
     setInterval(load_vehicles(),8000);  
 });*/
 //var load_v = setInterval( function() { load_vehicles(); }, 10000);
-console.log(localStorage);
+//console.log(localStorage);
 </script> 

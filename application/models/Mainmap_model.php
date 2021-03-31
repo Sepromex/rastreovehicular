@@ -88,7 +88,7 @@ Class Mainmap_model extends CI_Model {
 	}
 
 	public function load_geo($company_id,$user_id){
-		$this->dbweb->select("G.num_geo,G.nombre,G.tipo,G.latitud,G.longitud, G.id_usuario, G.id_empresa, T.descripcion");
+		$this->dbweb->select("G.num_geo,G.nombre,G.tipo,G.latitud,G.longitud,g.radioMts,g.tipo, G.id_usuario, G.id_empresa, T.descripcion");
 		$this->dbweb->from("geo_time AS G");
 		$this->dbweb->join("tipo_geocerca AS T","G.tipo=T.tipo");
 		$this->dbweb->where("G.id_empresa",$company_id);

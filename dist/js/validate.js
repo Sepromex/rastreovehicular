@@ -20,7 +20,7 @@ function validate_select(id,feedback){
         valid_input(id,feedback);
         return "true";
     }
-}
+} 
 
 function validate_lastname(id,feedback){
     if($(id).val().length < 4) {        
@@ -32,9 +32,12 @@ function validate_lastname(id,feedback){
         valid_input(id,feedback);
         return "true";
     }
-}
+} 
 
 function validate_name(id,feedback){ 
+    
+    if($(id)){
+    
     if($(id).val().length < 4) {
         mns = "* Campo requerido, el nombre debe ser mayor 4 carácteres";
         invalid_input(id,feedback,mns);
@@ -44,11 +47,44 @@ function validate_name(id,feedback){
         valid_input(id,feedback);
         return "true";
     }
+    }
+    
 }
+
+function validate_namenotreq(id,feedback){    
+    var val = $(id).val().trim();
+    if(val.length < 4) {        
+        if(val.length == 0) {
+            valid_input(id,feedback);
+            return "true";
+        }else{
+            mns = "* Campo requerido, el nombre debe ser mayor 4 carácteres";
+            invalid_input(id,feedback,mns);
+            return "false";
+        }
+    }
+    else{
+        valid_input(id,feedback);
+        return "true";
+    }
+}
+
 
 function validate_userrol(id,feedback){
     if ($(id).val() == 0) {                   
         mns = "Selecciona un rol de usuario";        
+        invalid_input(id,feedback,mns);
+        return "false";
+    }
+    else{
+        valid_input(id,feedback);
+        return "true";
+    }
+}
+
+function validate_sitetype(id,feedback){
+    if ($(id).val() == 0) {                   
+        mns = "Selecciona un tipo de sitio";        
         invalid_input(id,feedback,mns);
         return "false";
     }
@@ -146,6 +182,7 @@ function validate_username(id,feedback,edit =""){
         return "true";
     }else{
         if($(id).val().length > 3){
+            console.log($(id).val().length );
             $.ajax({
                 type: "POST", 
                 data: {name:$(id).val()},
@@ -171,11 +208,32 @@ function validate_username(id,feedback,edit =""){
     }
 }
 
+function validate_phonemask(id,feedback,req = 0) { 
+    var phone = $(id).val();      
+    var phone = phone.replace(/[\W_]+/g, '');      
+    if (phone.length == 10) {                          
+        valid_input(id,feedback);
+        return "true";        
+    }
+    else{
+        if(req == 1 && phone.length == 0){
+            valid_input(id,feedback);
+            return "true";
+        }else{
+            mns = "Teléfono debe ser de 10 díjitos";        
+            invalid_input(id,feedback,mns);
+            return "false";
+        }        
+    } 
+}
+
+
 function valid_input(id,feedback){
     $(feedback).css("display","none");
     $(id).removeClass('invalid');
     $(id).addClass('valid');
 }
+
 
 function invalid_input(id,feedback,mns=""){
     $(feedback).html(mns);

@@ -358,6 +358,7 @@ public function get_ubication(){
 		/* insertar auditabilidad */
 		$veh     = $_POST["id"];
 		$company = $_POST["company"];
+		$check   = $_POST["check"];
 		
 		// cambiar valor del vehiculo actual en el DOM
 
@@ -461,23 +462,24 @@ public function get_ubication(){
 				else 
 				if( $obsoleto != 1 ){ $calle = $cruce; } //si trae cruce no entra al web service y recibe al valor de la consulta		
 				else $calle = "Posición obsoleta: $cruce";
-//<img onclick='ocultar_veh();' src='img2/cerrar.png' width='20px'>
+				// <img onclick='ocultar_veh();' src='img2/cerrar.png' width='20px'>				
 				$datos = "
 				<div id='mostrar_veh' style='margin:0px; width: 100%;'>
 					<div style='float:right;'></div>
 					<table border='0' id='box-table-a' class='table' style=' margin:0px;'>
 						<tr class='fuente_siete' style='margin:0px; width: 100%; background-color:#f3f3f3;'>
-							<th align='center'>Veh&iacute;culo</th>
+							<th align='center'>Vehículo</th>
 							<th  align='center'>Fecha / Hora</th>
 							<th align='center'>Km/H</th>
 							$cab_bat 
 							$cabe
 							<th align='center'>Latitud,Longitud</th>
-							<th align='center'>Ubicaci&oacute;n</th>
+							<th align='center'>Ubicación</th>
 							<th align='center'>MSJ</th>
 							<th>Satelites</th>
 						</tr>
-						<tr class='fuente_ocho'>";
+						<tr class='fuente_ocho' id='tr_vehcontent'>";
+				//if($check == 1){ $datos = ""; }
 
 				$fec1     = date_format(date_create($fecha),'Y-m-d h:i:s'); // cambio de strtotime() a date_format()para php 7				
 				$fec1     = intval($fec1);

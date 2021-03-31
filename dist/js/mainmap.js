@@ -15,6 +15,17 @@ $('.mail-menu li a').on('click', function () {
     $(this).addClass('active');
     $('.mainmap_list').css("display","none");
     $('#' + $(this).data("list")).css("display","block");
+    
+        
+    //$('#form_sitelist input:checkbox').prop('checked', false);
+    //$('#form_geolist input:checkbox').prop('checked', false);
+    
+    if($("#mostrar_veh")){
+        $("#mostrar_veh").html("");
+    } 
+
+    $('#settings').removeClass('active');
+   // reset();
     return false; 
 });
 

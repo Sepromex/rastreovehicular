@@ -33,19 +33,23 @@ class Sites extends CI_Controller {
 	public function new_site(){		
 		$data["site_type"]    = $this->Mainmap_model->site_type(15);
 		$data["sitet_form"]   = "1";
+		$data["lat"]          = $_POST["lat"];
+		$data["lon"]          = $_POST["lon"];
 		$this->load->view("config/sites/site_edit",$data);
-	} 
+	}  
 	
 	public function site_edit(){
 		$data["site"]         = $this->site_model->site_byid($_POST["id"]);
 		$data["site_type"]    = $this->Mainmap_model->site_type(15);
 		$data["sitet_form"]   = "0";
+		$data["lat"]          = $data["site"]["latitud"];
+		$data["lon"]          = $data["site"]["longitud"];
 //		$data["contact_list"] = $this->contact_model->contact_list(15);
 
 		$this->load->view("config/sites/site_edit",$data);
 	} 
 
-
+ 
 	public function site_update(){
 		$site     = ["nombre"   => $_POST["edit_sitename"],
                      "id_tipo"  => $_POST["edit_sitetype"],
@@ -59,6 +63,8 @@ class Sites extends CI_Controller {
 
 	public function insert_site(){
 		$site     = ["nombre"     => $_POST["edit_sitename"],
+					 "latitud"    => $_POST["lat"],
+					 "longitud"   => $_POST["lon"],
                      "id_tipo"    => $_POST["edit_sitetype"],
                      "contacto"   => $_POST["edit_sitecontact"],
 					 "tel1"       => $_POST["edit_sitephone"],

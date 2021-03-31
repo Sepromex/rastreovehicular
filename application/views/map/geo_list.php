@@ -37,34 +37,43 @@
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">
                     <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>
                     <!-- <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>-->
-                    <a class="dropdown-item mailunread" href="#" onclick="geonew()"><i class="mdi mdi-trash-can-outline"></i> Nueva Geocerca </a>
+                    <a class="dropdown-item mailunread" href="#" onclick="ejecutar_geocercas()"><i class="mdi mdi-trash-can-outline"></i> Nueva Geocerca </a>
                 </div>
             </div> 
 
         </div>
 </div> 
+<form id="form_geolist">
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
     <ul class="mail-app list-unstyled" id="geo_list">
         <?php foreach($geoc as $geo): 
-                $icon  = ($geo->tipo==0)?'circle':'polig';  
+                $type = $geo->tipo;
+
+                $icon  = ($type==0)?'circle':'polig';  
                 $idgeo = $geo->num_geo;
 
+ 
                 if($geo->id_usuario == $user_id){
                     $icon_usr =  "mdi mdi-account-outline text-success"; $classusr = "user";
                 }else{
                     $icon_usr =  "mdi mdi-shield-check-outline text-muted"; $classusr = "company";
                 }
-        ?>        
+
+                $lat = $geo->latitud; 
+                $lon = $geo->longitud;
+                $geoname = $geo->nombre; 
+        ?>
+
         <li class="py-1 px-2 mail-item inbox sent g-<?=$icon?> geo_<?=$classusr?>" id="geolist_<?=$idgeo?>">
             <div class="d-flex align-self-center align-middle">
 
                 <label class="chkbox">
-                    <input type="checkbox">
+                    <input type="checkbox" name="geocheck[<?=$idgeo?>]" data-name="<?=$geoname?>" data-type="<?=$type?>" data-radio="<?=$geo->radioMts?>" data-lat="<?=$lat?>" data-lon="<?=$lon?>" onclick="contar()" value="<?=$idgeo?>">
                     <span class="checkmark small"></span>
                 </label>
 
                 <div class="mail-content d-md-flex w-100">
-                    <span class="car-name" id="geoname_<?=$idgeo?>"><?=$geo->nombre?></span>
+                    <span class="car-name" id="geoname_<?=$idgeo?>"  onclick="geo_go(<?=$lat?>,<?=$lon?>,<?=$type?>,<?=$idgeo?>)"><?=$geoname?></span>
 
                     <div class="d-flex mt-3 mt-md-0 ml-auto">
 
@@ -78,7 +87,7 @@
 
                         <div class="dropdown-menu p-0 m-0 dropdown-menu-right">
                             <a class="dropdown-item" href="#" onclick="edit_geolist(<?=$idgeo?>)"><i class="mdi mdi-playlist-edit"></i> Editar </a>
-                            <a class="dropdown-item" href="#" onclick="delete_mainsite(<?=$idgeo?>)"><i class="icon-trash"></i> Eliminar </a>
+                            <a class="dropdown-item" href="#" onclick="delete_maingeo(<?=$idgeo?>)"><i class="icon-trash"></i> Eliminar </a>
                         </div>
                         
                     </div>
@@ -89,3 +98,4 @@
         <?php endforeach; ?>
     </ul>
 </div> <!-- LISTADO VEHICULOS --> 
+</form>

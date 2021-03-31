@@ -13,9 +13,16 @@ class Geo extends CI_Controller {
 	public function geo_sideform(){
         if($_POST["type"] == 1):
 		    $data["geoside"]      = $this->geo_model->geo_byid($_POST["id"]);		
-        endif;
-		$data["geot_form"]   = $_POST["type"];
-        $data["geot_user"]   = 1029;
+		else:			
+			$data["geoside"] = ["num_geo"   => 0,
+								"latitud"   => $_POST["lat"],
+								"longitud"  => $_POST["lon"],
+								"radioMts"  => $_POST["radio"],
+								"nombre"    => "",
+							    "empresa"   => "",
+								"username"  => ""];
+		endif;
+		$data["geot_form"]    = $_POST["type"];
 		$this->load->view("config/geo/geoside",$data);
 	} 
 
@@ -27,24 +34,37 @@ class Geo extends CI_Controller {
 	}	
 
 	public function insert_site(){
-		/*$geo     = ["nombre"          => $_POST["nombre"],
+		$geo     = ["nombre"          => $_POST["geoside_name"],
                     "id_usuario"      => "1029",
                     "id_empresa"      => "15",
                     "color"           => "cBlue",
-                    "latitud"         => $_POST["latitud"],
-                    "longitud"        => $_POST["longitud"],
-                    "radioMts"        => $_POST["radio"],
-                    "tipo"            => $_POST["tipo"],
+                    "latitud"         => $_POST["maingeo_latitud"],
+                    "longitud"        => $_POST["maingeo_longitud"],
+                    "radioMts"        => $_POST["maingeo_radio"],
+                    "tipo"            => $_POST["maingeo_tipo"],
                     "FECHA_CREACION"  => date('Y-m-d')];
-		$idgeo   = $this->geo_model->insert_geo($geo);*/
-        $idgeo = 4601;
+		$idgeo   = $this->geo_model->insert_geo($geo);
+        //$idgeo = 4601;
 		if($idgeo>0): echo $idgeo; else: echo "false"; endif;	 
 	}
 
-	public function delete_mainsite(){		
-		$site = ["activo" => 0];
-		$idsite = $this->site_model->delete_site($site,$_POST["id"]);
-		if($idsite>0): echo "true"; else: echo "false"; endif;
+	public function delete_maingeo(){		
+		$geo = ["activo" => 0];
+		$idgeo = $this->geo_model->delete_geo($geo,$_POST["id"]);
+		if($idgeo>0): echo "true"; else: echo "false"; endif;
 	}
+
+	public function info_geo(){		
+		$data  = $this->geo_model->geo_info($_POST["id"]);
+		header("Content-type: application/json");        	
+		echo json_encode($data);
+	}
+
+	public function info_geo_po(){
+		$data  = $this->geo_model->geo_infopo($_POST["id"]);
+		header("Content-type: application/json");        	
+		echo json_encode($data);
+	}
+
  
 } 

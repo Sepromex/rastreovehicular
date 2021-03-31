@@ -64,22 +64,21 @@
         </div>
 </div>
 
-
+<form id="form_vehlist">
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
 
     <ul class="mail-app list-unstyled" id="vehicles_list">
         <?php foreach($vehicles as $veh): $vehid = $veh->NUM_VEH; ?>
             <li class="py-1 px-2 mail-item inbox  cursor-pointer" id="vehiclelist_<?=$vehid?>">
                 <div class="d-flex align-self-center align-middle">
-                    <label class="chkbox">
-                        <input type="checkbox" onclick="vehicle_realtime(this)" id="checkveh_<?=$vehid?>">
+                   <!-- <label class="chkbox">
+                        <input type="checkbox" onclick="vehicle_realtime('<?=$vehid?>','<?=$veh->id_empresa?>',this)" name="mark_live" value="<?=$vehid?>" id="checkveh_<?=$vehid?>">
                         <span class="checkmark small"></span>
-                    </label>
+                    </label> -->
                     <div class="mail-content d-md-flex w-100">                                                    
                         <span class="car-name" onclick="vehicle_detail(<?=$vehid?>)"><?=$veh->ID_VEH?></span>
 
-                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>" onclick="vehicle_ubication('<?=$vehid?>','<?=$veh->id_empresa?>')">                           
-                                <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
+                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>" onclick="vehicle_ubication('<?=$vehid?>','<?=$veh->id_empresa?>',0)">                                                           <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
                                 <div class="speed-icon mr-1">
                                     <img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_blue.png">
                                 </div>
@@ -101,3 +100,4 @@
     </ul>
 
 </div> <!-- LISTADO VEHICULOS -->
+</form>

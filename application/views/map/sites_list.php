@@ -36,7 +36,7 @@
         <div>
             <a href="#" class="mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">                
-                <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>                    
+                <a class="dropdown-item mailread" href="#" onclick="clearMark()" ><i class="icon-reload"></i> Limpiar mapa </a>                    
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item mailread" href="#" onclick="new_mainsite()"><i class="icon-plus"></i> Nuevo sitio de interés </a>                    
             </div>
@@ -45,7 +45,7 @@
     </div>
 </div>            
 
-
+<form id="form_sitelist">
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
     <ul class="mail-app list-unstyled" id="sites_list">
         <!-- ITEMS <div id="vehicles_list"></div> -->
@@ -53,15 +53,15 @@
                 $icon_class = ($site->id_tipo>0)?$site->id_tipo:0;			
                 $iconimg    = ($site->imagen!="")?substr($site->imagen,14):"defaul_marker.png";    
                 $idsite     = $site->id_sitio;
-        ?>
-        <li class="py-1 px-2 mail-item inbox sitetype-<?=$icon_class?>" id="sitelist_<?=$idsite?>"> 
+        ?> 
+        <li class="py-1 px-2 mail-item inbox sitetype-<?=$icon_class?> cursor-pointer pointer" id="sitelist_<?=$idsite?>"> 
             <div class="d-flex align-self-center align-middle">
                 <label class="chkbox">
-                    <input type="checkbox">
+                    <input type="checkbox" onclick="show_site(this,<?=$idsite?>)" name="mark_site[<?=$idsite?>]" value="<?=$idsite?>">
                     <span class="checkmark small"></span>
                 </label>
                 <div class="mail-content d-md-flex w-100">								
-                    <span class="car-name" id="sitename_<?=$idsite?>" onclick="show_site(<?=$idsite?>)"><?=$site->nombre?></span>                                                     
+                    <span class="car-name" id="sitename_<?=$idsite?>" onclick="veh_seleccion(<?=$site->latitud?>,<?=$site->longitud?>)"><?=$site->nombre?></span>                                                     
                     <div class="d-flex mt-3 mt-md-0 ml-auto"> 
                         <div id="siteicon_<?=$idsite?>"><img src="/dist/images/map/site_type/<?=$iconimg?>" width="25px" height="22px" class="toltip" data-placement="top" title="<?=$site->descripcion?>"></div>
                         <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,6 +78,7 @@
         <?php endforeach; ?>
     </ul>
 </div> <!-- LISTADO VEHICULOS -->
+</form> 
 
 <script>
  
