@@ -23,15 +23,15 @@ class Login extends CI_Controller {
         //Get data
         $usuario  = $_POST["user"];
         $password = $_POST["password"];
-
+ 
         //Search user 
         $user = $this->login_model->check_login($usuario, $password);
  
         //If user exist, save and return true
-        if($user){            
-            $this->init($user);
-            $this->load_system_data();
-            echo "true";             
+        if($user){ 
+                    $this->init($user);
+                    $this->load_system_data();
+                    echo "true";                
         }else{ 
             echo "false";
         }        
@@ -51,8 +51,7 @@ class Login extends CI_Controller {
                        "nombre"  => $user["nombre"],
                        "company" => $user["id_empresa"],
                        "estatus" => $user["estatus"]);
-        $_SESSION["user"]  = $login;
-        
+        $_SESSION["user"]  = $login;        
     }
 
     //Close session
@@ -62,7 +61,7 @@ class Login extends CI_Controller {
     }
  
     //Load recovery view
-    public function PasswordRecovery(){        
+    public function PasswordRecovery(){
         $custom = array("title" => "Recuperar Contraseña",
                         "form"  => "login/recovery");
         $data["custom"] = $custom; 
@@ -71,7 +70,7 @@ class Login extends CI_Controller {
 
     //Send email recovery
     public function SendRecovery(){
-        //Get data
+        //Get data        
         $email  = $_POST["email"];
 
         //Search user in DB and send email
@@ -84,5 +83,6 @@ class Login extends CI_Controller {
              echo "false";
          }
     }
+    
 
 }

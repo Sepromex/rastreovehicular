@@ -11,7 +11,7 @@ class User extends CI_Controller {
 		$this->headerdata["module"] = "Acount";
 	} 
  
-	public function index()
+	public function index() 
 	{ 
 		$data["custom"]  = ["title"   => "Usuarios",
 							"page"    => "Users",							
@@ -39,10 +39,11 @@ class User extends CI_Controller {
 							  $row->usuario,
 							  $row->nombre, 
 							  $row->email,                            
-							  "<div class='text-center'>".user_status($row->estatus)."</div>",
+							  "<div class='text-center'>".$row->estatus."</div>",
 							  $icon]; 
 					$jsonData['data'][] = $data;
 				}
+				//user_status($row->estatus_id)
 		} 
         echo json_encode($jsonData);
 	}  

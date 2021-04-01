@@ -20,15 +20,15 @@
                 <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked="">
                 <label class="custom-control-label" for="checkbox-signin">Remember me</label>
             </div>
-        </div> 
+        </div>
 
         <div class="form-group mb-0">
             <button class="btn btn-primary" type="button" onclick="login()"> Ingresar </button>
         </div>
-
-        <div class="mt-2">¿Olvidaste tu contraseña? 
+        
+        <!-- <div class="mt-2"> ¿Olvidaste tu contraseña? 
             <p> <a href="Login/PasswordRecovery">Recuperar Contraseña</a> </p>
-        </div>
+        </div> -->
         
     </div>
 </form>

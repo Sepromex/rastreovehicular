@@ -5,9 +5,18 @@ Class User_model extends CI_Model {
     // User list
     public function user_list()
 	{
-        $this->db->select("id_usuario, usuario, email, concat(nombre, ' ', apellido) as nombre, estatus");
-		$this->db->from("usuarios");
-        $this->db->where("estatus","1");        
+        //$this->db->select("id_usuario, usuario, email, concat(nombre, ' ', apellido) as nombre, estatus");
+        $this->db->select("u.ID_USUARIO as id_usuario, 
+                           u.username as usuario, 
+                           u.EMAIL as email,
+                           u.ESTATUS as estatus_id, 
+                           u.NOMBRE as nombre, 
+                           u.PASSWORD as password, 
+                           u.ID_EMPRESA as id_empresa,u.usuario_tipo, u.activo, e.DESCRIPCION as estatus");
+
+		$this->db->from("usuarios u","left");
+        $this->db->join("estusr e", "u.ESTATUS = e.ESTATUS");
+        $this->db->where("activo","1");        
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
@@ -50,7 +59,7 @@ Class User_model extends CI_Model {
     public function delete_vechicle($id){
         $this->db->where('id',$id);
         return $this->db->delete('usuarios_vehiculos');
-    }
+    } 
 
     public function validate_user($value,$field){
         $this->db->select($field);

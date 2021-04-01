@@ -1,0 +1,167 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*Opciones de la ayuda*/
+div#encabezado{
+	position:absolute;
+	font-family:Calibri;
+	left: 30px;
+	top: 29px;
+	width: 340px;
+	height: 60px;
+	color:#0560A6;
+} 
+div#imagen
+{
+   position:absolute;
+   left: 251px;
+   top: -1px;
+}
+div#menuayuda{
+	position:absolute;
+	left:21px;
+	top:150px;
+	height: 190px;
+	width: 341px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+}
+
+#menuayuda a:link {
+    text-decoration:none;
+	color:#0560A6;
+}
+#menuayuda a:visited {
+     color:#0560A6;
+	text-decoration:none;
+}
+#menuayuda a:hover {
+	color:#FCC146;
+	text-decoration:none;
+}
+div#examinar
+{
+	position:absolute;
+	left:28px;
+	top:107px;
+	font-family:Calibri;
+	background-image:url(fondo_ex.jpg);
+	width: 316px;
+	height: 30px;
+	color:#FFFFFF;
+	font-size:10pt;
+	padding:1%;
+}
+div#dpolear
+{
+	position:absolute;
+	left:12px;
+	top:348px;
+	font-family:Calibri;
+	width: 365px;
+	height: 22px;
+	color:#0560A6;
+	font-size:14px;
+}
+div#dingsis
+{
+    position:absolute;
+	left:15px;
+	top:347px;
+	height: 179px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+div#dreccon
+{
+    position:absolute;
+	left:15px;
+	top:718px;
+	height: 372px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+div#dcamcon
+{
+    position:absolute;
+	left:15px;
+	top:1089px;
+	height: 372px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+div#dconpos
+{
+    position:absolute;
+	left:15px;
+	top:1460px;
+	height: 372px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+div#dsolpos
+{
+    position:absolute;
+	left:15px;
+	top:1831px;
+	height: 372px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+div#dtipmap
+{
+    position:absolute;
+	left:15px;
+	top:2202px;
+	height: 372px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+div#denvmsj
+{
+    position:absolute;
+	left:15px;
+	top:2573px;
+	height: 367px;
+	width: 364px;
+	color:#0560A6;
+	font-family:Tahoma;
+	font-size:11px;
+	font-style:normal;
+	text-align:center;
+	vertical-align:top;
+}
+/*Fin de ayuda*/

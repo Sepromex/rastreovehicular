@@ -1,0 +1,27 @@
+<html>
+<head>
+<link rel="stylesheet" media="screen" type="text/css" href="librerias/frameworks/jquery-ui-1.8.7.custom.css" />
+<style type="text/css">
+	/* css for timepicker */
+	.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+	.ui-timepicker-div dl{ text-align: left; }
+	.ui-timepicker-div dl dt{ height: 25px; }
+	.ui-timepicker-div dl dd{ margin: -25px 10px 10px 65px; }
+	.ui-timepicker-div td { font-size: 90%; }  
+</style>
+<script type='text/javascript' src="librerias/frameworks/jquery-1.4.4.min.js"></script>
+<script type='text/javascript' src="librerias/frameworks/jquery-ui-1.8.7.custom.min.js"></script>
+<script type='text/javascript' src="librerias/frameworks/jquery-ui-timepicker-addon.js"></script>
+<script>
+$(document).ready(function(){
+	$('#example1').datetimepicker();
+});
+
+</script>
+</head>
+<body>
+<br>
+<br>
+	<input type="text" value="06/01/2011 12:12" id="example1" name="example1" class="hasDatepicker">
+</body>
+</html>
