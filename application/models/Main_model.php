@@ -68,7 +68,7 @@ Class Main_model extends CI_Model {
 			return false; 			
         }	            
     }   
-  
+    http://193.122.129.141:81/intranet/atencion_clientes/empresas/
     // Company list
     public function company_list()
 	{

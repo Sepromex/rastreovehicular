@@ -10,7 +10,7 @@
                         <button type="button" class="btn btn-primary" onclick="validate_edituser()">Editar Usuario</button>
                     </div>
                 </div>
- 
+  
                 <div class="card-body">                
                     <div class="form-row">
                         <div class="form-group col-md-4">

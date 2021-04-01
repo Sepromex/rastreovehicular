@@ -4,8 +4,7 @@ Class User_model extends CI_Model {
     
     // User list
     public function user_list()
-	{
-        //$this->db->select("id_usuario, usuario, email, concat(nombre, ' ', apellido) as nombre, estatus");
+	{        
         $this->db->select("u.ID_USUARIO as id_usuario, 
                            u.username as usuario, 
                            u.EMAIL as email,
@@ -13,7 +12,6 @@ Class User_model extends CI_Model {
                            u.NOMBRE as nombre, 
                            u.PASSWORD as password, 
                            u.ID_EMPRESA as id_empresa,u.usuario_tipo, u.activo, e.DESCRIPCION as estatus");
-
 		$this->db->from("usuarios u","left");
         $this->db->join("estusr e", "u.ESTATUS = e.ESTATUS");
         $this->db->where("activo","1");        
@@ -27,10 +25,18 @@ Class User_model extends CI_Model {
 
     // Get user by ID
     public function user_byid($id)
-	{
-        $this->db->select("*");
+	{  //usuario, contraseña, fecha inicio, fecha fin , rol de usuario, asignar vehiculos
+        $this->db->select("ID_USUARIO as id_usuario, 
+                           username as usuario, 
+                           EMAIL as email,
+                           ESTATUS as estatus_id, 
+                           NOMBRE as nombre, 
+                           PASSWORD as password, 
+                           ID_EMPRESA as id_empresa,
+                           usuario_tipo, 
+                           activo, F_INICIO, F_TERMINO");
 		$this->db->from("usuarios");
-        $this->db->where("id_usuario",$id);
+        $this->db->where("ID_USUARIO",$id);
         $query = $this->db->get();
          
 		if($query->num_rows()>0){            
