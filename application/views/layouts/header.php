@@ -26,11 +26,12 @@
 
             <div class="navbar-right ml-auto h-100">
                 <ul class="ml-auto p-0 m-0 list-unstyled d-flex top-icon h-100">
+
                     <li class="d-inline-block align-self-center  d-block d-lg-none">
                         <a href="#" class="nav-link mobilesearch" data-toggle="dropdown" aria-expanded="false"><i class="icon-magnifier h4"></i>                               
                         </a>
                     </li>                        
-
+                    <!-- 
                     <li class="dropdown align-self-center">
                         <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false">
                             <i class="icon-reload h4"></i>
@@ -41,17 +42,6 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-right border  py-0">
-                            <li>
-                                <a class="dropdown-item px-2 py-2 border border-top-0 border-left-0 border-right-0" href="#">
-                                    <div class="media">
-                                        <img src="/dist/images/author.jpg" alt="" class="d-flex mr-3 img-fluid rounded-circle">
-                                            <div class="media-body">
-                                                <p class="mb-0">SEPROMEX</p>
-                                                <span class="text-success">Cambio de imagen.</span>
-                                            </div>
-                                    </div>
-                                </a>
-                            </li>
                              
                             <li>
                                 <a class="dropdown-item px-2 py-2 border border-top-0 border-left-0 border-right-0" href="#">
@@ -113,7 +103,7 @@
 
                             <li><a class="dropdown-item text-center py-2" href="#"> Todas las Notificaciones <i class="icon-arrow-right pl-2 small"></i></a></li>
                         </ul>
-                    </li>
+                    </li> -->
 
                     <li class="dropdown user-profile align-self-center d-inline-block">
                         <a href="#" class="nav-link py-0" data-toggle="dropdown" aria-expanded="false"> 
@@ -128,7 +118,7 @@
                                 Perfil
                             </a>
                             
-                            <div class="dropdown-divider"></div>
+                            <!-- <div class="dropdown-divider"></div>
 
                             <a href="" class="dropdown-item px-2 align-self-center d-flex">
                                 <span class="icon-support mr-2 h6  mb-0"></span> 
@@ -145,7 +135,7 @@
                                 Configuración de la cuenta
                             </a>
 
-                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-divider"></div> -->
 
                             <a href="http://rastreovehicular/Login/cerrar_session" class="dropdown-item px-2 text-danger align-self-center d-flex">
                                 <span class="icon-logout mr-2 h6  mb-0"></span> 

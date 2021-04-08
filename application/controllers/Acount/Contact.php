@@ -11,7 +11,7 @@ class Contact extends CI_Controller {
 	}
 
 	public function index()
-	{   	 
+	{   	  
 		$data["custom"]   = ["title"   => "Contactos",
                              "page"    => "ContactList",
                              "section" => "Contact",
@@ -19,7 +19,7 @@ class Contact extends CI_Controller {
                              "module"  => $this->headerdata["module"]];
         //Files to be included in head, body and footer
 		$data["include"]    = includefiles($data["custom"]["page"]);  
-        $data["locations"]  = $this->main_model->get_locations();  
+        //$data["locations"]  = $this->main_model->get_locations();  
         $data["userlist"]   = $this->main_model->contactuser_list();
         $data["companys"]   = $this->main_model->company_list(); 
 		//Load view
@@ -46,41 +46,43 @@ class Contact extends CI_Controller {
         echo json_encode($jsonData);
 	}
 
-    public function new(){ 
+    public function new(){ 		
+			$var   = array("(", ")", "-", " ");
+			$phone = str_replace($var, "", $_POST["contact_phone"]);
 			$contact    = ["nombre"      => $_POST["contact_name"],
                            "puesto"      => $_POST["contact_job"],
                            "email"       => $_POST["contact_email"],
-                           "telefono"    => $_POST["contact_phone"], 
-                           "horario"     => $_POST["contact_available"], 
-                           "ubicacion"   => $_POST["contact_location"], 
-                           "id_empresa"  => $_POST["contact_companyid"], 
-                           "id_sucursal" => $_POST["contact_office"], 
+                           "telefono"    => $phone, 
+                           "horario"     => $_POST["contact_available"],                            
+                           "id_empresa"  => $_POST["contact_companyid"],                            
                            "id_usuario"  => $_POST["contact_userid"], 
                            "fecha_reg"   => date('Y-m-d'),                    
                            "estatus"     => "1"];
-			$contact_id = $this->contact_model->add_contact($contact);    
-			if($contact_id): echo "true"; else: echo "No se inserto el contacto"; endif;
+
+			$contact_id = $this->contact_model->add_contact($contact);
+			if($contact_id): echo "true"; else: echo "No se inserto el contacto"; endif;			
 	}
 
     public function view_contactconfig(){
 		$contact = $this->contact_model->contact_byid($_POST["id"]);         
-		header("Content-type: application/json");        	
+		header("Content-type: application/json");         	
 		echo json_encode($contact);
-	} 
+	}  
     
     public function update(){ 
+		$var   = array("(", ")", "-", " ");
+		$phone = str_replace($var, "", $_POST["conf_contactphone"]);		
 		$contact  = ["nombre"      => $_POST["conf_contactname"],
 					 "id_usuario"  => $_POST["conf_contactuserid"],
 					 "horario"     => $_POST["conf_contactailable"],
 					 "email"       => $_POST["conf_contactemail"],
-					 "telefono"    => $_POST["conf_contactphone"],
-                     "puesto"      => $_POST["conf_contactjob"],
-                     "ubicacion"   => $_POST["conf_contactlocation"],
-                     "id_empresa"  => $_POST["conf_contactcompanyid"],
-                     "id_empresa"  => $_POST["conf_contactoffice"],                     
-					 "estatus"     => $_POST["conf_contactstatus"]];
+					 "telefono"    => $phone,
+                     "puesto"      => $_POST["conf_contactjob"], 
+                     "id_empresa"  => $_POST["conf_contactcompanyid"]];
+		
+					 //print_array($contact);
 		$contact  = $this->contact_model->update_contact($contact,$_POST["conf_contactid"]);    
-		if($contact): echo "true"; else: echo "No se edito el contacto"; endif;			 	 
+		if($contact): echo "true"; else: echo "No se edito el contacto"; endif;
 	}
 
     public function delete(){

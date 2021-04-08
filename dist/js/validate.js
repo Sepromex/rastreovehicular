@@ -10,7 +10,7 @@ function general_validate(id,feedback){
     }
 }
 
-function validate_select(id,feedback){
+function validate_select(id,feedback){    
     if($(id).val() == 0) {        
         mns = "* Campo requerido, seleccione una opción";
         invalid_input(id,feedback,mns);
@@ -20,7 +20,7 @@ function validate_select(id,feedback){
         valid_input(id,feedback);
         return "true";
     }
-} 
+}  
 
 function validate_lastname(id,feedback){
     if($(id).val().length < 4) {        

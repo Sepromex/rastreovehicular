@@ -8,7 +8,7 @@ class Login extends CI_Controller {
         $this->load->model('login_model');
 	}
 
-    //Load login
+    //Load login 
 	public function index()
 	{    
         $custom = array("title" => "Login",
@@ -20,21 +20,30 @@ class Login extends CI_Controller {
     //Start session
     public function start()
 	{
-        //Get data
+        //Get data 
         $usuario  = $_POST["user"];
         $password = $_POST["password"];
  
         //Search user 
         $user = $this->login_model->check_login($usuario, $password);
- 
+  
         //If user exist, save and return true
-        if($user){ 
-                    $this->init($user);
-                    $this->load_system_data();
-                    echo "true";                
-        }else{ 
-            echo "false";
-        }        
+        if($user){
+            $fec  = strtotime(date("Y-m-d H:i:00",time()));
+            $feci = strtotime($user["f_inicio"]);
+            $fecf = strtotime($user["f_termino"]);
+
+            if($fec > $feci && $fec < $fecf){               
+                $this->init($user);
+                $this->load_system_data();
+                //echo "true"; 
+                echo "true"; 
+            }else{
+                echo "Error: Usuario caducado.";
+            }                              
+        }else{
+            echo "Error: Usuario o contraseña incorrecto.";
+        }
     }
 
     private function load_system_data(){       
@@ -57,7 +66,7 @@ class Login extends CI_Controller {
     //Close session
     public function cerrar_session(){
         session_destroy();
-        header('Location:http://rastreovehicular/Login');
+        header('Location:/Login');
     }
  
     //Load recovery view

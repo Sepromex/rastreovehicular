@@ -26,6 +26,8 @@
         });
     }
 
+    $('[data-masked]').inputmask(); 
+    $(".select-form").select2();
     
 
     if($('.send_form')){
@@ -58,7 +60,50 @@
 
 })(jQuery);
  
- 
+function validate_editcontact(){
+    var band = 1;
+    var name    = general_validate('#conf_contactname','#feedback-confcontactname');    
+    var email   = validate_email('#conf_contactemail','#feedback-confcontactemail');
+    var phone   = validate_phonemask('#conf_contactphone','#feedback-confcontactphone',1);
+    var horario = general_validate('#conf_contactailable','#feedback-confcontactailable');
+    var company = validate_select('#conf_contactcompanyid','#feedback-confcontactcompanyid');
+             
+    if(name == "false"){ band = 0; }        
+    if(email == "false"){ band = 0; }    
+    if(phone == "false"){ band = 0; }    
+    if(horario == "false"){ band = 0; }    
+    if(company == "false"){ band = 0; }   
+
+    if(band == 1){
+        save_configform();       
+    }
+}
+
+function validate_contact(){
+    var band = 1;
+    var name    = general_validate('#contact_name','#feedback-contactname');
+    //var puesto  = general_validate('#contact_job','#feedback-contactjob');
+    var email   = validate_email('#contact_email','#feedback-contactemail');
+    var phone   = validate_phonemask('#contact_phone','#feedback-contactphone',1);
+    var horario = general_validate('#contact_available','#feedback-contactavailable');
+    var company = validate_select('#contact_companyid','#feedback-contactcompanyid');
+    //var user    = validate_select('#contact_userid','#feedback-contactuserid');
+         
+    if(name == "false"){ band = 0; }    
+    //if(puesto == "false"){ band = 0; }    
+    if(email == "false"){ band = 0; }    
+    if(phone == "false"){ band = 0; }    
+    if(horario == "false"){ band = 0; }    
+    if(company == "false"){ band = 0; }
+    //if(user == "false"){ band = 0; }       
+
+    if(band == 1){        
+        insert_newrow();        
+    }            
+
+}
+
+
 function validate_form(form,type = "config",func = "0"){    
     $("#"+form).addClass('was-validated');    
     if ($("#"+form)[0].checkValidity() === false) {                
@@ -67,13 +112,32 @@ function validate_form(form,type = "config",func = "0"){
     else{                   	
         if(func != "0"){
             console.log(func);
-           // self[func]();  
+           // self[func](); 
         }else{
             if(type == "new"){insert_newrow();}
-            if(type == "config"){save_configform();}
+            if(type == "config"){ save_configform(); }
         }        
     }    
-} 
+}  
+
+function validate_company(){
+    var band = 1;
+    var companytype = validate_select('#conf_companytype','#feedback-confcompanytype');
+    var phone = validate_phonemask("#conf_companyphone","#feedback-confcompanyphone",1);
+    var category = validate_select('#conf_companytype','#feedback-confcompanytype');
+
+    if($("#conf_companyname").hasClass('invalid')){ band = 0; }
+    if($("#conf_companyagent").hasClass('invalid')){ band = 0;} 
+    if($("#conf_companyrfc").hasClass('invalid')){ band = 0;}         
+    if(companytype == "false"){ band = 0; }    
+    if(phone == "false"){ band = 0; }    
+    if(category == "false"){ band = 0; }    
+
+    if(band == 1){        
+        save_configform();        
+    }
+
+}
 
 //Show config form
 function general_formtoggle(){
@@ -102,19 +166,24 @@ function insert_newrow(){
         }
     }); 
 }
- 
+  
 
 // Save Config Form
 function save_configform(){  
     $.ajax({ 
         type: "POST",
-        data: $("#<?=$custom["prefix"]?>_configform").serialize(),
-        url: "<?=$include["body"]["upconf"]?>",
+        data: $("#<?=$custom["prefix"]?>_configform").serialize(), 
+        url: "<?=$include["body"]["upconf"]?>", 
         success: function (response) {             
              if (response == "true") {
                 location.reload(); 
-            } else {                            
-                alert(response);
+            } else {   
+                if (response == "true_") {
+                    $('#settings').removeClass('active');
+                } else {                            
+                    alert(response);
+                }                          
+                
              }             
         }
     }); 
@@ -143,19 +212,34 @@ function contact_formedit(id){
         type: "POST",
         data: {id:id},
         url: "/Acount/contact/view_contactconfig",
-        success: function (contact) {
-            $("#conf_companyidlabel").html(contact.id_empresa);
-            $("#conf_companyidlabel").html(contact.fecha_reg);
-            $("#conf_companyid").val(contact.id_empresa);
-            $("#conf_companyuserid").val(contact.giro);        
-            $("#conf_companystatus").val(contact.estatus);
-            $("#conf_companyname").val(contact.nombre);
-            $("#conf_companyailable").val(contact.horario);
-            $("#conf_companyjob").val(contact.puesto);
-            $("#conf_companyemail").val(contact.email);
-            $("#conf_companyphone").val(contact.telefono);
-            $("#conf_companylocation").val(contact.ubicacion);
-            $("#conf_companycompanyid").val(contact.id_empresa);
+        success: function (contact) { 
+            console.log(contact.id_empresa);
+            console.log(contact.id_usuario);
+            $("#conf_contactid").val(contact.id_contacto);
+            $("#conf_contactidlabel").html(contact.id_contacto);
+            $("#conf_contactfechareg").html(contact.fecha_reg);
+            $("#conf_contactname").val(contact.nombre);
+            $("#conf_contactailable").val(contact.horario);
+            $("#conf_contactjob").val(contact.puesto);
+            $("#conf_contactemail").val(contact.email);
+            $("#conf_contactphone").val(contact.telefono);
+
+            //document.getElementById("conf_contactcompanyid").value =  '"'+contact.id_empresa+'"';
+            //$("#contact_configform #conf_contactcompanyid option[value='"+contact.id_empresa+"']").attr("selected","true");
+
+            $("#contact_configform #conf_contactcompanyid").val(contact.id_empresa);
+            $("#contact_configform #conf_contactcompanyid").change();
+            
+            //$("#conf_contactcompanyid");
+
+            //document.getElementById("conf_contactuserid").value = contact.id_usuario;
+
+            //$("#contact_configform #conf_contactuserid option[value='"+ contact.id_usuario +"']").prop("selected","true"); 000000001029"
+            //var us = 000000001029
+            $("#contact_configform #conf_contactuserid").val(contact.id_usuario);
+            $("#contact_configform #conf_contactuserid").change(); 
+            
+
             acount_formtoggle();
         } 
     });
@@ -274,8 +358,38 @@ function rol_formedit(id){
     });
 }
 
-function vehicle_formedit(id){
+function edit_vehicle(){
     $.ajax({
+        type: "POST", 
+        data: $("#vehedit_configform").serialize(),
+            url: "/Config/Vehicles/vehicle_update",
+        success: function (response) { 
+            console.log(response);
+            if (response == "true") {
+                location.reload();                     
+            } else {                            
+                alert(response); 
+            }
+        }
+    }); 
+}
+function vehicle_formedit(id){
+    $.ajax({ 
+        type: "POST", 
+        data: {id:id},
+        url: "/Config/Vehicles/vehicle_edit",
+        success: function (response) { 
+            $("#sidebar-content").html(response); 
+            $('#settings').toggleClass('active');
+            $('.openside').on('click', function () {
+                $('#settings').toggleClass('active');
+                return false;
+            });            
+        }
+    });
+
+
+    /*$.ajax({
         type: "POST",
         data: {id:id},
         url: "/Config/Vehicles/view_vehicleconfig",
@@ -283,8 +397,8 @@ function vehicle_formedit(id){
             $("#general-forms").html(response);
             general_formtoggle();
         }
-    });
-}
+    });*/
+} 
 
 
 </script>

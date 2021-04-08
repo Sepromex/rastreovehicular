@@ -125,6 +125,7 @@ File: Main Style
     --dark: #343a40;
     --sidebarwidth: 140px;
 }
+html{ overflow-x: hidden; }
 
 .semi-dark {
     --sidebarbg: #060818;
@@ -2189,7 +2190,7 @@ footer.site-footer {
 .chat-menu li.active:after, .chat-menu li:hover:after {
     opacity: 0.1;
 }
-
+ 
 .chat-menu li .online-status:before {
     content: "";
     position: absolute;
@@ -5873,4 +5874,52 @@ transform: scale(1.01);
     .header-chart {
         float: left;
     }
+}
+
+
+
+
+/* ------- */
+
+@media (max-width: 1199px) {
+
+}
+
+@media (min-width: 992px) {
+    .show-mobile {
+        display:none;
+    }
+    .hidde-mobile {
+        display:block;
+    }
+}
+@media (min-width: 768px) {
+    .show-mobile {
+        display:none;
+    }
+    .hidde-mobile {
+        display:block;
+    }
+    .label-mobile{
+        display: inline;
+    }
+
+}
+
+@media (max-width: 767px) { 
+    .show-mobile {
+        display:block;
+    }
+    .hidde-mobile {
+        display:none;
+    }
+    .label-mobile{
+        display: block;
+    }
+    .ml4-mobile{ margin-left: 1.5rem !important; }
+}
+
+@media (max-width: 575px) { 
+
+
 }

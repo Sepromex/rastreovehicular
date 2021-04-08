@@ -25,34 +25,34 @@
             </div>                 
         </div> 
     </div> 
-</div> 
+</div>  
  
 <?php if(isset($assignedvehicles)): if(is_array($assignedvehicles)): ?>
 <div class="row mt-3"> 
     <div class="col-xl-12">
         <div class="card">           
             <div class="card-body p-0">
-                <div class="contacts list" id="vehicle_itemslist">
-                <?php foreach($assignedvehicles as $vl): //id_vehiculo ?>
-                    <div class="contact family-contact p-0">                             
-                        <div class="contact-content" style="min-width:300px;">
+                <div class="contacts list " id="vehicle_itemslist" >
+                <?php foreach($assignedvehicles as $vl): ?>
+                    <div class="contact family-contact p-0  w-100"  id="uservehicle<?=$vl->id_vuser?>">                             
+                        <div class="contact-content" style="min-width:300px; max-width:100%;">
                             <div class="contact-profile col-md-4">                                                   
                                 <div class="contact-info">
                                     <p class="mb-0 small">Vehículo </p>
                                     <p class="contact-name mb-0"><?=$vl->vehiculo?></p>
                                 </div>
                             </div>
-                            <div class="contact-email col-md-3">
+                            <div class="contact-email col-md-3 hidde-mobile">
                                 <p class="mb-0 small">Placas </p>
                                 <p class="user-email"><?=$vl->placas?></p>
                                 <p class="user-phone"></p>
                             </div> 
-                            <div class="contact-phone col-md-3">
+                            <div class="contact-phone col-md-3 hidde-mobile">
                                 <p class="mb-0 small">Modelo: </p>
                                 <p class="user-phone"><?=$vl->modelo?></p>
                             </div>
                             <div class="line-h-1 h5  col-md-2">
-                                <a class="text-danger delete-contact" href="#"><i class="icon-trash"></i></a>                                 
+                                <a class="text-danger delete-contact" href="#uservehicle<?=$vl->id_vuser?>" onclick="delete_uservehicle('<?=$vl->id_vuser?>')"><i class="icon-trash"></i></a>                                 
                             </div> 
                         </div>
                     </div>
@@ -97,16 +97,17 @@ function changeselectveh(companyid){
 }
 
     function assign_vehicle(){ 
-        var id_veh  = $("#vehicles_company").val();
-        var user_id = $("#conf_userid").val();
+        var id_veh  = $("#vehicles_company").val();	
         $.ajax({
         type: "POST",
-        data: {id:id_veh, user: user_id},
-        url: "/Acount/User/assign_vehicles",
+        data: $("#user_configform").serialize(), 
+        url: "/Acount/User/assign_vehicles/"+id_veh,
         success: function (response) {  
+            console.log(response);
                 if(response.insert == "true"){
                     var v = response.vehicle[0];
-                    var template = '<div class="contact family-contact p-0" id="uservehicle'+v.id_vehiculo+'">'+                         
+                    
+                    var template = '<div class="contact family-contact p-0" id="uservehicle'+v.id_vuser+'">'+                         
                         '<div class="contact-content" style="min-width:300px;">'+
                             '<div class="contact-profile col-md-4">'+
                                 '<div class="contact-info">'+
@@ -123,7 +124,7 @@ function changeselectveh(companyid){
                                 '<p class="user-phone"> '+ v.modelo +' </p>'+
                             '</div>'+
                             '<div class="line-h-1 h5  col-md-2">'+
-                                '<a class="text-danger delete-contact" href="#" onclick="delete_uservehicle('+v.id_vehiculo+')"><i class="icon-trash"></i></a>'+
+                                '<a class="text-danger delete-contact" href="#uservehicle'+v.id_vuser+'" onclick="delete_uservehicle('+v.id_vuser+')"><i class="icon-trash"></i></a>'+
                             '</div>'+ 
                         '</div>'+
                        '</div>';
@@ -148,11 +149,16 @@ function changeselectveh(companyid){
             type: "POST",
             data: {id:id},
             url: "/Acount/User/delete_vechilce",            
-            success: function(response) {                        
+            success: function(response) {                                        
                 if(response == "true"){
-                    $("#uservehicle"+id).remove(); 
-                }                                                  
-                    
+                    var idveh = "#uservehicle"+id;
+
+                    $(idveh).addClass('bg-danger');
+                    $(idveh).slideUp(550, function () {
+                        $(idveh).remove();
+                    });
+
+                }   
             } 
         });
     }

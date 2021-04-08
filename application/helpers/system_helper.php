@@ -4,7 +4,7 @@ function print_array($array){
     print_r($array);
     echo "</pre>";   
 }
-function base_url(){
+function base_url(){ 
 
     echo ""; 
     //$_SERVER['SERVER_NAME'];
@@ -13,8 +13,8 @@ function base_url(){
 }
 
 function listoption_template($data,$items = 0){    
-    $edit   = $data["edit_function"].'('.$data["id"].')';
-    $delete = $data["delete_function"].'('.$data["id"].')';
+    $edit   = $data["edit_function"]."('".$data["id"]."')";
+    $delete = $data["delete_function"]."('".$data["id"]."')";
     
     if($items != 0){
         $edit   = $data["edit_function"].'('.$data["id"].','.$data["id2"].')';        
@@ -28,7 +28,7 @@ function listoption_template($data,$items = 0){
                     <i class="icon-trash"></i>
                 </a>
             </div>';
-    return $icon;
+    return $icon; 
 }
 
 function generalstatus($type){

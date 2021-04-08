@@ -1,12 +1,5 @@
 <?php
 // USERS
-function user_status($type){
-    switch($type){
-        case "1": $status = "Activo"; break;
-        case "0": $status = "Inactivo"; break;
-    }
-    return $status;
-}   
 function user_toption($user_id){
     $data = ["edit_function"   => "user_formedit",
              "delete_function" => "list_delete",

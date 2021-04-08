@@ -13,7 +13,7 @@
 <script>
     //Plugin documentation 
     //https://wakirin.github.io/Lightpick/ 
-    var gists = [
+  /*  var gists = [
         'https://gist.github.com/wakirin/c0100ee7e886fe74b3256ddb74f16adf.json?callback=callbackJson',
         'https://gist.github.com/wakirin/d4f00465b259590233f0727f01eaba66.json?callback=callbackJson',
         'https://gist.github.com/wakirin/c4e84bf9c5546a9656337236491a75f6.json?callback=callbackJson',
@@ -31,16 +31,14 @@
         field: document.getElementById('conf_userfechainicio'),
         secondField: document.getElementById('conf_userfechafin'),
         repick: true,
+        format: 'Y-m-m',
         dropdowns:{
             years: {
                 min: '2010',
                 max: '2035'
             }
-        },
-        onSelect: function(start, end){
-            document.getElementById('fecha_desc').innerHTML = rangeText(start, end);
-        }
-    }); 
+        }        
+    }); */
 
     $('.select-form').select2();
 </script>

@@ -16,7 +16,7 @@ class Vehicles extends CI_Controller {
                              "header"  => "Vehiculos",
                              "page"    => "Vehicles",
 							 "prefix"  => "veh",
-							 "section" => "Vehicles",                             
+					 		 "section" => "Vehicles",                             
                              "module"  => $this->headerdata["module"]];
         
         //Files to be included in head, body and footer
@@ -82,7 +82,7 @@ class Vehicles extends CI_Controller {
 	}
 
 	public function view_vehicleconfig(){
-		$data["vehicle"]    = $this->vehicle_model->vehicle_byid($_POST["id"]);
+		$data["vehicle"]    = $this->main_model->vehicle_byid($_POST["id"]);
         $data["companylist"] = $this->main_model->company_list();  //companys
         $data["statuslist"]  = $this->listvehicle_status();
 		

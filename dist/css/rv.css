@@ -18,4 +18,10 @@
 .form-hide{ display:none; }
 .select2-container--default .select2-selection--single{border:1px solid #ced4da; line-height: 1.5;}
 .select2-container{ width: 100% !important; }
+
+#vehicle_itemslist { 
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
   

@@ -4,16 +4,24 @@ Class Vehicle_model extends CI_Model {
     
     // Vehicle list
     public function vehicle_list()
-	{
-        $this->db->select("*");
-		$this->db->from("vehiculos");
-        //$this->db->where("estatus","1"); undefined status
-        $query = $this->db->get();         
-		if($query->num_rows()>0){            
+	{         
+        $this->db->select("DISTINCT(v.NUM_VEH) as id_vehiculo,
+                           v.ID_VEH as vehiculo,
+                           v.PLACAS as placas,
+                           v.MODELO as modelo, 
+                           v.detalle,                           
+                           v.estatus");
+		$this->db->from("veh_usr as vu");
+        $this->db->join("vehiculos as v","vu.NUM_VEH = v.NUM_VEH ");               
+        $this->db->where("vu.ID_USUARIO", $_SESSION["user"]["id"]); 
+        $this->db->where("vu.activo",1);  
+        $this->db->order_by("v.NUM_VEH","asc");
+        $query = $this->db->get();
+		if($query->num_rows()>0){
 			return $query->result();
-		}else{			
-			return false; 			
-        }	            
+		}else{
+			return false;
+        }
     } 
 
 

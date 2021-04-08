@@ -10,7 +10,7 @@ class Rol extends CI_Controller {
 		$this->headerdata["module"] = "Acount";
 	}
 
-	public function index()
+	public function index() 
 	{  	
 		$data["custom"]   = ["title"   => "Roles de Usuarios",
                              "page"    => "Rol",
@@ -22,7 +22,7 @@ class Rol extends CI_Controller {
 		$data["modules"]  = $this->rol_model->get_modules();  
 		//Load view
 		$this->load->view('layouts/admin',$data);		 
-	} 
+	}  
 	
 	public function List(){
 		//Json rol list
@@ -35,7 +35,7 @@ class Rol extends CI_Controller {
 					$data  = ["<div class='text-center'>".$row->id_rol."</div>",
 							  $row->rol,
 							  ($row->descripcion!='')?$row->descripcion:'',  
-							  "<div class='text-center'>".user_status($row->estatus)."</div>",
+							  "<div class='text-center'>".generalstatus($row->estatus)."</div>",
 							  $icon]; 
 					$jsonData['data'][] = $data; 
 				}   
@@ -69,11 +69,11 @@ class Rol extends CI_Controller {
 		if(isset($_POST["rolcheck"])){
 			$access = $this->rol_model->set_access($_POST["rolcheck"],$_POST["conf_rolid"]);
 		}
-		else{ $access = true;}		
+		else{ $access = true; }		 
 		if($rol && $access): echo "true"; else: echo "No se edito el rol de usuario"; endif;
 	}
  
-	public function delete(){ 
+	public function delete(){
 		$user = $this->rol_model->delete_rol($_POST["id"]);    
 		if($user): echo "true"; else: echo "No se elimino el usuario"; endif;	
 	}

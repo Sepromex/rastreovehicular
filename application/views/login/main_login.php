@@ -19,7 +19,7 @@
         <!-- START: Page CSS-->   
         <link rel="stylesheet" href="/dist/vendors/social-button/bootstrap-social.css"/>   
         <!-- END: Page CSS-->
-
+ 
         <!-- START: Custom CSS-->
         <link rel="stylesheet" href="/dist/css/main.css">
         <!-- END: Custom CSS-->
@@ -48,41 +48,8 @@
         <script src="/dist/vendors/moment/moment.js"></script>
         <script src="/dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>    
         <script src="/dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
-        <script>
-            function login() {
-                jQuery.ajax({
-                    type: "POST",
-                    data: $("#login_form").serialize(),
-                    url: "Login/start",
-                    success: function (response) {
-                        if (response == "true") {
-                             window.location.href = "MainMap";
-                        } else {                            
-                            alert("Error: Usuario o contraseña incorrecto.");
-                        }
-                    }
-                });
-            };       
-            
-            function recuperar() {
-                jQuery.ajax({
-                    type: "POST",
-                    data: $("#login_form").serialize(),
-                    url: "/Login/SendRecovery",
-                    success: function (response) {
-                        console.log(response);
-                        if (response == "true") {
-                             alert("Te enviamos un correo electrónico de recuperación");
-                             window.location.href = "/Login";
-                             
-                        } else {                            
-                            alert("Error: Email no registrado en la DB.");
-                        }
-                    }
-                });
-            };
         
-        </script>
+        <script src="/dist/js/login.js"></script>
 
         <!-- END: Template JS-->  
     </body>

@@ -14,13 +14,13 @@
             <label for="password">Contraseña</label>
             <input class="form-control" name="password" type="password" required="" id="password" placeholder="Enter your password">
         </div>
-
-        <div class="form-group mb-3">
+ 
+        <!-- <div class="form-group mb-3">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked="">
                 <label class="custom-control-label" for="checkbox-signin">Remember me</label>
             </div>
-        </div>
+        </div> -->
 
         <div class="form-group mb-0">
             <button class="btn btn-primary" type="button" onclick="login()"> Ingresar </button>

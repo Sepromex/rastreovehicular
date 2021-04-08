@@ -21,12 +21,12 @@ class Speeds extends CI_Controller {
         
         //Files to be included in head, body and footer
 		$data["include"]     = includefiles($data["custom"]["page"]);
-        $data["companylist"] = $this->main_model->company_list();  //companys
         
 
         //Load view 
 		$this->load->view('layouts/admin',$data);         
 	} 
+
 	// Vehicle status DB sepromex
     private function vehicle_status($id){
         $status_list = $_SESSION["catalog"]["vehicle_status"];
@@ -39,8 +39,8 @@ class Speeds extends CI_Controller {
 		$speed_list = $this->speeds_model->speed_list();
 		if(isset($speed_list) && count($speed_list)>0){
 				foreach($speed_list  AS $row){
-					$icon = speed_toption($row->id_velocidad);                    
-					$data  = ["<div class='text-center'>".$row->id_velocidad."</div>",
+					$icon = speed_toption($row->id_usuario);                    
+					$data  = ["<div class='text-center'>".$row->id_usuario."</div>",
 							  $row->nombre,
                               ($row->minima  != '')?$row->minima:'',
                               ($row->regular != '')?$row->regular:'',
@@ -66,25 +66,20 @@ class Speeds extends CI_Controller {
 		$speed_id = $this->speeds_model->add_speed($speed);
 		if($speed_id): echo "true"; else: echo "Error! Intente de nuevo."; endif;
 	}
-	 
+	  
 	public function view_speedconfig(){
-		$speed   = $this->speeds_model->speed_byid($_POST["id"]);
-        header("Content-type: application/json");
-        echo json_encode($speed);
+		$speed["speed"]   = $this->speeds_model->speed_byid($_POST["id"]);
+		$speed["veh_id"]  = $_POST["id"];
+		$this->load->view("config/speed/add_speed",$speed);	
+        //header("Content-type: application/json");
+        //echo json_encode($speed);
 	}
 
  
-	public function update(){ 
-		$vehicle  = ["vehiculo"   => $_POST["conf_vehname"],
-                     "modelo"     => $_POST["conf_vehmodel"],
-                     "placas"     => $_POST["conf_vehplate"],
-                     "id_empresa" => $_POST["conf_vehcompany"],
-                     "estatus"    => $_POST["conf_vehstatus"],
-                     "id_sepro"   => $_POST["conf_vehidsepro"],
-                     "detalle"    => $_POST["conf_vehdetail"],
-                     "id_grupo"   => $_POST["conf_vehgroup"]];
-		$vehicle  = $this->speeds_model->update_vehicle($vehicle,$_POST["conf_vehid"]);		
-		if($vehicle): echo "true"; else: echo "No se edito el vehiculo"; endif;
+	public function update(){ 		
+		
+		$vehicle  = $this->speeds_model->update_speed($_POST);		
+		echo "true_";//if($vehicle): echo "true"; else: echo "No se edito el vehiculo"; endif; 		
 	}
  
 	public function delete(){ 

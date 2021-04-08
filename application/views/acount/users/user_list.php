@@ -11,12 +11,13 @@
         <div class="align-self-center">
             <?php $this->load->view("acount/users/menu_user"); ?>
         </div>
+        <!--
         <div class="align-self-center ml-auto text-center text-sm-right">           
             <a href="#" class="bg-primary py-2 px-2 rounded ml-auto text-white text-center openside">
                 <i class="icon-plus align-middle text-white"></i> 
                 <span class="d-none d-xl-inline-block">Usuario Nuevo</span>
             </a> 
-        </div>
+        </div> -->
     </div>
 </div> 
 

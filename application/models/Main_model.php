@@ -24,9 +24,10 @@ Class Main_model extends CI_Model {
     // Contact user list
     public function contactuser_list()
 	{
-        $this->db->select("id_usuario, email, concat(nombre, ' ', apellido) as nombre");
+        $this->db->select("id_usuario, email, nombre, username");
 		$this->db->from("usuarios");
-        //$this->db->where("estatus","1");        
+        $this->db->where("activo","1"); 
+        $this->db->where("activo","1");        
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
@@ -38,29 +39,42 @@ Class Main_model extends CI_Model {
     // Contact list
     public function contact_list($id = 0, $type="company")
 	{
-        $field = "id_empresa";
-        if($type == "office"){ $field = "id_sucursal"; }        
+        //$field = "id_empresa";
+        //if($type == "office"){ $field = "id_sucursal"; }
+        
         $this->db->select("*");
-		$this->db->from("contactos");
-        $this->db->where("estatus","1");         
+		$this->db->from("contactos_web");
+        $this->db->where("estatus","1"); 
         if($id > 0){
-            $this->db->where($field,$id);
-        }       
-        $query = $this->db->get();         
-		if($query->num_rows()>0){            
+            $this->db->where("id_empresa",$id);
+        }
+        $query = $this->db->get();
+		if($query->num_rows()>0){ 
 			return $query->result();
 		}else{
-			return false; 			
-        }	            
+			return false; 
+        }
+
     } 
 
     public function office_list($company = 0)
 	{
-        $this->db->select("*"); 
-		$this->db->from("sucursales"); 
-        if($company > 0){
-            $this->db->where("id_empresa",$company); 
-        }        
+        $this->db->select("e.nombre as razon_social,
+                           e.rep as representante,
+                           e.rfc,
+                           e.contacto as id_contacto,
+                           e.tel_ppal as telefono,
+                           e.email,
+                           e.direccion,
+                           e.colonia,
+                           e.ciudad,
+                           e.id_estado,
+                           est.descripcion as estado");
+		$this->db->from("empresas e","left"); 
+        $this->db->join("estados est", "e.id_estado = est.id_estado","left");         
+        $this->db->where("id_parent",$company); 
+          
+
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
@@ -68,81 +82,91 @@ Class Main_model extends CI_Model {
 			return false; 			
         }	            
     }   
-    http://193.122.129.141:81/intranet/atencion_clientes/empresas/
+
+    
     // Company list
     public function company_list()
 	{
-        $this->db->select("id_empresa, razon_social");
-		$this->db->from("empresas");        
-        $query = $this->db->get();         
-		if($query->num_rows()>0){            
+        $this->db->select("id_empresa, NOMBRE as razon_social");
+		$this->db->from("empresas");
+        $query = $this->db->get();
+		if($query->num_rows()>0){         
 			return $query->result();
-		}else{			
-			return false;	
+		}else{
+			return false;
         }	            
     }
 
-    // Sepromex users
-    public function users_sepromex(){
-        $this->dbweb->select("id_usuario, username as nombre");
-		$this->dbweb->from("usuarios");
-        $this->dbweb->where("username !=","");
-        $this->dbmaster->order_by("nombre","asc");     
-        $query = $this->dbweb->get();
-		if($query->num_rows()>0){
-			return $query->result();
-		}else{
-			return false;
-        }
-    }
+   
 
      
     // Vehicle list
-    public function vehicle_list($empresa = 0,$id = 0){
-        $this->db->select("id_vehiculo,vehiculo,placas,modelo");
-		$this->db->from("vehiculos");
-        if($empresa > 0){ 
-            $this->db->where("id_empresa",$empresa);
+    public function vehicle_list($id = 0,$id_a = 0){        
+        $this->db->select("distinct(v.NUM_VEH) as id_vehiculo,
+                           v.ID_VEH as vehiculo,
+                           v.PLACAS as placas,
+                           v.MODELO as modelo, 
+                           vu.ID as id_vuser");
+		$this->db->from("veh_usr as vu");
+        $this->db->join("vehiculos as v","vu.NUM_VEH = v.NUM_VEH ");        
+        $this->db->where("vu.ID_USUARIO", $id); 
+        $this->db->where("vu.activo",1); 
+        if($id_a > 0){
+            $this->db->where("vu.ID",$id_a); 
         }
-        if($id > 0){ 
-            $this->db->where("id_vehiculo",$id);
-        }
-        $this->db->order_by("vehiculo","asc");
+        $this->db->order_by("v.ID_VEH","asc");
         $query = $this->db->get();
 		if($query->num_rows()>0){
 			return $query->result();
 		}else{
 			return false;
         }
-    } 
+    }   
 
     public function assigned_vehicles($id_usuario){
-        $this->db->select("uv.id, uv.id_usuario, v.id_vehiculo, v.vehiculo, v.placas, v.modelo");
-		$this->db->from("usuarios_vehiculos uv");
-        $this->db->join("vehiculos v", "uv.id_vehiculo = v.id_vehiculo");        
-        $this->db->order_by("v.id_vehiculo","asc");
+        $this->db->select("distinct(v.NUM_VEH) as id_vehiculo,
+                           v.ID_VEH as vehiculo,
+                           v.PLACAS as placas,
+                           v.MODELO as modelo,
+                           vu.ID as id_vuser");
+		$this->db->from("veh_usr as vu");
+        $this->db->join("vehiculos as v","vu.NUM_VEH = v.NUM_VEH ");        
+        $this->db->where("vu.ID_USUARIO", $id_usuario); 
+        $this->db->where("vu.activo",1); 
+        $this->db->order_by("v.ID_VEH","asc");
         $query = $this->db->get();
-        if($query->num_rows()>0){
+		if($query->num_rows()>0){
 			return $query->result();
 		}else{
 			return false;
         }
     }
 
-    public function assign_vehicles($data){
-        $this->db->select("id");
-		$this->db->from("usuarios_vehiculos");
-        $this->db->where("id_vehiculo",$data["id_vehiculo"]);
+    public function assign_vehicles($data,$id){
+        $this->db->select("NUM_VEH");
+		$this->db->from("veh_usr");
+        $this->db->where("NUM_VEH",$id);
+        $this->db->where("ID_USUARIO",$data["conf_userid"]);
+
         $query = $this->db->get();
         if($query->num_rows()>0){		
-            return "2";
+            return "true";
 		}else{
-            $this->db->insert('usuarios_vehiculos',$data);
-		    if($this->db->insert_id()){ 
-                return "true";
+            $insert = ["ID_EMPRESA" => $data["conf_usercompany"], 
+                       "ID_USUARIO" => $data["conf_userid"], 
+                       "NUM_VEH"    => $id, 
+                       "FECHA_I"    => $data["conf_userfinit"], 
+                       "FECHA_T"    => $data["conf_userend"], 
+                       "ACTIVO"     => "1"];
+                       //print_array($data);            
+            $this->db->insert('veh_usr',$insert);
+            $id_vu = $this->db->insert_id();
+		    if($id_vu){ 
+                return $id_vu;
             }else{
                 return "false";
-            }           
+            }
+            //return "true";
         }
     }
     

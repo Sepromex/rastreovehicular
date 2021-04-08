@@ -6,7 +6,8 @@ Class Rol_model extends CI_Model {
     public function rol_list()
 	{
         $this->db->select("*");
-		$this->db->from("usuario_roles");        
+		$this->db->from("usuario_roles");  
+        $this->db->where("estatus",1);      
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();
@@ -40,20 +41,21 @@ Class Rol_model extends CI_Model {
         $this->db->select("*");
 		$this->db->from("usuario_rolacceso");
         $this->db->where("id_rol",$rolid);
+        $this->db->where("activo",1);
         $this->db->order_by("id_modulo, id_submodulo","asc");
         $query = $this->db->get();
-
-		if($query->num_rows()>0){             
+ 
+		if($query->num_rows()>0){ 
 			return $query->result();
-		}else{			
-			return false; 			
-		}	
+		}else{
+			return false; 
+		}
     }
 
     public function get_modules()
 	{
         $this->db->select("*");
-		$this->db->from("modulos");
+		$this->db->from("modulos_rv");
         $this->db->where("estatus","1");
         $this->db->order_by("grado, mprincipal","asc");
         $query = $this->db->get();
@@ -70,7 +72,7 @@ Class Rol_model extends CI_Model {
             return $modules;
 		}else{			
 			return false; 			
-		}	    
+        }
     }  
 
     public function update_rol($data,$id){
@@ -80,26 +82,48 @@ Class Rol_model extends CI_Model {
 	
 
     public function set_access($checkrol,$rolid){ 
+        $delete = ["activo" => 0];
         $this->db->where('id_rol',$rolid);
-        $this->db->delete('usuario_rolacceso');
+        $this->db->update('usuario_rolacceso',$delete);
+
         foreach($checkrol as $module_id => $submodule){
             foreach($submodule as $submodule_id => $access){
-                $data = ["id_rol"       => $rolid,
-                         "id_modulo"    => $module_id,
-                         "id_submodulo" => $submodule_id,
-                         "insertar"     => (isset($access["insert"]))?$access["insert"]:0,
-                         "editar"       => (isset($access["edit"]))?$access["edit"]:0,
-                         "eliminar"     => (isset($access["delete"]))?$access["delete"]:0,
-                         "leer"         => (isset($access["read"]))?$access["read"]:0];
-                $this->db->insert('usuario_rolacceso',$data);
-                $access_id = $this->db->insert_id();
+                $data    = ["id_rol"       => $rolid,
+                            "id_modulo"    => $module_id,
+                            "id_submodulo" => $submodule_id,
+                            "insertar"     => (isset($access["insert"]))?$access["insert"]:0,
+                            "editar"       => (isset($access["edit"]))?$access["edit"]:0,
+                            "eliminar"     => (isset($access["delete"]))?$access["delete"]:0,
+                            "leer"         => (isset($access["read"]))?$access["read"]:0,
+                            "activo"       => "1"];
+                
+                $this->db->select("id_acceso");
+                $this->db->from("usuario_rolacceso");
+                $this->db->where("id_rol",$rolid);
+                $this->db->where("id_modulo",$module_id);
+                $this->db->where("id_submodulo",$submodule_id);
+                $query = $this->db->get();
+                // If exist configuration
+                if($query->num_rows()>0){                    
+                    $rolaccess = $query->row_array();
+                    $update    = ["activo" => 1]; 
+                    $this->db->where('id_acceso',$rolaccess["id_acceso"]);
+                    $this->db->update('usuario_rolacceso',$data);
+                }else{			                    
+                    $this->db->insert('usuario_rolacceso',$data);
+                    $access_id = $this->db->insert_id();
+                }
+
             }
-        }        
-        return $access_id;
+        }
+                 
+        return "true";
     }
     
     public function delete_rol($id){
+        $delete = ["estatus" => 0];
         $this->db->where('id_rol',$id);
-        return $this->db->delete('usuario_roles');
+        return $this->db->update('usuario_roles',$delete);
     }
 }
+ 

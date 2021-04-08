@@ -43,7 +43,7 @@ function includefiles($page){
     $opt = [];
     switch($page){         
         case "MainMap":
-            $options     = ["icheck"];
+            $options     = ["icheck","validate"];
             $head        = ["dist/vendors/quill/quill.snow.css"];
             $body        = ["template" => ["map/map"]];
             //$scripts     = ["layouts/scripts/script_map"];
@@ -60,10 +60,12 @@ function includefiles($page){
                             "table"       => "/Config/Vehicles/List",                            
                             "add_url"     => "/Config/Vehicles/new",
                             "sidebar"     => "config/vehicle/add_vehicle",
-                            "upconf"      => "/Config/Vehicles/update",
-                            "deleteit"    => "/Config/Vehicles/delete"];
+                            "upconf"      => "/Config/Speeds/update",
+                            "deleteit"    => "/Config/Vehicles/delete"]; 
+                            //"upconf"      => "/Config/Vehicles/update",
             //$scriptend     = ["acount/users/validate_user"];  
             //$scriptendfile = ["/dist/js/validate_user.js"];
+            $scriptendfile = ["/dist/js/speeds.js"]; 
         break;   
 
         case "Speeds":             
@@ -106,10 +108,10 @@ function includefiles($page){
                             "add_url"  => "/Acount/User/new",
                             "sidebar"  => "acount/users/add_user",
                             "upconf"   => "/Acount/User/update",
-                            "deleteit" => "/Acount/User/delete"];
-            //$scriptend     = ["acount/users/validate_user"];
+                            "deleteit" => "/Acount/User/delete"];            
             $scriptendfile = ["/dist/js/validate_user.js"];
         break; 
+        
         // **** Profile files  => Acount/User **** //
         case "Profile":
             $options     = ["datatable","icheck","validate"]; 
@@ -138,7 +140,7 @@ function includefiles($page){
         break;
         // **** Company files  => Acount/Contact **** //
         case "CompanyList":
-            $options     = ["datatable","icheck"];
+            $options     = ["datatable","icheck","validate"];
             $body        = ["template" => ["acount/config"],
                             "list"     => "acount/company/company_list", 
                             "table"    => "/Acount/Companys/List",
@@ -150,7 +152,7 @@ function includefiles($page){
         break; 
         // **** My Company files  => Acount/Company/MyCompany **** //
         case "MyCompany":
-            $options     = ["datatable","icheck"];
+            $options     = ["datatable","icheck","validate"];
             $body        = ["template" => ["acount/config"],
                             "content"  => "acount/company/mycompany",
                             "table"    => "/Acount/Companys/List",
@@ -173,7 +175,7 @@ function includefiles($page){
         break;
         // **** Contact files   => Acount/Contact **** //
         case "ContactList":
-            $options = ["datatable","icheck"];
+            $options = ["datatable","icheck","validate"];
             $body        = ["template" => ["acount/config"],
                             "list"     => "acount/contact/contact_list",
                             "table"    => "/Acount/Contact/List",
@@ -184,7 +186,7 @@ function includefiles($page){
                             "deleteit" => "/Acount/Contact/delete"];
         break;
         // ###### ACOUNT FILES ###### //
-    }
+    } 
  
     if(isset($options)){        
         if(!isset($head)){ $head = []; }

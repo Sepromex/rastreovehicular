@@ -18,37 +18,34 @@ class User extends CI_Controller {
 							"prefix"  => "user",
 							"section" => "Users",							
 							"module"  => $this->headerdata["module"]];  
+
 		//Files to be included in head, body and footer
 		$data["include"]     = includefiles($data["custom"]["page"]);		
 		$data["rollist"]     = $this->rol_model->rol_list(); 
-		 
-		//print_array($data["include"]);
+		$data["status_list"]      = $this->user_model->status_usr_list();  
+
 		//Load view
-		$this->load->view('layouts/admin',$data);	 
+		$this->load->view('layouts/admin',$data);
 	}
 	
 	public function List(){
 		//Json user list
 		$user_list = $this->user_model->user_list();  
 
-		if(isset($user_list) && count($user_list)>0){
-			  
-				foreach($user_list  AS $row){
-					$icon = user_toption($row->id_usuario);
-					$data  = [$row->id_usuario,
-							  $row->usuario,
-							  $row->nombre, 
-							  $row->email,                            
-							  "<div class='text-center'>".$row->estatus."</div>",
-							  $icon]; 
-					$jsonData['data'][] = $data;
-				}
-				//user_status($row->estatus_id)
+		if(isset($user_list) && count($user_list)>0){			  
+			foreach($user_list  AS $row){
+				$icon = user_toption($row->id_usuario);
+				$data  = [$row->id_usuario,
+							$row->usuario,
+							$row->nombre, 
+							$row->email,                            
+							"<div class='text-center'>".$row->estatus."</div>",
+							$icon]; 
+				$jsonData['data'][] = $data;
+			}				
 		} 
         echo json_encode($jsonData);
 	}  
-
-
 
 	public function new(){
 		if($_POST["password"] == $_POST["confirmpassword"]){
@@ -70,10 +67,12 @@ class User extends CI_Controller {
 	public function view_userconfig(){
 		$data["user"]             = $this->user_model->user_byid($_POST["id"]); //user info
 		$data["rollist"]          = $this->rol_model->rol_list();   // User rol list
-		$data["companylist"]      = $this->main_model->company_list();  //companys
-		$data["usersep"]          = $this->main_model->users_sepromex();  //sepromex users
-		$data["vehiclelist"]      = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
+		$data["status_list"]      = $this->user_model->status_usr_list();   // User rol list
+		//$data["companylist"]    = $this->main_model->company_list();  //companys
+		
+		$data["vehiclelist"]      = $this->main_model->vehicle_list($_SESSION["user"]["id"]);  //vehicle list
 		$data["assignedvehicles"] = $this->main_model->assigned_vehicles($_POST["id"]);
+
 		//Load view
 		$this->load->view("acount/users/user_configform",$data);
 	}
@@ -88,46 +87,43 @@ class User extends CI_Controller {
         echo json_encode($data);
 	}
 
-	public function assign_vehicles(){		
-		$info             = ["id_vehiculo" => $_POST["id"], "id_usuario" => $_POST["user"]];
-		$data["insert"]   = $this->main_model->assign_vehicles($info); //Check and insert vehicle
+	public function assign_vehicles($id_veh){		
+		//print_array($_POST);
+		$data["insert"]   = $this->main_model->assign_vehicles($_POST,$id_veh); //Check and insert vehicle		
 		
-		if($data["insert"] == "true"):		
-			$data["vehicle"]  = $this->main_model->vehicle_list(0,$_POST["id"]);  // Vehicle info
+		if($data["insert"] > 0):						
+			$data["vehicle"]  = $this->main_model->vehicle_list($_POST["conf_userid"],$data["insert"]);  // Vehicle info
+			$data["insert"]   = "true";
 		endif;
 
 		header("Content-type: application/json");
-        echo json_encode($data);		
+        echo json_encode($data);
 	}
 
 	public function delete_vechilce(){
-		$vehicle = $this->user_model->delete_vechicle($_POST["id"]);    
-		if($vehicle): echo "true"; else: echo "No se elimino el vehiculo"; endif;	
-		
+		$data = ["ACTIVO" => 0];
+		$vehicle = $this->user_model->delete_vechicle($data,$_POST["id"]);    
+		if($vehicle): echo "true"; else: echo "No se elimino el vehiculo"; endif;		
 	}
 
    
 	public function update(){ 
+
 		if($_POST["conf_userpassword"] == $_POST["conf_userconfirmpassword"]){
-			$user = ["usuario"   	=> $_POST["conf_user"],
-					 "nombre"    	=> $_POST["conf_username"],
-					 "apellido"  	=> $_POST["conf_userlastname"],
-					 "email"     	=> $_POST["conf_useremail"],
-					 "password"  	=> $_POST["conf_userpassword"],
-					 "fecha_inicio" => $_POST["conf_userfechainicio"],
-					 "fecha_fin"    => $_POST["conf_userfechafin"],
-					 "estatus"   	=> $_POST["conf_userstatus"],
-					 "id_sepro"   	=> $_POST["conf_usersepromex"],
-					 "id_rol"       => $_POST["conf_userrol"],
-					 "estatus"      => $_POST["conf_userstatus"],
-					 "id_empresa"   => $_POST["conf_usercompany"]];
+			$user = ["USERNAME"   	=> $_POST["conf_user"],
+					 "NOMBRE"    	=> $_POST["conf_username"],					 
+					 "EMAIL"     	=> $_POST["conf_useremail"],
+					 "PASSWORD"  	=> $_POST["conf_userpassword"],					
+					 "ESTATUS"   	=> $_POST["conf_userstatus"],					 
+					 "id_rol"       => $_POST["conf_userrol"]];
 
 			$user_id = $this->user_model->update_user($user,$_POST["conf_userid"]);    
 			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;
-			//print_array($_POST);
+			print_array($user);
 		}else{
 			echo "Las contraseñas no coinciden";
-		}
+		}		
+		echo "update";
 	}
 
 	public function delete(){
@@ -145,9 +141,9 @@ class User extends CI_Controller {
 		$data["include"]  = includefiles($data["custom"]["page"]);		
 		$data["user"]             = $this->user_model->user_byid($_SESSION["user"]["id"]); //user info
 		$data["rollist"]          = $this->rol_model->rol_list();   // User rol list
-		$data["companylist"]      = $this->main_model->company_list();  //companys
-		$data["usersep"]          = $this->main_model->users_sepromex();  //sepromex users		
-		$data["vehiclelist"]      = $this->main_model->vehicle_list($data["user"]["id_empresa"]);  //vehicle list
+		//$data["companylist"]      = $this->main_model->company_list();  //companys
+		//$data["usersep"]          = $this->main_model->users_sepromex();  //sepromex users		
+		$data["vehiclelist"]      = $this->main_model->vehicle_list($_SESSION["user"]["id"]);  //vehicle list
 		$data["assignedvehicles"] = $this->main_model->assigned_vehicles($_SESSION["user"]["id"]);
 		
 		//Load view

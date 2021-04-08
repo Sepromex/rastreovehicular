@@ -10,14 +10,14 @@
                 <?php foreach($company_contactlist as $ccl): ?>
                     <div class="contact family-contact p-0">                             
                         <div class="contact-content" style="min-width:300px;">
-                            <div class="contact-profile col-md-4">                                                   
+                            <div class="contact-profile col-md-5">                                                   
                                     <div class="contact-info">
                                     <p class="contact-name mb-0"><?=$ccl->nombre?></p>
                                     <p class="contact-position mb-0 small font-weight-bold text-muted"><?=$ccl->puesto?></p>
                                     <small class="body-color"><?=$ccl->horario?></small>                                            
-                                    </div>
-                            </div>
-                            <div class="contact-email col-md-3">
+                                    </div> 
+                            </div> 
+                            <div class="contact-email col-md-4"> 
                                 <p class="mb-0 small">Contacto </p>
                                 <p class="user-email"><?=$ccl->email?></p>
                                 <p class="user-phone"></p>
@@ -26,8 +26,9 @@
                                 <p class="mb-0 small">Teléfono: </p>
                                 <p class="user-phone"><?=$ccl->telefono?></p>
                             </div>
-                            <div class="line-h-1 h5  col-md-2">
-                                <a class="text-danger delete-contact" href="#"><i class="icon-trash"></i></a>                                 
+                            <div class="line-h-1 h5  col-md-2"> 
+                                &nbsp;
+                                <!-- <a class="text-danger delete-contact" href="#"><i class="icon-trash"></i></a> -->
                             </div> 
                         </div>
                     </div>
@@ -49,17 +50,22 @@
         </div>
         <div class="card-body p-0">
             <div class="contacts list">
-            <?php foreach($company_officelist as $col): ?>
+            <?php foreach($company_officelist as $col): 
+                    $add  = (isset($col->colonia))?$col->colonia:"";
+                    $ciu  = (isset($col->ciudad) && !is_numeric($col->ciudad))?$col->ciudad:"";
+                    $est  = (isset($col->estado))?$col->estado:"";
+                    $dir  = $add." ".$ciu." ".$est;                    
+            ?>
                 <div class="contact family-contact p-0 "> 
                     <div class="contact-content" style="min-width:300px;">
-                        <div class="contact-profile col-md-4">                         
+                        <div class="contact-profile col-md-5">                         
                             <div class="contact-info">
                                 <p class="contact-name mb-0"><?=$col->razon_social?></p>
                                 <p class="contact-position mb-0 small font-weight-bold text-muted"><?=$col->direccion?></p>
-                                <small class="body-color"><?=$col->colonia." ".$col->ciudad." ".$col->estado?></small>
+                                <small class="body-color"><?=$dir?></small>
                             </div>
                         </div>
-                        <div class="contact-email  col-md-3">
+                        <div class="contact-email  col-md-4">
                             <p class="mb-0 small">Contact </p>
                             <p class="user-email"><?=$col->email?></p>
                             <p class="user-phone"></p>
@@ -68,8 +74,10 @@
                             <p class="mb-0 small">Teléfono: </p>
                             <p class="user-phone"><?=$col->telefono?></p>
                         </div>
+                         
                         <div class="line-h-1 h5  col-md-2">
-                            <a class="text-danger delete-contact" href="#"><i class="icon-trash"></i></a>                                 
+                            &nbsp;&nbsp;
+                            <!-- <a class="text-danger delete-contact" href="#"><i class="icon-trash"></i></a> -->
                         </div> 
                     </div>
                 </div>

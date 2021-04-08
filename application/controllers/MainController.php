@@ -14,6 +14,10 @@ class MainController extends CI_Controller {
         $jsonData['data'] = [];
         echo json_encode($jsonData);				 
     }
+
+	public function status_session(){
+		print_array($_SESSION);
+	}
     
      
 }

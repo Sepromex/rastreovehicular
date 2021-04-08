@@ -1800,7 +1800,7 @@ function modificaUsr($formUsr){
 	$permisos  = $formUsr['perm0'].$formUsr['perm1'].$formUsr['perm2'].$formUsr['perm3'].$formUsr['perm4'].$formUsr['perm5'].$formUsr['perm6'].$formUsr['perm7'].$formUsr['perm8'].$formUsr['perm9'];
 	$vehiculos  = $formUsr['vehiculos'];
 	//$objResponse->alert($permisos );
-	if($usrNvo == ''){
+	if($usrNvo == ''){ 
 		$objResponse->alert("Inserte el nombre del usuario");
 	}else if($pass == ''){
 		$objResponse->alert("Inserte la contraseña para el nuevo usuario");
@@ -1821,11 +1821,11 @@ function modificaUsr($formUsr){
 			}
 		}
 		if($numrow){
-			$cad_qry  ="UPDATE usuarios SET id_empresa='$empresa',username='$usrNvo',password='$pass',estatus='3',
+			$cad_qry  = "UPDATE usuarios SET id_empresa='$empresa',username='$usrNvo',password='$pass',estatus='3',
 			f_inicio='$fecha_ini',f_termino='$fecha_fin',statusmxc='0',poleo_web='1',permisos='$permisos'
 			WHERE id_usuario = $idusuario";
 			$res_qry = mysql_query($cad_qry);
-			//$objResponse->alert(mysql_error() );
+			//$objResponse->alert(mysql_error());
 				if($res_qry){
 					$cad_des="UPDATE veh_usr SET activo = 0 WHERE id_usuario = '$idusuario'";
 					mysql_query($cad_des);

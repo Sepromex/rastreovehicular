@@ -12,12 +12,12 @@
         <div class="align-self-center">
             <?php $this->load->view("config/vehicle/menu_vehicle"); ?>
         </div>
-        <div class="align-self-center ml-auto text-center text-sm-right">           
+        <!-- <div class="align-self-center ml-auto text-center text-sm-right">           
             <a href="#" class="bg-primary py-2 px-2 rounded ml-auto text-white text-center openside">
                 <i class="icon-plus align-middle text-white"></i> 
                 <span class="d-none d-xl-inline-block">Nuevo Vehículo</span>
             </a> 
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -27,12 +27,11 @@
             <thead>       
                 <tr>
                     <th width="10%">ID</th>
-                    <th width="20%">Vehiculo</th>
-                    <!-- <th width="10%">Grupo</th> -->
+                    <th width="20%">Vehiculo</th>                    
                     <th width="10%">Placas</th>
                     <th width="15%">Modelo</th>
-                    <th width="25%">Detalle</th>
-                    <th width="10%" class="text-center">Estatus</th>
+                    <th width="22%">Detalle</th>
+                    <th width="13%" class="text-center">Estatus</th>
                     <th width="10%">&nbsp;</th>
                 </tr>
             </thead> 

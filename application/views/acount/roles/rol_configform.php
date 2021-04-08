@@ -16,10 +16,10 @@
                         <h4 class="card-title">Datos Generales</h4>
                         <div class="align-self-center ml-auto text-center text-sm-right">  
                             <button type="button" class="btn btn-danger" onclick="acount_formtoggle()">Cancelar</button>         
-                            <button type="button" onclick="velidate_form('rol_configform','config')" class="btn btn-success">Editar Rol</button>
+                            <button type="button" onclick="validate_form('rol_configform','config')" class="btn btn-success">Editar Rol</button>
                         </div>
                     </div> 
- 
+  
                     <div class="card-body">
 
                         <div class="form-row">

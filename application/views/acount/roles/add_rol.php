@@ -16,11 +16,11 @@
             <label for="rol_description" class="col-form-label">Descripción</label>
             <textarea name="rol_description" id="rol_description" class="form-control" required="" ></textarea>
         </div>  
-
+ 
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-danger openside">Cancelar</button>
-        <button type="button" class="btn btn-primary" onclick="velidate_form('rol_newform','new')">Agregar Rol</button>
+        <button type="button" class="btn btn-primary" onclick="validate_form('rol_newform','new')">Agregar Rol</button>
     </div>
 </form> 
  

@@ -10,13 +10,12 @@ Class Login_model extends CI_Model {
                            ESTATUS as estatus, 
                            NOMBRE as nombre, 
                            PASSWORD as password, 
-                           ID_EMPRESA as id_empresa,usuario_tipo, activo");
+                           ID_EMPRESA as id_empresa,usuario_tipo, activo, f_inicio, f_termino");
 		$this->db->from("usuarios");
         $this->db->where("USERNAME",$user);		
         $this->db->where("PASSWORD",$password);
         $this->db->where("activo",1);
-        $this->db->where("ESTATUS >",1);   
-        $this->db->where("NOW() BETWEEN f_inicio AND f_termino");     
+        $this->db->where("ESTATUS >",1);        
         $query = $this->db->get();                 
 		if($query->num_rows()>0){            
 		    return $query->row_array();
