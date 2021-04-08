@@ -10,7 +10,7 @@ class Login extends CI_Controller {
 
     //Load login 
 	public function index()
-	{    
+	{ 
         $custom = array("title" => "Login",
                         "form"  => "login/login");     
         $data["custom"] = $custom; 

@@ -1,4 +1,4 @@
-#Activamos la reescritura SI SOLO SI el mod_rewrite se encuentra activado, así se evitan errores 500
+﻿#Activamos la reescritura SI SOLO SI el mod_rewrite se encuentra activado, así se evitan errores 500
 <IfModule mod_rewrite.c>
 
     # Suponiendo que el listado de directorios esté desactivado, permitimos indexación y activamos el rewrite
