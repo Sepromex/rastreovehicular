@@ -18,11 +18,11 @@
     <div class="col-12 px-2 py-3 d-flex mail-toolbar">
         
         <div class="check d-inline-block mr-3">
-            <label class="chkbox">All 
+            <!-- <label class="chkbox">All 
                 <input name="all" value="" type="checkbox" class="checkall">
                 <span class="checkmark"></span>
-            </label>
-        </div> 
+            </label> -->
+        </div>  
 
         <!-- Filtrar por Etiquetas -->
         <a href="#" class="ml-auto toltip" data-placement="top" title="Eliminar"><i class="icon-trash"></i></a>
@@ -36,7 +36,7 @@
         <div>
             <a href="#" class="mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">                
-                <a class="dropdown-item mailread" href="#" onclick="clearMark()" ><i class="icon-reload"></i> Limpiar mapa </a>                    
+                <a class="dropdown-item mailread" href="#" onclick="clearMark()"><i class="icon-reload"></i> Limpiar mapa </a>                    
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item mailread" href="#" onclick="new_mainsite()"><i class="icon-plus"></i> Nuevo sitio de interés </a>                    
             </div>
@@ -63,7 +63,7 @@
                 <div class="mail-content d-md-flex w-100">								
                     <span class="car-name" id="sitename_<?=$idsite?>" onclick="veh_seleccion(<?=$site->latitud?>,<?=$site->longitud?>)"><?=$site->nombre?></span>                                                     
                     <div class="d-flex mt-3 mt-md-0 ml-auto"> 
-                        <div id="siteicon_<?=$idsite?>"><img src="/dist/images/map/site_type/<?=$iconimg?>" width="25px" height="22px" class="toltip" data-placement="top" title="<?=$site->descripcion?>"></div>
+                        <div id="siteicon_<?=$idsite?>"><img src="<?=base_url()?>/dist/images/map/site_type/<?=$iconimg?>" width="25px" height="22px" class="toltip" data-placement="top" title="<?=$site->descripcion?>"></div>
                         <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-options-vertical"></i>
                         </a>
@@ -86,7 +86,7 @@ function formatState (state) {
   if (!state.id) {
     return state.text;
   }
-  var baseUrl = "/dist/images/map/site_type/";  
+  var baseUrl = "<?=base_url()?>/dist/images/map/site_type/";  
   var icon = state.element.dataset.icon;
   //iconos_sitios/15_taller.png  
   

@@ -23,7 +23,7 @@
 
 <div class="card-body">
     <div class="table-responsive">
-        <table id="example" class="display w-100 table dataTable table-striped table-bordered editable-table">
+        <table id="example" class="display w-100 table dataTable table-striped table-bordered editable-table table-responsive">
             <thead>       
                 <tr>
                     <th width="10%">ID</th>

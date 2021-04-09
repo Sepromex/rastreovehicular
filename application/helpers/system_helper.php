@@ -8,6 +8,7 @@ function base_url(){
     //$_SERVER['SERVER_NAME'];
     /*echo $_SERVER['SERVER_NAME']." --- ";
         echo $_SERVER['REQUEST_URI'];*/
+        return "/rv";
 }
 
 function listoption_template($data,$items = 0){    

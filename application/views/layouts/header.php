@@ -2,13 +2,13 @@
 <div id="header-fix" class="header fixed-top">
     <div class="site-width">
         <nav class="navbar navbar-expand-lg  p-0">
-            <div class="navbar-header  h-100 h4 mb-0 align-self-center logo-bar text-left">  
-                <a href="index.html" class="horizontal-logo text-left">
-                    <img   height="40px" src="/assets/images/layout/logo_head.png"/>                                
+            <div class="navbar-header  h-100 h4 mb-0 align-self-center logo-bar text-left hidde-mobile">  
+                <a href="<?=base_url()?>/MainMap" class="horizontal-logo text-left">
+                    <img   height="40px" src="<?=base_url()?>/assets/images/layout/logo_head.png"/>                                
                 </a>                    
             </div>
             <div class="navbar-header h4 mb-0 text-center h-100 collapse-menu-bar">
-                <a href="#" class="sidebarCollapse" id="collapse"><i class="icon-menu"></i></a>
+                <a href="#" class="sidebarCollapse" id="collapse" onclick="collapse()"><i class="icon-menu"></i></a>
             </div>
 
             <form class="float-left d-none d-lg-block search-form">
@@ -17,7 +17,7 @@
                         <div class="btn-search position-absolute top-0">
                             <a href="#"><i class="h6 icon-magnifier"></i></a>
                         </div>
-                        <a href="#" class="position-absolute close-button mobilesearch d-lg-none" data-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="position-absolute close-button mobilesearch d-lg-none " data-toggle="dropdown" aria-expanded="false">
                             <i class="icon-close h5"></i>                               
                         </a>
 
@@ -30,7 +30,8 @@
                     <li class="d-inline-block align-self-center  d-block d-lg-none">
                         <a href="#" class="nav-link mobilesearch" data-toggle="dropdown" aria-expanded="false"><i class="icon-magnifier h4"></i>                               
                         </a>
-                    </li>                        
+                    </li>          
+
                     <!-- 
                     <li class="dropdown align-self-center">
                         <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false">
@@ -108,7 +109,7 @@
                     <li class="dropdown user-profile align-self-center d-inline-block">
                         <a href="#" class="nav-link py-0" data-toggle="dropdown" aria-expanded="false"> 
                             <div class="media">                                   
-                                <img src="/dist/images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29">
+                                <img src="<?=base_url()?>/dist/images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29">
                             </div>
                         </a>
 
@@ -137,7 +138,7 @@
 
                             <div class="dropdown-divider"></div> -->
 
-                            <a href="http://rastreovehicular/Login/cerrar_session" class="dropdown-item px-2 text-danger align-self-center d-flex">
+                            <a href="<?=base_url()?>/Login/cerrar_session" class="dropdown-item px-2 text-danger align-self-center d-flex">
                                 <span class="icon-logout mr-2 h6  mb-0"></span> 
                                 Cerrar Sessión
                             </a>

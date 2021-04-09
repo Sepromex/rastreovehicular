@@ -6,8 +6,7 @@
     $(window).on("load", function () {
         // Animate loader off screen
         $(".se-pre-con").fadeOut("slow");
-        ;
-    });
+    }); 
   
 ///////////////// Flip Menu ///////////
 
@@ -73,12 +72,22 @@
         return false;
     });
 
+
+    
  
     /*==============================================================
      Sidebar 
      ============================================================= */
 
-   
+     $('.sidebarCollapse').on('click', function () {
+        $('body').toggleClass('compact-menu');
+        $('.sidebar').toggleClass('active');
+    });
+
+    $('.mobilesearch').on('click', function () {
+        $('.search-form').toggleClass('d-none');
+
+    });
 
     /////////////////////////// Datepicker ////////////////////////
     if (typeof $.fn.datepicker !== "undefined") {
@@ -163,5 +172,4 @@
 
     
 
-})(jQuery);
- 
+})(jQuery); 

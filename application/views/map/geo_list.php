@@ -18,10 +18,10 @@
             <a href="#" class="ml-auto toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Tipo de Geocerca"><i class="mdi mdi-map-marker-radius "></i></a>
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right fgeo-type">
                 <a class="dropdown-item" href="#" data-type="mail-item"> Todas las Geo-cerca </a>
-                <a class="dropdown-item" href="#" data-type="g-polig"> <img src="/dist/images/map/geo/polig.png" width="15px" height="15px"> Poligonal </a>
-                <a class="dropdown-item" href="#" data-type="g-circle"> <img src="/dist/images/map/geo/circle.png" width="15px" height="15px"> Circular </a>
+                <a class="dropdown-item" href="#" data-type="g-polig"> <img src="<?=base_url()?>/dist/images/map/geo/polig.png" width="15px" height="15px"> Poligonal </a>
+                <a class="dropdown-item" href="#" data-type="g-circle"> <img src="<?=base_url()?>/dist/images/map/geo/circle.png" width="15px" height="15px"> Circular </a>
             </div>
-            
+             
 
             <div>
             <a href="#" class="ml-0 toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Empresa/Usuario"><i class="mdi mdi-shield-check-outline"></i></a>
@@ -35,7 +35,7 @@
             <div>
                 <a href="#" class="mr-0 toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">
-                    <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>
+                    <a class="dropdown-item mailread" href="#" onclick="clearMark()"><i class="icon-reload"></i> Limpiar mapa </a>
                     <!-- <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>-->
                     <a class="dropdown-item mailunread" href="#" onclick="ejecutar_geocercas()"><i class="mdi mdi-trash-can-outline"></i> Nueva Geocerca </a>
                 </div>
@@ -79,7 +79,7 @@
 
                         <div class="<?=$icon_usr?> h5"></div>
 
-                        <img src="/dist/images/map/geo/<?=$icon?>.png" class="mt-1" width="20px" height="18px">
+                        <img src="<?=base_url()?>/dist/images/map/geo/<?=$icon?>.png" class="mt-1" width="20px" height="18px">
 
                         <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-options-vertical"></i>

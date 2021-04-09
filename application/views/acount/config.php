@@ -5,17 +5,17 @@
         <div class="card border h-100 contact-menu-section">
             <ul class="nav flex-column contact-menu">
                 <li class="nav-item">
-                    <a class="nav-link h6 <?=($custom['section'] == 'Users')?'active':''?>" href="/Acount/User">
+                    <a class="nav-link h6 <?=($custom['section'] == 'Users')?'active':''?>" href="<?=base_url()?>/Acount/User">
                         <i class="icon-people h4"></i> Usuarios
                     </a>
                 </li>               
                 <li class="nav-item">
-                    <a class="nav-link h6 <?=($custom['section'] == 'Company')?'active':''?>" href="/Acount/Companys">
+                    <a class="nav-link h6 <?=($custom['section'] == 'Company')?'active':''?>" href="<?=base_url()?>/Acount/Companys">
                         <i class="icon-layers h4"></i> Empresas
                     </a>
                 </li> 
                 <li class="nav-item">
-                    <a class="nav-link h6 <?=($custom['section'] == 'Contact')?'active':''?>" href="/Acount/Contact">
+                    <a class="nav-link h6 <?=($custom['section'] == 'Contact')?'active':''?>" href="<?=base_url()?>/Acount/Contact">
                         <i class="icon-people h4"></i> Contactos
                     </a>
                 </li>            

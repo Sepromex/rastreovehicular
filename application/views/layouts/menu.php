@@ -4,7 +4,11 @@
         <!-- START: Menu-->
         <ul id="side-menu" class="sidebar-menu">
 
-            <li><a href="/MainMap"><i class="icon-organization mr-1"></i> Rastreo </a> </li>
+            <li><a href="<?=base_url()?>/MainMap"><i class="icon-organization mr-1"></i> Rastreo </a> 
+                <ul class="show-mobile">
+                    <li><a href="<?=base_url()?>/MainMap"> <i class="icon-doc mr-1"></i> Mapa </a></li>                    
+                </ul> 
+            </li>
             
             <!--<li class="dropdown"><a href="#"><i class="icon-layers mr-1"></i> Reportes </a>                  
                 <ul>
@@ -16,7 +20,7 @@
 
             <li class="dropdown"><a href="#"><i class="icon-doc mr-1"></i> Configuración </a>                  
                 <ul>
-                    <li> <a href="/Config/Vehicles"> <i class="icon-lock"></i> Vehiculos </a></li>  
+                    <li> <a href="<?=base_url()?>/Config/Vehicles"> <i class="icon-lock"></i> Vehiculos </a></li>  
                    <!-- <li> <a href="/"> <i class="icon-lock"></i> Sitios de interez </a></li>  
                     <li> <a href="/"> <i class="icon-lock"></i> Geocercas </a></li> -->
                 </ul>
@@ -26,9 +30,9 @@
 
             <li class="dropdown"><a href="#"><i class="icon-doc mr-1"></i> Cuenta </a>                  
                 <ul>  
-                    <li><a href="/Acount/User"><i class="icon-book-open"></i> Usuarios </a> </li>
-                    <li><a href="/Acount/Companys"><i class="icon-book-open"></i> Empresas </a> </li>
-                    <li><a href="/Acount/Contact"><i class="icon-book-open"></i> Contactos </a> </li>
+                    <li><a href="<?=base_url()?>/Acount/User"><i class="icon-book-open"></i> Usuarios </a> </li>
+                    <li><a href="<?=base_url()?>/Acount/Companys"><i class="icon-book-open"></i> Empresas </a> </li>
+                    <li><a href="<?=base_url()?>/Acount/Contact"><i class="icon-book-open"></i> Contactos </a> </li>
                     <!-- <li><a href="#"> <i class="icon-book-open"></i> Preferencias </a> </li> -->
                 </ul>                   
             </li> 

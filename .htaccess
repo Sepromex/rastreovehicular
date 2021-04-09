@@ -9,7 +9,7 @@
     #AllowOverride All
 
     # Se supone que la regla aplica desde el directorio donde se encuentra el .htaccess pero si es necesario lo especificas, siendo / la raiz de dominio
-    #RewriteBase /rv/
+    #RewriteBase /rv
 
     # con esta instrucción bloqueamos el acceso a la carpeta system, si es que se encuentra en el directorio web
     RedirectMatch 403 ^/(system).*$
@@ -19,6 +19,7 @@
     RewriteCond %{REQUEST_FILENAME} !-d
 
     # Si el archivo/directorio no existe, redireccionamos
-    RewriteRule ^(.*)$ /index.php/$1 [L]
+    #RewriteRule ^(.*)$ /index.php/$1 [L]
+    RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
 </IfModule>
 

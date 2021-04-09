@@ -69,7 +69,7 @@
     </div> 
     
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger openside" onclick="clearMarkers()">Cancelar</button>
+        <button type="button" class="btn btn-danger openside" onclick="clearMark()">Cancelar</button>
         <?php if($sitet_form==0): ?>
         <button type="button" class="btn btn-primary" onclick="edit_site()">Editar Sitio</button>
         <?php else: ?>
@@ -85,7 +85,7 @@ function formatStateedit (state) {
   if (!state.id) {
     return state.text;
   }
-  var baseUrl = "/dist/images/map/site_type/";  
+  var baseUrl = "<?=base_url()?>/dist/images/map/site_type/";  
   var icon = state.element.dataset.icon;
   //console.log(icon);  
   

@@ -279,7 +279,7 @@ html{ overflow-x: hidden; }
     width: 50px;
     border-right: 1px solid var(--bordercolor);
     padding: 16px 0px;
-    line-height: 39px;
+    line-height: 39px; 
 }
 
 #header-fix nav {
@@ -5894,6 +5894,7 @@ transform: scale(1.01);
     }
 }
 @media (min-width: 768px) {
+    
     .show-mobile {
         display:none;
     }
@@ -5906,7 +5907,8 @@ transform: scale(1.01);
 
 }
 
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
+    .car-name{ font-size: 18px !important;} 
     .show-mobile {
         display:block;
     }

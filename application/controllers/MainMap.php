@@ -374,7 +374,7 @@ public function get_ubication(){
 			}	
 
 			$resveh = $this->Mainmap_model->vehicle_position($max_pos,$veh,$company);  
-			if($resveh){
+			if(!$resveh){
 				$resveh = $this->Mainmap_model->vehicle_position(0,$veh,$company);
 			}		
 			
@@ -474,8 +474,8 @@ public function get_ubication(){
 							$cab_bat 
 							$cabe
 							<th align='center'>Latitud,Longitud</th>
-							<th align='center'>Ubicación</th>
-							<th align='center'>MSJ</th>
+							<!--<th align='center'>Ubicación</th>
+							<th align='center'>MSJ</th>-->
 							<th>Satelites</th>
 						</tr>
 						<tr class='fuente_ocho' id='tr_vehcontent'>";
@@ -505,15 +505,15 @@ public function get_ubication(){
 				
 				
 				//$calle .= " ".sitio_cercano($idemp,$lat,$lon);
+				//<td>".$calle."</td>				
+				//<td>".$img."</td>
 				$datos .= "
 							<td>".$vehname."</td>
 							<td>".date('d',$fec1).'-'.$mess.'-'.date('Y h:i:s A', $fec1)."</td>
 							<td>".$vel."</td>
 							$cuer_bat 
 							$cuerpo
-							<td>".number_format($lat,7,'.','').",".number_format($lon,7,'.','')."</td>
-							<td>".$calle."</td>
-							<td>".$img."</td>
+							<td>".number_format($lat,7,'.','').",".number_format($lon,7,'.','')."</td>							
 							<td align='center'>".$rowveh["satelites"]."</td>
 						</tr>
 					</table>
@@ -544,6 +544,224 @@ public function get_ubication(){
 
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+public function get_ubication22(){
+	$options="";
+	/* insertar auditabilidad */
+	$veh     = "68514";
+	$company = "342";
+	$check   = "0";
+	
+	// cambiar valor del vehiculo actual en el DOM
+
+	$msg = $this->Mainmap_model->company_messages($company);
+	if($msg): $company = $msg["id_empresa"]; else: $company = 15; endif;
+
+	/* ************ */
+	if($veh!=0){
+
+		$max_pos = 0;
+		$idlast_positions   = $this->Mainmap_model->id_pos_date($veh);			
+		if(isset($idlast_positions["id"]) && $idlast_positions["id"]>0){
+			$max_pos = $idlast_positions["id"];
+		}	
+		echo "entro al if";
+		$resveh = $this->Mainmap_model->vehicle_position($max_pos,$veh,$company);  
+		echo "entro al if2";
+		if(!$resveh){
+			echo "entro al if 3";
+			$resveh = $this->Mainmap_model->vehicle_position(0,$veh,$company);
+		}		
+		echo "entro al if4";
+		print_array($resveh);
+		
+		$rowveh = $resveh;
+		$vehname = $rowveh["id_veh"];
+		$lat = $rowveh["lat"];
+		$lon = $rowveh["lon"];
+		$vel = $rowveh["velocidad"];
+		$fecha = $rowveh["fecha"];
+		$tipov = $rowveh["tipoveh"];
+		$t_msj = $rowveh["t_mensaje"];
+		$empresa = $rowveh["id_empresa"];
+		$clv = $rowveh["entradas"];
+		$odo = $rowveh["odometro"];
+		$bat = $rowveh["entradas_a"];
+		$idtipo = $rowveh["id_tipo"];
+		$idsis = $rowveh["id_sistema"];
+		$obsoleto = $rowveh["obsoleto"];
+
+		$zona=$this->Mainmap_model->get_gtm($veh);
+		if($zona == "0"){
+			$dif="+0";				
+		}else{
+			$dif=(5)+($zona["gmt"]);
+			$fecha=date("Y-m-d H:i:s",strtotime($fecha." $dif hours"));
+		} 
+
+		$men      = $obsoleto;
+		$cab_bat  = ""; 
+		$cabe     = "";
+		$cuer_bat = "";
+		$cabe     = "";
+		$cuerpo   = "";
+
+		if($idsis == 23 || $idsis == 26){
+			if($bat<= 100 && $bat > 90){
+				$bateria = "<img src='/dist/images/map/carga1.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat	<=90  && $bat >75 ){
+				$bateria = "<img src='/dist/images/map/carga2.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat	<= 75 && $bat > 60){
+				$bateria = "<img src='/dist/images/map/carga3.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat	<= 60 && $bat > 48){
+				$bateria = "<img src='/dist/images/map/carga4.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat	<= 48 && $bat > 30){
+				$bateria = "<img src='/dist/images/map/carga5.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat	<= 30 && $bat > 15){
+				$bateria = "<img src='/dist/images/map/carga6.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat	<= 15 && $bat >= 1){
+				$bateria = "<img src='/dist/images/map/carga7.png' width='10' height='20' title='$bat %'/>";
+			}
+			if($bat == 0){
+				$bateria = "<img src='/dist/images/map/carga8.png' width='10' height='20' title='$bat %'/>";
+			}
+			$cab_bat  = "<th>Bateria</th>";
+			$cuer_bat = "<td>$bateria</td>";
+		}
+		if( $idsis == 20 || $idsis == 34  ){ //$veh == 67948  || $veh == 66887
+			$cabe = "<th>ODO</th>";
+			$cuerpo = "<td>$odo</td>";
+		}	
+		if($t_msj == 2 || $t_msj == 1 || $t_msj == 13)
+			$men = $rowveh["mensaje"];		
+		if($men != ''){
+			$img='<img src="/dist/images/map/msg.png" border = "0" title="'.$men.'" width = "25" height="16" onclick = "alert(\''.$men.'\')" >';
+		}
+		else
+			$img = "&nbsp;";
+			
+
+		// ERROR EN ESTE IF
+		if((($lat != "") || ($lon != "")) && (($lat != 0) || ($lon != 0))){
+			$cruce = ""; //otro_server($lat,$lon);
+			$calle = "";
+
+			if($cruce==''){//si no trae cruce entra al web service
+			}
+			else 
+			if( $obsoleto != 1 ){ $calle = $cruce; } //si trae cruce no entra al web service y recibe al valor de la consulta		
+			else $calle = "Posición obsoleta: $cruce";
+			// <img onclick='ocultar_veh();' src='img2/cerrar.png' width='20px'>				
+			$datos = "
+			<div id='mostrar_veh' style='margin:0px; width: 100%;'>
+				<div style='float:right;'></div>
+				<table border='0' id='box-table-a' class='table' style=' margin:0px;'>
+					<tr class='fuente_siete' style='margin:0px; width: 100%; background-color:#f3f3f3;'>
+						<th align='center'>Vehículo</th>
+						<th  align='center'>Fecha / Hora</th>
+						<th align='center'>Km/H</th>
+						$cab_bat 
+						$cabe
+						<th align='center'>Latitud,Longitud</th>
+						<!--<th align='center'>Ubicación</th>
+						<th align='center'>MSJ</th>-->
+						<th>Satelites</th>
+					</tr>
+					<tr class='fuente_ocho' id='tr_vehcontent'>";
+			//if($check == 1){ $datos = ""; }
+
+			$fec1     = date_format(date_create($fecha),'Y-m-d h:i:s'); // cambio de strtotime() a date_format()para php 7				
+			$fec1     = intval($fec1);
+			
+			$mes=date('n',$fec1);
+
+//			echo $fecha." -- /// -- ".$mes;
+
+			switch($mes){
+				case 1: $mess='Ene'; break;
+				case 2: $mess='Feb'; break;
+				case 3: $mess='Mar'; break;
+				case 4: $mess='Abr'; break;
+				case 5: $mess='May'; break;
+				case 6: $mess='Jun'; break;
+				case 7: $mess='Jul'; break;
+				case 8: $mess='Ago'; break;
+				case 9: $mess='Sep'; break;
+				case 10: $mess='Oct'; break;
+				case 11: $mess='Nov'; break;
+				case 12: $mess='Dic'; break;
+			}
+			
+			
+			//$calle .= " ".sitio_cercano($idemp,$lat,$lon);
+			//<td>".$calle."</td>				
+			//<td>".$img."</td>
+			$datos .= "
+						<td>".$vehname."</td>
+						<td>".date('d',$fec1).'-'.$mess.'-'.date('Y h:i:s A', $fec1)."</td>
+						<td>".$vel."</td>
+						$cuer_bat 
+						$cuerpo
+						<td>".number_format($lat,7,'.','').",".number_format($lon,7,'.','')."</td>							
+						<td align='center'>".$rowveh["satelites"]."</td>
+					</tr>
+				</table>
+			</div>";
+
+			//echo "--".$max_pos."--";
+			$data["table"]   = $datos; //mostrar tabla
+			$data["last"]    = ["lat" => $lat, "lon" => $lon, "tipov" => $tipov]; //Ultima posicion "MapaCord"
+			$data["route"]   = $this->Mainmap_model->get_positiones($veh);	//$objResponse->call("crea_recorrido",
+			$data["veh"]     = $veh;
+
+			//$objResponse->script("mostrarLinea2(0);");				
+			//$objResponse->script("muestra_cuerpo()");
+			
+		}else{ //Sucede cuando no hay datos de ese vehiculo en la tabla ultimapos				
+			$data["error"] = "No hay posición válida del vehículo seleccionado en este momento, vuelva a intentar en unos momentos o envíe un poleo";
+		}
+
+	}else { //si selecciona el valor "0" le decimos al usuario que seleccione un vehiculo de la lista
+		$data["error"] = "Seleccione un vehiculo de la lista."; 
+	}
+
+	//header("Content-type: application/json");        	
+	//echo json_encode($data);
+	print_array($data);
+
+	/************* */
+
+
+
+}
 
 
 

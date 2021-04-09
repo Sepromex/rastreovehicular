@@ -11,12 +11,13 @@
         <div class="align-self-center">
             <?php $this->load->view("acount/company/menu_company"); ?>
         </div>
+        <!--
         <div class="align-self-center ml-auto text-center text-sm-right">           
             <a href="#" class="bg-primary py-2 px-2 rounded ml-auto text-white text-center openside">
                 <i class="icon-plus align-middle text-white"></i> 
                 <span class="d-none d-xl-inline-block"> Nueva Empresa </span>
             </a> 
-        </div>
+        </div> -->
     </div>
 </div> 
 
@@ -26,11 +27,11 @@
             <div class="position-relative">
                 <div class="background-image-maker py-5"></div>
                 <div class="holder-image">
-                    <img src="/dist/images/Acount/profile_banner.jpeg" alt="" class="img-fluid d-none">
+                    <img src="<?=base_url()?>/dist/images/Acount/profile_banner.jpeg" alt="" class="img-fluid d-none">
                 </div>
                 <div class="position-relative px-3 py-5">
                     <div class="media d-md-flex d-block">
-                        <a href="#"><img src="/dist/images/Acount/profile.png" width="100" alt="" class="img-fluid rounded-circle"></a>
+                        <a href="#"><img src="<?=base_url()?>/dist/images/Acount/profile.png" width="100" alt="" class="img-fluid rounded-circle"></a>
                         <div class="media-body z-index-1">
                             <div class="pl-4">
                                 <h1 class="display-4 text-uppercase text-white mb-0" id="company_labelname"><?=(isset($company["razon_social"]))?$company["razon_social"]:""?></h1>

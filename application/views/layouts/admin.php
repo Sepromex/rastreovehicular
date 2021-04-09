@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/flags-icon/css/flag-icon.min.css">        
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/materialdesign-webfont/css/materialdesignicons.min.css">        
         <!-- END Template CSS-->       
-        
+         
         <!-- START: Page CSS-->   
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/morris/morris.css"> 
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/weather-icons/css/pe-icon-set-weather.min.css">  
@@ -212,3 +212,9 @@
     </body>
     <!-- END: Body-->
 </html> 
+<script>
+    function collapse(){
+        $('body').toggleClass('compact-menu');
+        $('.sidebar').toggleClass('active');
+    }
+</script>

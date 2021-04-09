@@ -1,5 +1,25 @@
-	RewriteEngine on RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
-	RewriteRule ^index\.html$ http://localhost/rv/ [R=301,L]
-	RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
-	RewriteRule ^index\.php$ http://localhost/rv/ [R=301,L]
+﻿#Activamos la reescritura SI SOLO SI el mod_rewrite se encuentra activado, así se evitan errores 500
+<IfModule mod_rewrite.c>
+
+    # Suponiendo que el listado de directorios esté desactivado, permitimos indexación y activamos el rewrite
+    Options +FollowSymLinks -Indexes
+    RewriteEngine on
+
+    # Usualmente "AllowOverride" debería estar en 'All' en el apache.conf/vhost.conf, pero si no descomentas lo siguiente para evitar un error 404
+    #AllowOverride All
+
+    # Se supone que la regla aplica desde el directorio donde se encuentra el .htaccess pero si es necesario lo especificas, siendo / la raiz de dominio
+    #RewriteBase /rv
+
+    # con esta instrucción bloqueamos el acceso a la carpeta system, si es que se encuentra en el directorio web
+    RedirectMatch 403 ^/(system).*$
+
+    # Antes de redireccionar, se verifica que la petición no sea a un directorio o archivo existente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Si el archivo/directorio no existe, redireccionamos
+    #RewriteRule ^(.*)$ /index.php/$1 [L]
+    RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+</IfModule>
 

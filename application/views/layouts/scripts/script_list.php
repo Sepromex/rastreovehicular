@@ -44,7 +44,7 @@
         });
     }
 
-    var table_list = '<?=$include["body"]["table"]?>';
+    var table_list = '<?=base_url().$include["body"]["table"]?>';
     if(table_list){
         if($('#example')){
             $('#example').DataTable({
@@ -53,7 +53,7 @@
                                 'copy', 'csv', 'excel', 'pdf', 'print'
                             ],                
                 responsive: true,
-                ajax: '<?=$include["body"]["table"]?>'
+                ajax: table_list
             });  
         }
     }
@@ -156,7 +156,7 @@ function insert_newrow(){
     $.ajax({
         type: "POST", 
         data: $("#<?=$custom["prefix"]?>_newform").serialize(),
-            url: "<?=$include["body"]["add_url"]?>",
+            url: "<?=base_url().$include["body"]["add_url"]?>",
         success: function (response) { 
             if (response == "true") {
                 location.reload();                     
@@ -173,7 +173,7 @@ function save_configform(){
     $.ajax({ 
         type: "POST",
         data: $("#<?=$custom["prefix"]?>_configform").serialize(), 
-        url: "<?=$include["body"]["upconf"]?>", 
+        url: "<?=base_url().$include["body"]["upconf"]?>", 
         success: function (response) {             
              if (response == "true") {
                 location.reload(); 
@@ -194,7 +194,7 @@ function list_delete(id){
     $.ajax({ 
         type: "POST",
         data: {id:id},
-        url: "<?=$include["body"]["deleteit"]?>", 
+        url: "<?=base_url().$include["body"]["deleteit"]?>", 
         success: function (response) {              
             console.log(response); 
             if (response == "true") {
@@ -211,7 +211,7 @@ function contact_formedit(id){
     $.ajax({
         type: "POST",
         data: {id:id},
-        url: "/Acount/contact/view_contactconfig",
+        url: "<?=base_url()?>/Acount/contact/view_contactconfig",
         success: function (contact) { 
             console.log(contact.id_empresa);
             console.log(contact.id_usuario);
@@ -250,7 +250,7 @@ function company_formedit(id){
     $.ajax({
         type: "POST",
         data: {id:id},
-        url: "/Acount/companys/view_companyconfig",
+        url: "<?=base_url()?>/Acount/companys/view_companyconfig",
         success: function (response) {  
             //var company = response.company;
             //var contactofficelist = response.contactofficelist;
@@ -282,7 +282,7 @@ function office_formedit(id,company){
     $.ajax({
         type: "POST",
         data: {id:id,id_company:company},
-        url: "/Acount/office/view_officeconfig",
+        url: "<?=base_url()?>/Acount/office/view_officeconfig",
         success: function (response) {        
             $("#general-forms").html(response);
             acount_formtoggle();
@@ -322,7 +322,7 @@ function rol_formedit(id){
     $.ajax({
         type: "POST",
         data: {id:id},
-        url: "/Acount/Rol/view_rolconfig",
+        url: "<?=base_url()?>/Acount/Rol/view_rolconfig",
         success: function (response) { 
             crean_checkform();             
             var rol = response.rol;
@@ -362,7 +362,7 @@ function edit_vehicle(){
     $.ajax({
         type: "POST", 
         data: $("#vehedit_configform").serialize(),
-            url: "/Config/Vehicles/vehicle_update",
+            url: "<?=base_url()?>/Config/Vehicles/vehicle_update",
         success: function (response) { 
             console.log(response);
             if (response == "true") {
@@ -377,7 +377,7 @@ function vehicle_formedit(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
-        url: "/Config/Vehicles/vehicle_edit",
+        url: "<?=base_url()?>/Config/Vehicles/vehicle_edit",
         success: function (response) { 
             $("#sidebar-content").html(response); 
             $('#settings').toggleClass('active');
@@ -401,4 +401,45 @@ function vehicle_formedit(id){
 } 
 
 
+
+function user_formedit(id){
+    $.ajax({
+        type: "POST",
+        data: {id:id},
+        url: "<?=base_url()?>/Acount/User/view_userconfig",
+        success: function (response) {              
+           /* $("#conf_useridlabel").html(user.id_usuario);
+            $("#conf_userid").val(user.id_usuario);
+            $("#conf_user").val(user.usuario);            
+            $("#conf_username").val(user.nombre);
+            $("#conf_userlastname").val(user.apellido);            
+            $("#conf_useremail").val(user.email);
+            $("#conf_userstatus").val(user.estatus);
+            $("#conf_userfechareg").html(user.fecha_reg);
+            $("#conf_userpassword").val(user.password); 
+            $("#conf_userconfirmpassword").val(user.password); */
+            $("#acount-forms").html(response);            
+            acount_formtoggle(); 
+        } 
+    });
+}
+
+var user_configform = document.getElementById('rol_configform');
+if(user_configform){
+user_configform.onsubmit = function(){ 
+    $.ajax({
+        type: "POST",
+        data: $("#rol_configform").serialize(),
+        url: "<?=base_url()?>/Acount/Rol/update",
+        success: function (response) { 
+            if (response == "true") {
+                location.reload(); 
+            } else {                            
+                alert(response);
+            //    $("#confirmpassword").attr('invalid');
+            } 
+        }
+    });
+};
+} 
 </script>

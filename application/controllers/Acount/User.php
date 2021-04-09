@@ -119,11 +119,11 @@ class User extends CI_Controller {
 
 			$user_id = $this->user_model->update_user($user,$_POST["conf_userid"]);    
 			if($user_id): echo "true"; else: echo "No se edito el usuario"; endif;
-			
+			 
 		}else{
 			echo "Las contraseñas no coinciden";
 		}		
-		echo "update";
+
 	}
 
 	public function delete(){

@@ -12,13 +12,14 @@
     .padding-tab{ padding: .5rem .6rem !important; }
     .speed-icon{ margin-bottom: .5rem; font-weight: 500; line-height: 1.2; width:20px; }
     .bg-orange{ background-color: orange; }    
-    #map { width: 100%; height: 690px; }
+    #map { width: 97%; height: 690px; margin left:10px; }
+    #ubicacion, #sitios {width:99.9%; }
     html, body{ height: 100%; margin: 0; padding: 0; }
     .text-orange{ color: orange; }
     .cursor-pointer{ cursor:pointer; }
     .bg-control{ background-color: #d3f5c9 !important; } 
 </style>
-
+ 
 <div class="container-fluid "> 
     <!-- START: Card Data-->
     <div class="row">
@@ -31,7 +32,7 @@
     <div class="row">
 
 
-        <div class="col-2 mt-3"> 
+        <div class=" col-sm-12 col-md-4 col-lg-4 col-xl-3  mt-3"> 
             <div class="card"><?php //print_array($site_type);?>
                 <!-- ##### TABS ##### -->
                 
@@ -42,19 +43,19 @@
                                     <li class="nav-item" style="padding: 5px 2px !important;">
                                         <a href="#" class="nav-link padding-tab active  toltip" data-list="vehicle_list"  data-placement="top" title="Vehículos"> 
                                             <i class="mdi mdi-car font-tab"></i> 
-                                            <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span>
+                                            <!-- <span class="ml-auto badge badge-pill badge-success bg-success car-num"><?=(isset($vehicle_list))?count($vehicle_list):0;?></span> -->
                                         </a>
                                     </li>
                                     <li class="nav-item" style="padding: 5px 2px !important;">
-                                        <a href="#" class="nav-link padding-tab toltip" data-list="site_list" data-placement="top" title="Sitios de interéz">
+                                        <a href="#" class="nav-link padding-tab toltip" data-list="site_list" data-placement="top" title="Sitios de interés">
                                             <i class="mdi mdi-home-map-marker font-tab"></i> 
-                                            <span class="ml-auto badge badge-pill badge-success bg-success car-num">9</span>
+                                            <!-- <span class="ml-auto badge badge-pill badge-success bg-success car-num">9</span> -->
                                         </a>
                                     </li> 
                                     <li class="nav-item"  style="padding: 5px 2px !important;">
                                         <a href="#" class="nav-link padding-tab toltip"  data-list="geoc_list"  data-placement="top" title="Geo-cerca">
                                             <i class="mdi mdi-map-marker-circle font-tab"></i>
-                                            <span class="ml-auto badge badge-pill badge-success bg-success car-num">10</span>
+                                            <!-- <span class="ml-auto badge badge-pill badge-success bg-success car-num">10</span> -->
                                         </a>
                                     </li>
                                 </ul> 
@@ -92,7 +93,7 @@
             </div>  <!-- End card-->              
         </div> <!-- END col-2 -->
         
-        <div class="col-9 mt-3">
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-9  mt-3">
             <div class="row">                
                 <div id="map"></div>
             </div>
@@ -103,9 +104,9 @@
     </div>
 </div>
 
-<!--
+
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
-   -->
+
 
 <script> 
 
@@ -113,14 +114,14 @@ $('.toltip').tooltip();
 var timerID = 0;
 var marca,marker,sitios;
 var elim_sitio = new Array();
-//var makingQuery = false;
+
 var markersArrays = new Array();
 var directionsService;
 var directionsDisplay;
 
 var childwindows = new Array();
 var al = new Array();
-var nl = new Array();
+var nl = new Array(); 
 
 //founcion de incio de mapas de google.
 var punto;
@@ -132,8 +133,8 @@ var marcaStart,marcaEnd;
 var visitedPages = new  Array();
 var linea = new Array();
 var optSelected = 1;
-var flightPath;
-var arregloDeRecorridos= new Array();
+var flightPath = new Array();
+var arregloDeRecorridos = new Array();
 
 var origin = null;
 var destination = null;
@@ -143,9 +144,36 @@ var markers = [];
 var markers_rutas = [];
 var directionsVisible = false;
 var currentId = 0;
-var uniqueId = function() {
-    return ++currentId;
-}
+
+
+let map;
+
+    function initMap() {
+        //directionsService = new google.maps.DirectionsService();
+        //directionsDisplay = new google.maps.DirectionsRenderer();
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 21.9518, lng: -100.9397 },
+            zoom: 6,
+            streetViewControl: true, //true= "monito"
+            disableDoubleClickZoom:true,
+            overviewMapControl:true,
+            panControl: true,
+            zoomControl: true,  
+            zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.SMALL
+            },
+            scaleControl: true,
+            scaleControlOptions: {
+                position: google.maps.ControlPosition.LEFT_CENTER
+            },
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+        });
+                
+        //directionsService = new google.maps.DirectionsService();
+        //directionsDisplay = new google.maps.DirectionsRenderer(); 
+        //directionsDisplay.setMap(map);
+    }
 
 function ejecutar_geocercas(){
 	var request = confirm("Deseas agregar una geocerca cirular");
@@ -190,7 +218,7 @@ function edit_geoside(id){
         $.ajax({ 
             type: "POST", 
             data: $("#side_maingeo").serialize(),
-            url: "/Config/Geo/geo_update",
+            url: "<?=base_url()?>/Config/Geo/geo_update",
             success: function (response) {  
                 if(response == "true"){ 
                     $("#geo_list li #geoname_"+id).html($("#side_maingeo #geoside_name").val());
@@ -217,7 +245,7 @@ function save_newgeo(){
         $.ajax({ 
             type: "POST", 
             data: $("#side_maingeo").serialize(),
-            url: "/Config/Geo/insert_site",
+            url: "<?=base_url()?>/Config/Geo/insert_site",
             success: function (response) {            
                 if(response > 0){
                     var idgeo = response;
@@ -228,7 +256,7 @@ function save_newgeo(){
 
                     $('#settings').removeClass('active');
                 
-                var template = '<li class="py-1 px-2 mail-item inbox bg-control sent g-'+icon+' geo_'+classusr+'"  id="geolist_'+idgeo+'" style="opacity:0;"><div class="d-flex align-self-center align-middle"><label class="chkbox"><input type="checkbox"><span class="checkmark small"></span></label><div class="mail-content d-md-flex w-100"><span class="car-name" id="geoname_'+idgeo+'">'+nombre+'</span><div class="d-flex mt-3 mt-md-0 ml-auto"><div class="'+icon_usr+' h5"></div><img src="/dist/images/map/geo/'+icon+'.png" class="mt-1" width="20px" height="18px"><a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a><div class="dropdown-menu p-0 m-0 dropdown-menu-right"><a class="dropdown-item" href="#" onclick="edit_geolist('+idgeo+')"><i class="mdi mdi-playlist-edit"></i> Editar </a><a class="dropdown-item" href="#" onclick="delete_mainsite('+idgeo+')"><i class="icon-trash"></i> Eliminar </a></div></div></div></div></li>';               
+                var template = '<li class="py-1 px-2 mail-item inbox bg-control sent g-'+icon+' geo_'+classusr+'"  id="geolist_'+idgeo+'" style="opacity:0;"><div class="d-flex align-self-center align-middle"><label class="chkbox"><input type="checkbox"><span class="checkmark small"></span></label><div class="mail-content d-md-flex w-100"><span class="car-name" id="geoname_'+idgeo+'">'+nombre+'</span><div class="d-flex mt-3 mt-md-0 ml-auto"><div class="'+icon_usr+' h5"></div><img src="<?=base_url()?>/dist/images/map/geo/'+icon+'.png" class="mt-1" width="20px" height="18px"><a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a><div class="dropdown-menu p-0 m-0 dropdown-menu-right"><a class="dropdown-item" href="#" onclick="edit_geolist('+idgeo+')"><i class="mdi mdi-playlist-edit"></i> Editar </a><a class="dropdown-item" href="#" onclick="delete_mainsite('+idgeo+')"><i class="icon-trash"></i> Eliminar </a></div></div></div></div></li>';               
                 if($("#geo_list").prepend(template)){
                         $("#geolist_"+idgeo).animate({opacity: 1}, 700, function() {                        
                             $("#geolist_"+idgeo).removeClass('bg-control',700);
@@ -249,7 +277,7 @@ function edit_geolist(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id,type:1},
-        url: "/Config/Geo/geo_sideform",
+        url: "<?=base_url()?>/Config/Geo/geo_sideform",
         success: function (response) { 
             $("#sidebar-content").html(response);  
             $('#settings').addClass('active');
@@ -296,7 +324,7 @@ function dibujaGeoCircular(centro){
         $.ajax({ 
             type: "POST",             
             data: {type:0, lat:centro.lat(), lon:centro.lng(), radio:radio},
-            url: "/Config/Geo/geo_sideform",
+            url: "<?=base_url()?>/Config/Geo/geo_sideform",
             success: function (response) {  
                 $("#sidebar-content").html(response);  
                 $('#settings').addClass('active');
@@ -456,7 +484,7 @@ function contar(){
                 $.ajax({ 
                 type: "POST", 
                 data: {id:check},
-                url: "/Config/Geo/info_geo",
+                url: "<?=base_url()?>/Config/Geo/info_geo",
                 success: function (response) {   
                     /*$("#sidebar-content").html(response); 
                     $('#settings').addClass('active');
@@ -492,61 +520,31 @@ function reset() {
      
 }
 
-//Sin uso
-function clear_ruta(){
-nC("#inicio_ruta").val(0);
-nC("#inter_ruta").val(0);
-nC("#fin_ruta").val(0);
-}
-let map;
 
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 21.9518, lng: -100.9397 },
-            zoom: 6,
-            streetViewControl: true, //true= "monito"
-            disableDoubleClickZoom:true,
-            overviewMapControl:true,
-            panControl: true,
-            zoomControl: true,  
-            zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL
-            },
-            scaleControl: true,
-            scaleControlOptions: {
-                position: google.maps.ControlPosition.LEFT_CENTER
-            },
-            mapTypeId:google.maps.MapTypeId.ROADMAP
-        });
-                
-        //directionsService = new google.maps.DirectionsService();
-        //directionsDisplay = new google.maps.DirectionsRenderer();
-    }
+
  
-var no_win = 0;
-var time_live;
-var time_pan;
-var ml = new Array();
-var lis = new Array();
+ 
 
-
-function mostrarLinea2(pag){
-	flightPath = new google.maps.Polyline({
-		path: linea,
-		strokeColor: "#cd4224",
-		strokeOpacity: 1.0,
-		strokeWeight: 3,
-		geodesic:true
-	});
-	arregloDeRecorridos.push(flightPath);
-	flightPath.setMap(map);
-	linea = linea.splice(linea.length);
+function mark_list(e){
+//console.log(  );  
+    $(e).css("background","#d4f8b1");
 }
 
-function elimR(){
-	var flightPath = arregloDeRecorridos[0];
+function vehicle_realtime(id,company,e){  
+    if($(e).is(":checked")) {
+        console.log("checo");        
+        vehicle_ubication(id,company,1);
+    }else{
+        console.log("no checo");
+    } 
+    
+}
+
+
+function elimR(){	
+    var flightPath = arregloDeRecorridos[0];    
 	flightPath.setMap(null);
-	arregloDeRecorridos.length=0;
+    arregloDeRecorridos.length=0;	
 }
 
 function crea_recorrido(lat,lon,t,pag){
@@ -566,7 +564,7 @@ function crea_recorrido(lat,lon,t,pag){
 	
 //funcion que recibe los datos de la ubicacion y los envia a createMarker
 function MapaCord(la, lo, tv, v) { 
-	if(markersArrays.length!=0){var elim=elimMarcador();}
+	if(markersArrays.length!=0){var elim=elimMarcador(); }
 
 	if(al.length!=0){al.splice(al.length);}
 
@@ -576,7 +574,7 @@ function MapaCord(la, lo, tv, v) {
 		center:miPosicion,		
 		zoom:15
 	});
-	var image = new google.maps.MarkerImage('/dist/images/map/veh/veh_type/'+tv+'.png',
+	var image = new google.maps.MarkerImage('<?=base_url()?>/dist/images/map/veh/veh_type/'+tv+'.png',
         new google.maps.Size(50, 20),
 		new google.maps.Point(0,0),
 		new google.maps.Point(0, 20));
@@ -595,38 +593,44 @@ function elimMarcador(){
 		markersArrays.length=0;
 }	 
 
-function mark_list(e){
-//console.log(  );  
-    $(e).css("background","#d4f8b1");
+function mostrarLinea2(pag){
+	flightPath = new google.maps.Polyline({
+		path: linea,
+		strokeColor: "#cd4224",
+		strokeOpacity: 1.0,
+		strokeWeight: 3,
+		geodesic:true
+	});
+	arregloDeRecorridos.push(flightPath);
+	flightPath.setMap(map);
+	linea = linea.splice(linea.length);
 }
-
-function vehicle_realtime(id,company,e){  
-    if($(e).is(":checked")) {
-        console.log("checo");        
-        vehicle_ubication(id,company,1);
-    }else{
-        console.log("no checo");
-    } 
-    
-}
-
 function vehicle_ubication(id,company,check) {    
     $.ajax({ 
         type: "POST",
         data: {id:id,company:company,check:check},
-        url: "/MainMap/get_ubication",
+        url: "<?=base_url()?>/MainMap/get_ubication",
         success: function (response) {              
             if(response.error){
                 alert(response.error);
             }else{
+
                 var last = response.last;                
                 $("#ubicacion").html(response.table);
                 MapaCord(last.lat, last.lon, last.tipov, response.veh);                   
-                elimR();
-                $.each(response.route, function(i, item) {
-                    crea_recorrido(item.lat,item.lon,item.tipoveh,0);
-                });                   
-                mostrarLinea2(0);
+                if(check == 2){
+                    
+                    var flightPath = arregloDeRecorridos[0];    
+                    flightPath.setMap(null);
+                    arregloDeRecorridos.length=0;
+
+                    $.each(response.route, function(i, item) {
+                        crea_recorrido(item.lat,item.lon,item.tipoveh,0);
+                    });  
+
+                    mostrarLinea2(0);
+
+                }
             }
         }
     }); 
@@ -658,7 +662,7 @@ function veh_seleccion(lat,lon){
 //crea_sitios(s.nombre,s.latitud,s.longitud,s.contacto,s.tel1,s.tel2,s.imagen,s.descripcion,1);
 function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0){    
   //  console.log(imagenes);
-    var baseUrl   = "/dist/images/map/site_type/";               
+    var baseUrl   = "<?=base_url()?>/dist/images/map/site_type/";               
     var imagenes  = baseUrl+imagenes.substr(14);
   //  console.log(imagenes);
 
@@ -703,7 +707,7 @@ function show_site(e,id){
         $.ajax({ 
             type: "POST",
             data: {id:id}, 
-            url: "/MainMap/show_sites",
+            url: "<?=base_url()?>/MainMap/show_sites",
             success: function (response) {             
                 var s = response;
                 if(s.nombre){
@@ -791,7 +795,7 @@ function  new_mainsite(){
             $.ajax({ 
                 type: "POST", 
                 data: {lat: lat, lon: lng},
-                url: "/Config/Sites/new_site",
+                url: "<?=base_url()?>/Config/Sites/new_site",
                 success: function (response) {   
                     $("#sidebar-content").html(response); 
                     $('#settings').addClass('active');
@@ -812,7 +816,7 @@ function savenew_site(){
         $.ajax({ 
             type: "POST", 
             data: $("#edit_mainsite").serialize(),
-            url: "/Config/Sites/insert_site",
+            url: "<?=base_url()?>/Config/Sites/insert_site",
             success: function (response) {  
                 if(response > 0){
                     
@@ -822,7 +826,7 @@ function savenew_site(){
                     var name  = $("#edit_sitename").val();
                     var type  = $("#edit_sitetype option:selected").val();
 
-                    var baseUrl  = "/dist/images/map/site_type/";               
+                    var baseUrl  = "<?=base_url()?>/dist/images/map/site_type/";               
                     var icon     = baseUrl+icon.substr(14);
                 
                 var template = "<li class='py-1 px-2 mail-item inbox sitetype-"+type+" bg-control' id='sitelist_"+type+"'><div class='d-flex align-self-center align-middle'><label class='chkbox'><input type='checkbox'><span class='checkmark small'></span></label><div class='mail-content d-md-flex w-100'><span class='car-name' id='sitename_"+idsite+"' onclick='show_site("+idsite+")'>"+name+"</span><div class='d-flex mt-3 mt-md-0 ml-auto'><div id='siteicon_"+idsite+"'><img src='"+icon+"' width='25px' height='22px' class='toltip' data-placement='top' title='"+desc+"'></div><a href='#' class='ml-3 mark-list' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='icon-options-vertical'></i></a><div class='dropdown-menu p-0 m-0 dropdown-menu-right'><a class='dropdown-item' href='#' onclick='edit_sitelist("+idsite+")'><i class='mdi mdi-playlist-edit'></i> Editar </a> <a class='dropdown-item single-delete' href='#' onclick='delete_mainsite("+idsite+")'><i class='icon-trash'></i> Eliminar </a>  </div></div></div></div></li>";
@@ -848,7 +852,7 @@ function edit_site(){
         $.ajax({ 
             type: "POST", 
             data: $("#edit_mainsite").serialize(),
-            url: "/Config/Sites/site_update",
+            url: "<?=base_url()?>/Config/Sites/site_update",
             success: function (response) {  
                 if (response == "true") {
                     var id      = $("#edit_siteid").val();
@@ -856,7 +860,7 @@ function edit_site(){
 
                     var icon    = $("#edit_sitetype option:selected").data("icon");
                     var title   = $("#edit_sitetype option:selected").val();                
-                    var baseUrl = "/dist/images/map/site_type/"; 
+                    var baseUrl = "<?=base_url()?>/dist/images/map/site_type/"; 
 
                     var icon = baseUrl+icon.substr(14);                
                     var src  = '<img src="'+icon+'" width="25px" height="22px" class="toltip" data-placement="top" title="'+title+'">';
@@ -887,7 +891,7 @@ function delete_maingeo(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
-        url: "/Config/Geo/delete_maingeo",
+        url: "<?=base_url()?>/Config/Geo/delete_maingeo",
         success: function (response) {             
             var idgeo = "#geolist_"+id;
             $(idgeo).addClass('bg-danger');
@@ -902,7 +906,7 @@ function delete_mainsite(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
-        url: "/Config/Sites/delete_mainsite",
+        url: "<?=base_url()?>/Config/Sites/delete_mainsite",
         success: function (response) {             
             var idsite = "#sitelist_"+id;
             $(idsite).addClass('bg-danger');
@@ -932,7 +936,7 @@ function edit_sitelist(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
-        url: "/Config/Sites/site_edit",
+        url: "<?=base_url()?>/Config/Sites/site_edit",
         success: function (response) { 
             $("#sidebar-content").html(response);  
             $('#settings').addClass('active');
@@ -949,7 +953,7 @@ function edit_sitelist(id){
 function load_geo(){ 
     $.ajax({ 
         type: "POST", 
-        url: "/MainMap/load_geo",
+        url: "<?=base_url()?>/MainMap/load_geo",
         success: function (response) {             
             $("#geo_list").html(response);
             $('.toltip').tooltip();
@@ -970,7 +974,7 @@ function edit_vehicle(){
     $.ajax({
         type: "POST", 
         data: $("#vehedit_configform").serialize(),
-            url: "/Config/Vehicles/vehicle_update",
+            url: "<?=base_url()?>/Config/Vehicles/vehicle_update",
         success: function (response) { 
             console.log(response);
             if (response == "true") {
@@ -1024,7 +1028,7 @@ function edit_vehiclelist(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
-        url: "/Config/Vehicles/vehicle_edit",
+        url: "<?=base_url()?>/Config/Vehicles/vehicle_edit",
         success: function (response) { 
             $("#sidebar-content").html(response);
             /* $('.view-email').show();  
@@ -1043,7 +1047,7 @@ function vehicle_detail(id){
     $.ajax({ 
         type: "POST", 
         data: {id:id},
-        url: "/MainMap/vehicle_detail",
+        url: "<?=base_url()?>/MainMap/vehicle_detail",
         success: function (response) {
             $("#detail-content").html(response);
             $('.view-email').show();  
@@ -1065,7 +1069,7 @@ var vehicleslist_info = [];
 function load_vehicles(){ 
     $.ajax({ 
         type: "POST", 
-        url: "/MainMap/mostrar_vehiculos_act",
+        url: "<?=base_url()?>/MainMap/mostrar_vehiculos_act",
         success: function (response) { 
             var old_motorclass = "";
             var old_speedclass = "";
@@ -1094,7 +1098,7 @@ function load_vehicles(){
                 vehicleslist_info[i] = {"class_motor": motor, "class_speed": speed}; 
 
                 var icons = '<div class="h6 mr-1 '+item.icon_motor+' toltip" data-placement="top" title="'+item.toltip_motor+'"></div>'+
-							'<div class="speed-icon mr-1"><img class="toltip" style="width:100%;" src="/dist/images/config/vehicles/speed_'+item.speed+'.png" data-placement="top" title="'+item.speed_tooltip+'" ></div>';
+							'<div class="speed-icon mr-1"><img class="toltip" style="width:100%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_'+item.speed+'.png" data-placement="top" title="'+item.speed_tooltip+'" ></div>';
                 $("#vehicles_list #vehicle-element"+item.idveh).html(icons);
             });  
 
