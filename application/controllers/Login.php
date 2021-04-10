@@ -6,6 +6,7 @@ class Login extends CI_Controller {
 	public function __construct(){
         parent::__construct();         
         $this->load->model('login_model');
+        $this->load->model('acount/rol_model');     
 	}
 
     //Load login 
@@ -34,8 +35,8 @@ class Login extends CI_Controller {
             $fecf = strtotime($user["f_termino"]);
 
             if($fec > $feci && $fec < $fecf){               
-                $this->init($user);
-                $this->load_system_data();
+                $this->load_system_data($user);
+                $this->init($user);                
                 //echo "true"; 
                 echo "true"; 
             }else{
@@ -46,8 +47,9 @@ class Login extends CI_Controller {
         }
     }
 
-    private function load_system_data(){       
+    private function load_system_data($user){       
         $data["vehicle_status"] = $this->main_model->vehicle_status();
+        //$data["module"]         = $this->login_model->get_modules();
 
         $_SESSION["catalog"]    = $data;
         
@@ -59,9 +61,63 @@ class Login extends CI_Controller {
                        "usuario" => $user["usuario"],
                        "nombre"  => $user["nombre"],
                        "company" => $user["id_empresa"],
+                       "id_rol" => $user["id_rol"],
                        "estatus" => $user["estatus"]);
+                
         $_SESSION["user"]  = $login;        
     }
+
+
+    //Save user in session 
+    public function init_test(){
+        $user = $this->login_model->check_login("monitoreo2", "GPS2020");
+        $this->load_system_data($user);        
+
+        $login = array("id"      => $user["id_usuario"],
+                       "usuario" => $user["usuario"],
+                       "nombre"  => $user["nombre"],
+                       "company" => $user["id_empresa"],
+                       "company" => $user["id_rol"],
+                       "estatus" => $user["estatus"]);        
+
+        $data["rol"] = $this->rol_model->rol_access($user["id_rol"]);
+        
+        $modules_ = $this->login_model->get_modules();
+        $modules  = array();
+        $menu = array();
+
+        if(is_array($modules)){
+            foreach($modules_ as $mod){
+                $modules[$mod->id_modulo] = $mod;
+            }
+
+            foreach($modules as $mod){                
+                $index = $mod->modulo;
+                if($mod->mprincipal != 0){                    
+                     $index = $modules[$mod->mprincipal]->modulo;                    
+                }
+
+                if($mod->mprincipal != 0)
+                {                      
+                    if($mod->msecundario != 0){                        
+                        $menu[$index][$mod->mprincipal][$mod->msecundario]["node"][$mod->id_modulo][]  =  $mod;
+                    }else{
+                        $menu[$index][$mod->mprincipal][$mod->id_modulo] =  $mod;
+                    }                    
+                }
+
+                
+                
+            }
+            
+            
+        }
+        print_array($menu);
+        
+        $_SESSION["user"]  = $login;        
+        
+    }
+
 
     //Close session
     public function cerrar_session(){

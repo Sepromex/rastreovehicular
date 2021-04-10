@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/starrr/starrr.css"> 
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/fontawesome/css/all.min.css">
         <link rel="stylesheet" href="<?=base_url()?>/dist/vendors/ionicons/css/ionicons.min.css">  
-        <link rel="stylesheet" type="text/css" href="https://unpkg.com/lightpick@latest/css/lightpick.css">        
+        <!-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/lightpick@latest/css/lightpick.css">         -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
@@ -64,7 +64,7 @@
 
         <!-- START: Include CSS-->
         <?php if(isset($include["head"])){ foreach($include["head"] as $incl){  ?>
-                    <link rel="stylesheet" href="<?php echo base_url().$incl?>" />
+                    <link rel="stylesheet" href="<?=base_url().$incl?>" />
         <?php } } ?>
         <!-- END: Include Page CSS-->         
 
@@ -78,7 +78,7 @@
 
     <!-- START: Body-->
     <body id="main-container" class="default horizontal-menu">
-
+ 
         <!-- START: Pre Loader  
         <div class="se-pre-con">
             <div class="loader"></div>

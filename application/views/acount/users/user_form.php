@@ -6,12 +6,14 @@
                 <div class="card-header d-flex justify-content-between align-items-center">                                
                     <h4 class="card-title">Datos Generales</h4>
                     <div class="align-self-center ml-auto text-center text-sm-right hidde-mobile">  
+                    <?php if($custom['page'] != 'Profile'): ?>
                         <button type="button" class="btn btn-danger reset_form" data-reset="reset_user" onclick="acount_formtoggle()">Cancelar</button>
+                    <?php endif; ?>
                         <button type="button" class="btn btn-primary" onclick="validate_edituser()">Editar Usuario</button>
                     </div>
                 </div>
    
-                <div class="card-body">                
+                <div class="card-body">                 
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <div class="label-mobile ml4-mobile">

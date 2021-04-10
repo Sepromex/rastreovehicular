@@ -9,10 +9,10 @@
 <div class="row m-0 border-bottom theme-border">
         <div class="col-12 px-2 py-3 d-flex mail-toolbar">
             <div class="check d-inline-block mr-3">
-                <label class="chkbox">All 
+                <!--<label class="chkbox">All 
                     <input name="all" value="" type="checkbox" class="checkall">
                     <span class="checkmark"></span>
-                </label>
+                </label> -->
             </div>  
 
             <a href="#" class="ml-auto toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Tipo de Geocerca"><i class="mdi mdi-map-marker-radius "></i></a>
@@ -35,7 +35,7 @@
             <div>
                 <a href="#" class="mr-0 toltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">
-                    <a class="dropdown-item mailread" href="#" onclick="clearMark()"><i class="icon-reload"></i> Limpiar mapa </a>
+                    <a class="dropdown-item mailread" href="#" onclick="cleargeo()"><i class="icon-reload"></i> Limpiar geocerca </a>
                     <!-- <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>-->
                     <a class="dropdown-item mailunread" href="#" onclick="ejecutar_geocercas()"><i class="mdi mdi-trash-can-outline"></i> Nueva Geocerca </a>
                 </div>

@@ -40,11 +40,11 @@
         </ul>
         <!-- END: Menu-->
 
-        <!-- Breadcrumbs -->
+        <!-- Breadcrumbs 
         <ol class="breadcrumb bg-transparent align-self-center m-0 p-0 ml-auto">
             <li class="breadcrumb-item"><a href="#">Application</a></li>
             <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
+        </ol> -->
 
     </div>
 </div>

@@ -24,12 +24,12 @@
 <div class="card-body">
     <div class="table-responsive">
         <table id="example" class="display w-100 table dataTable table-striped table-bordered editable-table table-responsive">
-            <thead>       
+            <thead class="w-100">       
                 <tr>
                     <th width="10%">ID</th>
                     <th width="20%">Usuario</th>
                     <th width="25%">Nombre</th>
-                    <th width="25%">Correo</th>
+                    <th width="30%">Correo</th>
                     <th width="10%" class="text-center">Estatus</th>
                     <th width="10%">&nbsp;</th>
                 </tr>

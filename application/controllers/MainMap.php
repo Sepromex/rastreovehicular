@@ -5,6 +5,13 @@ class MainMap extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		
+		if(!isset($_SESSION["user"])){			
+			header("Location: ".base_url()."/Login");
+			//redirect('/Login', 'refresh');
+			//echo "no existe usuario";			
+		}
+
 		$this->load->model('Mainmap_model');		
 		$this->load->helper('map');
 		$this->headerdata["module"] = "Maps";		
@@ -19,12 +26,12 @@ class MainMap extends CI_Controller {
 				"module"  => $this->headerdata["module"]];
 
 		//Files in head, body y footer 
-		$data["user_id"]   = 1029;
+		$data["user_id"]   = $_SESSION["user"]["id"];
 		$data["include"]   = includefiles($data["custom"]["page"]);		
-		$data["site_type"] = $this->Mainmap_model->load_sitestype(15);
-		$data["vehicles"]  = $this->Mainmap_model->mainvehiclelist();
-		$data["geoc"]      = $this->Mainmap_model->load_geo(15,1029);
-		$data["sites"]     = $this->Mainmap_model->load_sites(15);		
+		$data["site_type"] = $this->Mainmap_model->load_sitestype($_SESSION["user"]["company"]);
+		$data["vehicles"]  = $this->Mainmap_model->mainvehiclelist($_SESSION["user"]["id"]);
+		$data["geoc"]      = $this->Mainmap_model->load_geo($_SESSION["user"]["company"],$_SESSION["user"]["id"]);
+		$data["sites"]     = $this->Mainmap_model->load_sites($_SESSION["user"]["company"]);		
 		
 		//Load view
 		$this->load->view('layouts/admin',$data);
@@ -38,7 +45,7 @@ class MainMap extends CI_Controller {
 
 	public function load_geo(){
 		//$data = ["user_id" => 1029, "company_id" => 15];
-		$geoc = $this->Mainmap_model->load_geo(15,1029);
+		$geoc = $this->Mainmap_model->load_geo($_SESSION["user"]["company"],$_SESSION["user"]["id"]);
 		$li = '';
 		foreach($geoc as $geo){
 			$icon = ($geo->tipo==0)?'circle':'polig';
@@ -68,7 +75,7 @@ class MainMap extends CI_Controller {
 	}
 
 	public function load_sites(){
-		$company_id = 15;
+		$company_id = $_SESSION["user"]["company"];
 		$sites = $this->Mainmap_model->load_sites($company_id);		
 		$li = '';
 		foreach($sites as $site){
@@ -106,12 +113,12 @@ class MainMap extends CI_Controller {
 
 //		unset($_SESSION["messages"]); unset($_SESSION["speeds"]);
 		if(!isset($_SESSION["messages"])):$this->Mainmap_model->load_messages();endif;
-		if(!isset($_SESSION["speeds"])):$this->Mainmap_model->load_speeds(1029);endif;
+		if(!isset($_SESSION["speeds"])):$this->Mainmap_model->load_speeds($_SESSION["user"]["id"]);endif;
 
-		$id_user = "1029"; 
+		$id_user = $_SESSION["user"]["id"]; 
 		//vehicles list 
 		$jsondata = [];
-		$vehicles = $this->Mainmap_model->main_vehiclelist();		
+		$vehicles = $this->Mainmap_model->main_vehiclelist($_SESSION["user"]["id"]);		
 		if(is_array($vehicles)){			
 			foreach($vehicles as $index => $veh){ 	
 			  //echo " ///////////////////////// </br></br>";				
@@ -521,7 +528,7 @@ public function get_ubication(){
 
 				//echo "--".$max_pos."--";
 				$data["table"]   = $datos; //mostrar tabla
-				$data["last"]    = ["lat" => $lat, "lon" => $lon, "tipov" => $tipov]; //Ultima posicion "MapaCord"
+				$data["last"]    = ["lat" => $lat, "lon" => $lon, "tipov" => $tipov, "name" => $vehname, "vel" => $vel]; //Ultima posicion "MapaCord"
 				$data["route"]   = $this->Mainmap_model->get_positiones($veh);	//$objResponse->call("crea_recorrido",
 				$data["veh"]     = $veh;
 

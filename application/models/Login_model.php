@@ -10,7 +10,7 @@ Class Login_model extends CI_Model {
                            ESTATUS as estatus, 
                            NOMBRE as nombre, 
                            PASSWORD as password, 
-                           ID_EMPRESA as id_empresa,usuario_tipo, activo, f_inicio, f_termino");
+                           ID_EMPRESA as id_empresa,usuario_tipo, id_rol, activo, f_inicio, f_termino");
 		$this->db->from("usuarios");
         $this->db->where("USERNAME",$user);		
         $this->db->where("PASSWORD",$password);
@@ -40,6 +40,23 @@ Class Login_model extends CI_Model {
 			return false; 			
 		}
     }
+
+
+    public function get_modules(){
+        $this->db->select("*");
+		$this->db->from("modulos_rv");  
+        //$this->db->where("mprincipal","5");  
+        $this->db->order_by("mprincipal, grado, msecundario", "asc");   
+        $query = $this->db->get(); 
+            
+        //check email in db
+		if($query->num_rows()>0){ 
+            return $query->result();
+            
+		}else{			
+			return false; 			
+		}
+    } 
  
 	
 }

@@ -1,6 +1,5 @@
 <!--  Busqueda  -->
-<div class="card-header border-bottom p-2 d-flex">
-    <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
+<div class="card-header border-bottom p-2 d-flex">    
     <input type="text" class="form-control border-0  w-100 h-100 vehicle-search" placeholder="Search ...">
 </div>
  
@@ -55,8 +54,8 @@
             <div>
                 <a href="#" class="mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">
-                    <a class="dropdown-item mailread" href="#" ><i class="icon-reload"></i> Limpiar mapa </a>
-                    <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>
+                    <a class="dropdown-item mailread" href="#" onclick="clearveh()"><i class="icon-reload"></i> Limpiar vehículos </a>
+                    <!-- <a class="dropdown-item mailunread" href="#"><i class="mdi mdi-trash-can-outline"></i> Eliminar </a>-->
                 </div>
             </div>           
 
@@ -74,7 +73,7 @@
                   
                     <div class="mail-content d-md-flex w-100">                                                    
                         
-                        <span class="car-name" onclick="vehicle_detail(<?=$vehid?>)"><?=$veh->ID_VEH?></span>
+                        <span class="car-name" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',1)"><?=$veh->ID_VEH?></span>
 
                         <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',0)">                                                           <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
                                 
@@ -87,8 +86,10 @@
                         <div class="d-flex mt-3 mt-md-0">       
                         
                         
-                            <i class="mdi mdi-map-marker text-danger toltip"  onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',1)" data-list="geoc_list"  data-placement="top" title="Ubicacion"></i>
-                           <!--  <i class="mdi mdi-map-marker-path ml-1 text-primary toltip" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',2)"  data-list="geoc_list"  data-placement="top" title="Ruta"></i> -->
+                            <!-- <i class="mdi mdi-map-marker text-danger toltip"  onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',2)"    data-placement="top" title="Ubicacion"></i> -->
+                            <i class="mdi mdi-information text-primary toltip"  onclick="vehicle_detail(<?=$vehid?>)"   data-placement="top" title="Información"></i>
+                            
+                            <i class="mdi mdi-map-marker-path ml-1 text-primary toltip" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',2)"  data-list="geoc_list"  data-placement="top" title="Ruta"></i> 
 
                             <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-options-vertical"></i>

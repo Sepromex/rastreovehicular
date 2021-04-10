@@ -13,7 +13,7 @@ Class User_model extends CI_Model {
     } 
 
     // User list
-    public function user_list()
+    public function user_list($company = 0)
 	{        
         $this->db->select("u.ID_USUARIO as id_usuario, 
                            u.username as usuario, 
@@ -22,9 +22,13 @@ Class User_model extends CI_Model {
                            u.NOMBRE as nombre, 
                            u.PASSWORD as password, 
                            u.ID_EMPRESA as id_empresa,u.usuario_tipo, u.activo, e.DESCRIPCION as estatus");
-		$this->db->from("usuarios u","left");
+		$this->db->from("usuarios u","left");        
         $this->db->join("estusr e", "u.ESTATUS = e.ESTATUS");
-        $this->db->where("activo","1");        
+        $this->db->where("activo","1");      
+        if($company != 0){
+            $this->db->where("id_empresa",$company);
+        }
+        
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();

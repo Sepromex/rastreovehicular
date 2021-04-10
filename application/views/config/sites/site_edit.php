@@ -2,7 +2,7 @@
     <h5 class="modal-title">
         <i class="icon-pencil"></i><?=($sitet_form==0)?" Editar Sitio de Interés":" Nuevo Sitio de Interés"?> 
     </h5>     
-    <i class="icon-close icons openside reset_form h3" onclick="clearMarkers()"></i>     
+    <i class="icon-close icons openside reset_form h3" onclick="clearsite()"></i>     
 </div>
 
 <form class="needs-validation" id="edit_mainsite" name="edit_mainsite" method="POST" novalidate >
@@ -69,7 +69,7 @@
     </div> 
     
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger openside" onclick="clearMark()">Cancelar</button>
+        <button type="button" class="btn btn-danger openside" onclick="clearsite()">Cancelar</button>
         <?php if($sitet_form==0): ?>
         <button type="button" class="btn btn-primary" onclick="edit_site()">Editar Sitio</button>
         <?php else: ?>

@@ -13,13 +13,13 @@
 
             <form class="float-left d-none d-lg-block search-form">
                 <div class="form-group mb-0 position-relative">
-                    <input type="text" class="form-control border-0 rounded bg-search pl-5" placeholder="Buscar...">
+                    <!-- <input type="text" class="form-control border-0 rounded bg-search pl-5" placeholder="Buscar...">
                         <div class="btn-search position-absolute top-0">
                             <a href="#"><i class="h6 icon-magnifier"></i></a>
                         </div>
                         <a href="#" class="position-absolute close-button mobilesearch d-lg-none " data-toggle="dropdown" aria-expanded="false">
                             <i class="icon-close h5"></i>                               
-                        </a>
+                        </a>-->
 
                 </div>
             </form>
@@ -114,7 +114,7 @@
                         </a>
 
                         <div class="dropdown-menu border dropdown-menu-right p-0">
-                            <a href="" class="dropdown-item px-2 align-self-center d-flex">
+                            <a href="<?=base_url()?>/Acount/User/Profile" class="dropdown-item px-2 align-self-center d-flex">
                                 <span class="icon-pencil mr-2 h6 mb-0"></span> 
                                 Perfil
                             </a>

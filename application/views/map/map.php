@@ -32,13 +32,13 @@
     <div class="row">
 
 
-        <div class=" col-sm-12 col-md-4 col-lg-4 col-xl-3  mt-3"> 
+        <div class=" col-sm-12 col-md-4 col-lg-3 col-xl-2  mt-3"> 
             <div class="card"><?php //print_array($site_type);?>
                 <!-- ##### TABS ##### -->
                 
                     <div class="card-header" id="maincontrols">
                         <div class="row m-auto">
-                            <div class="col-12 col-lg-12 col-xl-12 pr-lg-0 flip-menu">
+                            <div class=" m-auto ">
                                 <ul class="list-unstyled nav inbox-nav  mb-0 mail-menu" style="margin-top:0px !important;">
                                     <li class="nav-item" style="padding: 5px 2px !important;">
                                         <a href="#" class="nav-link padding-tab active  toltip" data-list="vehicle_list"  data-placement="top" title="Vehículos"> 
@@ -87,13 +87,13 @@
                             <?php $this->load->view("map/geo_list"); ?> 
                         </div> 
 
-                    </div>
+                    </div> 
                     <!-- ####### END VEHICULOS LIST ##############  -->
                  
             </div>  <!-- End card-->              
         </div> <!-- END col-2 -->
         
-        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-9  mt-3">
+        <div class="col-sm-12 col-md-8 col-lg-9 col-xl-10  mt-3">
             <div class="row">                
                 <div id="map"></div>
             </div>
@@ -198,7 +198,7 @@ var colores = ["#FE9A2E","#4B8A08","#084B8A","#DF0101","#01DF01","#8181F7","#FFF
 
 function cancelgeo() {
     cityCircle.setMap(null);
-    jQuery(this).dialog("close");
+    //jQuery(this).dialog("close");
 }			
 
 
@@ -329,6 +329,7 @@ function dibujaGeoCircular(centro){
                 $("#sidebar-content").html(response);  
                 $('#settings').addClass('active');
                 $('.openside').on('click', function () {
+                    //cityCircle.setMap(null);cancel-geo
                     $('#settings').toggleClass('active');
                     return false;
                 });
@@ -538,34 +539,13 @@ function vehicle_realtime(id,company,e){
         console.log("no checo");
     } 
     
-}
-
-
-function elimR(){	
-    var flightPath = arregloDeRecorridos[0];    
-	flightPath.setMap(null);
-    arregloDeRecorridos.length=0;	
-}
-
-function crea_recorrido(lat,lon,t,pag){
-	var encontrado = false;
-    //console.log(visitedPages.length);
-	for(i = 0; i < visitedPages.length; i++){
-		if(visitedPages[i] == pag){
-			encontrado= true;
-			break;
-		}
-	}
-	if(!encontrado){
-		tipoV = t;
-		linea.push(new google.maps.LatLng(lat,lon));		
-	}   
-}
+} 
 	
-//funcion que recibe los datos de la ubicacion y los envia a createMarker
-function MapaCord(la, lo, tv, v) { 
-	if(markersArrays.length!=0){var elim=elimMarcador(); }
 
+//funcion que recibe los datos de la ubicacion y los envia a createMarker
+function MapaCord(la, lo, tv, v, name, vel) { 
+	if(markersArrays.length!=0){var elim=elimMarcador(); }
+   
 	if(al.length!=0){al.splice(al.length);}
 
 	var miPosicion=new google.maps.LatLng(la,lo);
@@ -577,21 +557,34 @@ function MapaCord(la, lo, tv, v) {
 	var image = new google.maps.MarkerImage('<?=base_url()?>/dist/images/map/veh/veh_type/'+tv+'.png',
         new google.maps.Size(50, 20),
 		new google.maps.Point(0,0),
-		new google.maps.Point(0, 20));
+		new google.maps.Point(0, 5));
 	marcador = new google.maps.Marker({
 		position: miPosicion,
 		map: map,
 		icon: image,
 		title: v
 	});
-	markersArrays.push(marcador);
-}
+    
+     
+    if(arrayInfo.length!=0){
+        for(var f=0; f < arrayInfo.length; f++){
+            var info = arrayInfo[f]; // find the marker by given id
+            info.setMap(null);
+        }   
+    }
 
-function elimMarcador(){
-		var marker = markersArrays[0]; // find the marker by given id
-		marker.setMap(null);
-		markersArrays.length=0;
-}	 
+    infowindow = new google.maps.InfoWindow();    
+    var string="<div style='min-width:100px; height:50px; max-width:250px;'>Nombre: "+name+" </br> Velocidad: "+vel+" </br> Lat: "+la+", Lon: "+lo+"</div>";
+    infowindow.setContent(string);
+    infowindow.setPosition(miPosicion);
+    infowindow.open(map);
+    arrayInfo.push(infowindow);
+    
+    markersArrays.push(marcador);
+    
+    
+}
+ 
 
 function mostrarLinea2(pag){
 	flightPath = new google.maps.Polyline({
@@ -605,6 +598,29 @@ function mostrarLinea2(pag){
 	flightPath.setMap(map);
 	linea = linea.splice(linea.length);
 }
+
+function crea_recorrido(lat,lon,t,pag){
+	var encontrado = false;
+	for(i = 0; i < visitedPages.length; i++){
+		if(visitedPages[i] == pag){
+			encontrado= true;
+			break;
+		}
+	}
+	if(!encontrado){
+		tipoV = t;
+		linea.push(new google.maps.LatLng(lat,lon));		
+	} 
+}
+
+function elimR(){	
+    if(arregloDeRecorridos.length != 0 ){
+        var flightPath = arregloDeRecorridos[0];    
+        flightPath.setMap(null);
+        arregloDeRecorridos.length=0;	
+    } 
+}
+
 function vehicle_ubication(id,company,check) {    
     $.ajax({ 
         type: "POST",
@@ -616,13 +632,17 @@ function vehicle_ubication(id,company,check) {
             }else{
 
                 var last = response.last;                
-                $("#ubicacion").html(response.table);
-                MapaCord(last.lat, last.lon, last.tipov, response.veh);                   
+                $("#ubicacion").html(response.table); 
+                
+                MapaCord(last.lat, last.lon, last.tipov, response.veh, last.name, last.vel);      
+                 
+                
+
                 if(check == 2){
-                    
-                    var flightPath = arregloDeRecorridos[0];    
-                    flightPath.setMap(null);
-                    arregloDeRecorridos.length=0;
+                    elimR();
+                    //var flightPath = arregloDeRecorridos[0];    
+                    //flightPath.setMap(null);
+                    //arregloDeRecorridos.length=0;
 
                     $.each(response.route, function(i, item) {
                         crea_recorrido(item.lat,item.lon,item.tipoveh,0);
@@ -636,12 +656,50 @@ function vehicle_ubication(id,company,check) {
     }); 
 }
 
-function geo_go(lat,lon,type,id){
+function clearveh(){
+    if(arrayInfo.length!=0){
+        for(var f=0; f < arrayInfo.length; f++){
+            var info = arrayInfo[f]; // find the marker by given id
+            info.setMap(null);
+        }   
+    }
+
+    if(markersArrays.length!=0){
+        for(var f=0; f < markersArrays.length; f++){
+            var marker = markersArrays[f]; // find the marker by given id
+            marker.setMap(null);
+        }   
+    }
+    elimR();
+    $("#ubicacion").html(""); 
+   
+}
+
+function elimMarcador(){
+		var marker = markersArrays[0]; // find the marker by given id
+		marker.setMap(null);
+		markersArrays.length=0;
+}	 
+function cleargeo(){
+    for(var j=0; j < impresos.length; j++){
+		var geoCer = impresos[j]; // find the marker by given id
+		geoCer.setMap(null);
+		
+		//markersArrays.length=0;
+	}
+	for(var f=0; f < impresos.length; f++){
+		var info = arrayInfo[f]; // find the marker by given id
+		info.setMap(null);
+	}
+    
+    $('#form_geolist input:checkbox').prop('checked', false);
+}
+function geo_go(lat,lon,type,id){ 
     if(type==1){
         $.ajax({ 
             type: "POST",
             data: {id:id}, 
-            url: "/Config/Geo/info_geo_po",
+            url: "<?=base_url()?>/Config/Geo/info_geo_po",
             success: function (p) {                    
                 veh_seleccion(p.latitud,p.longitud);
             }
@@ -672,10 +730,12 @@ function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0
 		new google.maps.Point(0,0),
 		new google.maps.Point(0, 20));
 	}
+
 	tipoGeo = tipoGeo.toUpperCase();
 	var datosSitio="<u>Sitio de Interes</u><br/>"+
 	"Nombre: "+nombre+"<br/>Contacto: "+contacto+"<br /> Tel: "+tel1+"<br /> Tel: "+tel2+"<br /> Lat: "+lat+"<br /> Long: "+lon+
 	"<br /><img src='"+imagenes+"'  width='20' height='20' /> - "+tipoGeo+" - <img src='"+imagenes+"'  width='18' height='18' />";
+
 	var infowindow = new google.maps.InfoWindow({
 		content: datosSitio
 	});
@@ -729,14 +789,14 @@ function show_site(e,id){
     
 } 
  
-function clearMark() {      
+function clearMark() { 
     for(var i=0; i<elim_sitio.length;i++){
-        var marker = elim_sitio[i];
-        marker.setMap(null); 
-        markersArrays.setMap(null);    
-    }    
+			var marker = elim_sitio[i];
+			marker.setMap(null);
+		}    
+    
+
     $('#form_sitelist input:checkbox').prop('checked', false);
-    elimMarcador();
 }
 
 
@@ -752,15 +812,7 @@ function sitios_seleccionados(){
 
 
 
- 
-function addMarker(location) {
-    marker = new google.maps.Marker({
-    position: location,
-    map: map
-  });
-  markersArrays.push(marker);
-  google.maps.event.clearListeners(map, 'click');
-}        
+      
 
 function validate_form_newsite(){
     var sitename = validate_name("#edit_sitename","#feedback-edit_sitename");
@@ -778,8 +830,21 @@ function validate_form_newsite(){
     if(band == 1){
        return "true";
     }else{
-        return "false";
+        return "false"; 
     }
+}
+
+ 
+function addMarker(location) {
+    marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+  markersArrays.push(marker);
+  google.maps.event.clearListeners(map, 'click');
+}  
+function clearsite(){
+    marker.setMap(null);
 }
 
 function  new_mainsite(){
@@ -791,6 +856,7 @@ function  new_mainsite(){
             addMarker(myLatLng);
             var lat = myLatLng.lat();
             var lng = myLatLng.lng();
+           
 
             $.ajax({ 
                 type: "POST", 
@@ -1067,6 +1133,7 @@ $(".back-to-email").on("click", function () {
 var vehicleslist_info = [];
 
 function load_vehicles(){ 
+    console.log("loaddd");
     $.ajax({ 
         type: "POST", 
         url: "<?=base_url()?>/MainMap/mostrar_vehiculos_act",
@@ -1108,7 +1175,7 @@ function load_vehicles(){
 }
 
 /*
-function load_sites(){ 
+function load_sites(){  
     $.ajax({ 
         type: "POST",         
         url: "/MainMap/load_sites",
@@ -1119,11 +1186,11 @@ function load_sites(){
     }); 
 }*/
 
-
+/*
 $(".back-to-vlist").on("click", function () {
     $('#idss').show();
     $('#idsx').fadeOut();
-});
+});*/
 
 //load_sites(); 
 load_vehicles();

@@ -7,7 +7,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">                                
                     <h4 class="card-title">Datos Generales</h4>
                     <div class="align-self-center ml-auto text-center text-sm-right">  
-                        <button type="button" class="btn btn-danger" onclick="acount_formtoggle()">Cancelar</button>         
+                        <?php if($custom['page'] != 'MyCompany'): ?>
+                            <button type="button" class="btn btn-danger" onclick="acount_formtoggle()">Cancelar</button>         
+                        <?php endif; ?>                        
                         <button type="button"  onclick="validate_company()" class="btn btn-success">Editar Empresa</button>
                     </div>
                 </div> 
@@ -18,7 +20,7 @@
                         <label for="conf_companyaddress"><b>Dirección: </b></label> &nbsp;&nbsp;
                         <div id="conf_userfechareg"> <?=(isset($company["direccion"]))?$company["direccion"]:''?>   <?=(isset($company["colonia"]))?$company["colonia"]:''?>  <?=(isset($company["ciudad"]))?$company["ciudad"]:'';?>  <?=(isset($company["estado"]))?$company["estado"]:'';?> </div> 
                     </div> 
-
+ 
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="conf_companyname">Razon social</label>

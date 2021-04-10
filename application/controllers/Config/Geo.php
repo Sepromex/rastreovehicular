@@ -4,7 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Geo extends CI_Controller {
 
 	public function __construct(){
-		parent::__construct();		
+		parent::__construct();	
+		if(!isset($_SESSION["user"])){			
+			header("Location: ".base_url()."/Login");
+			//redirect('/Login', 'refresh');
+			//echo "no existe usuario";			
+		}	
 		$this->load->helper('config');
 		$this->load->model('config/geo_model'); 
 		$this->headerdata["module"] = "MainMap";

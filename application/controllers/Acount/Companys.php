@@ -5,11 +5,16 @@ class Companys extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		if(!isset($_SESSION["user"])){			
+			header("Location: ".base_url()."/Login");
+			//redirect('/Login', 'refresh');
+			//echo "no existe usuario";			
+		}
 		$this->load->model('acount/company_model'); 
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	}
- 
+  
 	public function index()
 	{  	 
 		$data["custom"]   = ["title"   => "Empresas",
@@ -68,6 +73,7 @@ class Companys extends CI_Controller {
 	}
 
 	public function view_companyconfig(){
+		$data["custom"]  = ["page"    => "Company"];
 		//Get list of contacts and offices where company = $_POST["id"]
 		$data["company_contactlist"] = $this->main_model->contact_list($_POST["id"]);
 		$data["company_officelist"]  = $this->main_model->office_list($_POST["id"]);		

@@ -5,6 +5,10 @@ class User extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		if(!isset($_SESSION["user"])){			
+			header("Location: ".base_url()."/Login");					 
+		}
+
 		$this->load->model('acount/user_model');
 		$this->load->model('acount/rol_model');
  		$this->load->helper('acount');
@@ -30,7 +34,7 @@ class User extends CI_Controller {
 	
 	public function List(){
 		//Json user list
-		$user_list = $this->user_model->user_list();  
+		$user_list = $this->user_model->user_list($_SESSION["user"]["company"]);  
 
 		if(isset($user_list) && count($user_list)>0){			  
 			foreach($user_list  AS $row){
@@ -65,6 +69,8 @@ class User extends CI_Controller {
 	} 
 
 	public function view_userconfig(){
+		$data["custom"]  = ["page"    => "Users"];  
+
 		$data["user"]             = $this->user_model->user_byid($_POST["id"]); //user info
 		$data["rollist"]          = $this->rol_model->rol_list();   // User rol list
 		$data["status_list"]      = $this->user_model->status_usr_list();   // User rol list
@@ -141,11 +147,12 @@ class User extends CI_Controller {
 		$data["include"]  = includefiles($data["custom"]["page"]);		
 		$data["user"]             = $this->user_model->user_byid($_SESSION["user"]["id"]); //user info
 		$data["rollist"]          = $this->rol_model->rol_list();   // User rol list
+		$data["status_list"]      = $this->user_model->status_usr_list();   // User rol list
 		//$data["companylist"]      = $this->main_model->company_list();  //companys
 		//$data["usersep"]          = $this->main_model->users_sepromex();  //sepromex users		
-		$data["vehiclelist"]      = $this->main_model->vehicle_list($_SESSION["user"]["id"]);  //vehicle list
+		//$data["vehiclelist"]      = $this->main_model->vehicle_list($_SESSION["user"]["id"]);  //vehicle list
 		$data["assignedvehicles"] = $this->main_model->assigned_vehicles($_SESSION["user"]["id"]);
-		
+			
 		//Load view
 		$this->load->view('layouts/admin',$data);
 	}

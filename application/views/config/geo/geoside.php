@@ -2,7 +2,7 @@
     <h5 class="modal-title">
         <i class="icon-pencil"></i><?=($geot_form==0)?" Nueva Geocerca":" Editar Geocerca"?> 
     </h5>     
-    <i class="icon-close icons openside reset_form h3" onclick="cancelgeo()"></i>     
+    <i class="icon-close icons openside reset_form h3 cancel-geo" onclick="cancelgeo()"></i>     
 </div>
 
 <form class="needs-validation" id="side_maingeo" method="POST" novalidate >
@@ -56,7 +56,7 @@
     </div> 
     
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger openside reset_form" onclick="cancelgeo()">Cancelar</button>
+        <button type="button" class="btn btn-danger openside cancel-geo" onclick="cancelgeo()">Cancelar</button>
         <?php if($geot_form==0): ?>
             <button type="button" class="btn btn-primary" onclick="save_newgeo()">Agregar Geocerca</button>        
         <?php else: ?>

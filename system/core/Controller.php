@@ -86,9 +86,14 @@ class CI_Controller {
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');
 
-		$this->dbweb    = $this->load->database('web', TRUE);
-		$this->dbmaster = $this->load->database('master', TRUE);
+		
 		session_start();
+		//if(isset($_SESSION["user"])){
+			$this->dbweb    = $this->load->database('web', TRUE);
+			$this->dbmaster = $this->load->database('master', TRUE);
+		//}else{
+		//	header("Location:".base_url()."/Login");
+		//}
 	}
 
 	// --------------------------------------------------------------------

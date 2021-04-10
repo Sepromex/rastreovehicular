@@ -3,29 +3,34 @@
     <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
     <input type="text" class="form-control border-0  w-100 h-100 site-search" placeholder="Search ..."> </br>    
 </div>
-
+<!--
 <div class="card-header border-bottom p-2 d-flex">    
-    <select class="form-control select-form" id="site_tipe" style="display:block;">
-        <option value="0" data-icon="iconos_sitios/defaul_marker.png"> Todos los sitios </option>   
-        <?php foreach($site_type as $site): ?>
-        <option value="<?=$site->id_tipo?>" data-icon="<?=$site->imagen?>"> <?=$site->descripcion?></option>
-        <?php endforeach; ?>
-    <select>
-</div>
+    
+</div> -->
 
 <!--  VEHICULO MENU LISTADO  -->
 <div class="row m-0 border-bottom theme-border">
+
+
+
     <div class="col-12 px-2 py-3 d-flex mail-toolbar">
         
-        <div class="check d-inline-block mr-3">
+        <div class=" d-inline-block mr-1 col-11">
             <!-- <label class="chkbox">All 
                 <input name="all" value="" type="checkbox" class="checkall">
                 <span class="checkmark"></span>
             </label> -->
+            <select class="form-control select-form" id="site_tipe" style="display:block;">
+            <option value="0" data-icon="iconos_sitios/defaul_marker.png"> Todos los sitios </option>   
+            <?php foreach($site_type as $site): ?>
+            <option value="<?=$site->id_tipo?>" data-icon="<?=$site->imagen?>"> <?=$site->descripcion?></option>
+            <?php endforeach; ?>
+        <select>
         </div>  
 
-        <!-- Filtrar por Etiquetas -->
-        <a href="#" class="ml-auto toltip" data-placement="top" title="Eliminar"><i class="icon-trash"></i></a>
+        
+        <!-- Filtrar por Etiquetas 
+                <a href="#" class="ml-auto toltip" data-placement="top" title="Eliminar"><i class="icon-trash"></i></a> -->
         
         <!-- 
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right bulk-mail-type">
@@ -36,7 +41,7 @@
         <div>
             <a href="#" class="mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-options-vertical"></i></a>
             <div class="dropdown-menu p-0 m-0 dropdown-menu-right mail-bulk-action">                
-                <a class="dropdown-item mailread" href="#" onclick="clearMark()"><i class="icon-reload"></i> Limpiar mapa </a>                    
+                <a class="dropdown-item mailread" href="#" onclick="clearMark()"><i class="icon-reload"></i> Limpiar sitios de interés </a>                    
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item mailread" href="#" onclick="new_mainsite()"><i class="icon-plus"></i> Nuevo sitio de interés </a>                    
             </div>

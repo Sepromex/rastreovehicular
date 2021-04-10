@@ -20,7 +20,7 @@ function  fileby_option($options){
         $icheck                 =   ["head"   =>  ["/dist/vendors/icheck/skins/all.css"],            
                                      "footer" =>  ["/dist/vendors/icheck/icheck.min.js"]];        
         $validate               =   ["footer" => ["/dist/js/validate.js"]];
-
+ 
         $allfiles               =   ["datatable" => $datatable, "icheck" => $icheck, "validate" => $validate];         
         $return = [];
 
@@ -44,7 +44,7 @@ function includefiles($page){
     switch($page){         
         case "MainMap":
             $options     = ["icheck","validate"];
-            $head        = ["dist/vendors/quill/quill.snow.css"];
+            $head        = ["/dist/vendors/quill/quill.snow.css"];
             $body        = ["template" => ["map/map"]];
             //$scripts     = ["layouts/scripts/script_map"];
             $footer      = ["/dist/vendors/quill/quill.min.js","/dist/js/mainmap.js","/dist/js/validate.js"]; 

@@ -25,10 +25,7 @@
     <div class="row">
         <div class="col-12 mt-3">
             <div class="position-relative">
-                <div class="background-image-maker py-5"></div>
-                <div class="holder-image">
-                    <img src="<?=base_url()?>/dist/images/Acount/profile_banner.jpeg" alt="" class="img-fluid d-none">
-                </div>
+            <div class="background-image-maker py-5" style="background-image: url('<?=base_url()?>/dist/images/Acount/profile_banner.jpeg') !important;"></div>
                 <div class="position-relative px-3 py-5">
                     <div class="media d-md-flex d-block">
                         <a href="#"><img src="<?=base_url()?>/dist/images/Acount/profile.png" width="100" alt="" class="img-fluid rounded-circle"></a>

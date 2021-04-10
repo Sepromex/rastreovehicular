@@ -18,6 +18,10 @@ class MainController extends CI_Controller {
 	public function status_session(){
 		print_array($_SESSION);
 	}
+
+	public function status_session_det($name){
+		print_array($_SESSION[$name]);
+	}
     
      
 }

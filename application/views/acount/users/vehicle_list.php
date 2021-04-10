@@ -1,3 +1,4 @@
+<?php if($custom['page'] != 'Profile'): ?>
 <div class="row mt-3"> 
     <div class="col-xl-12">
         <div class="card">
@@ -26,7 +27,8 @@
         </div> 
     </div> 
 </div>  
- 
+<?php endif; ?>
+
 <?php if(isset($assignedvehicles)): if(is_array($assignedvehicles)): ?>
 <div class="row mt-3"> 
     <div class="col-xl-12">

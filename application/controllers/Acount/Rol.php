@@ -5,6 +5,11 @@ class Rol extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		if(!isset($_SESSION["user"])){			
+			header("Location: ".base_url()."/Login");
+			//redirect('/Login', 'refresh');
+			//echo "no existe usuario";			
+		}
 		$this->load->model('acount/rol_model');
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
