@@ -77,7 +77,7 @@ class Login extends CI_Controller {
                        "usuario" => $user["usuario"],
                        "nombre"  => $user["nombre"],
                        "company" => $user["id_empresa"],
-                       "company" => $user["id_rol"],
+                       "rol_id"  => $user["id_rol"],
                        "estatus" => $user["estatus"]);        
 
         $data["rol"] = $this->rol_model->rol_access($user["id_rol"]);
@@ -131,7 +131,7 @@ class Login extends CI_Controller {
                         "form"  => "login/recovery");
         $data["custom"] = $custom; 
         $this->load->view('login/main_login',$data); 
-    }
+    } 
 
     //Send email recovery
     public function SendRecovery(){

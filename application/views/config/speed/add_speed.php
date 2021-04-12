@@ -18,7 +18,7 @@
         <div class="form-row  mb-3">
             <div class="form-group col-md-2">                
                 <div class="input-group-prepend">                         
-                    <img style="width:70%;" src="/dist/images/config/vehicles/speed_blue.png" alt="">
+                    <img style="width:70%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_blue.png" alt="">
                 </div>
             </div>
             <div class="form-group col-md-10">            
@@ -36,7 +36,7 @@
         <div class="form-row">
             <div class="form-group col-md-2">
                 <div class="input-group-prepend">                         
-                    <img style="width:70%;" src="/dist/images/config/vehicles/speed_green.png" alt="">
+                    <img style="width:70%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_green.png" alt="">
                 </div> 
             </div>
             <div class="form-group col-md-10">            
@@ -51,14 +51,14 @@
         <div class="form-row">
             <div class="form-group col-md-2">
                 <div class="input-group-prepend">                         
-                    <img style="width:70%;" src="/dist/images/config/vehicles/speed_yellow.png" alt="">
+                    <img style="width:70%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_yellow.png" alt="">
                 </div>
             </div>
             <div class="form-group col-md-10">            
                 <input type="number" onblur="normal_vel()" value="<?=(isset($speed["vel2"]))?$speed["vel2"]:'70'?>" name="speed_normal" id="speed_normal" class="form-control inputnumber" required="" > 
             </div>  
         </div>
-        
+         
         
         <div class="form-row">            
             <label for="speed_regular" class="col-form-label">Regular</label>            
@@ -66,7 +66,7 @@
         <div class="form-row">
             <div class="form-group col-md-2">
                 <div class="input-group-prepend">                         
-                    <img style="width:70%;" src="/dist/images/config/vehicles/speed_orange.png" alt="">
+                    <img style="width:70%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_orange.png" alt="">
                 </div>
             </div>
             <div class="form-group col-md-10">            
@@ -81,7 +81,7 @@
         <div class="form-row">
             <div class="form-group col-md-2">
                 <div class="input-group-prepend">                         
-                    <img style="width:70%;" src="/dist/images/config/vehicles/speed_red.png" alt="">
+                    <img style="width:70%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_red.png" alt="">
                 </div>
             </div>
             <div class="form-group col-md-10">            

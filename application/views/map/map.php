@@ -1133,7 +1133,7 @@ $(".back-to-email").on("click", function () {
 var vehicleslist_info = [];
 
 function load_vehicles(){ 
-    console.log("loaddd");
+    //console.log("loaddd");
     $.ajax({ 
         type: "POST", 
         url: "<?=base_url()?>/MainMap/mostrar_vehiculos_act",
@@ -1150,9 +1150,12 @@ function load_vehicles(){
                     old_speedclass = vehicleslist_info[i].class_speed;                                   
 
                     //Replace old class
-                    $("#vehiclelist_"+item.idveh).addClass(motor).removeClass(old_motorclass);
-                    $("#vehiclelist_"+item.idveh).addClass(speed).removeClass(old_speedclass);
+                    $("#vehiclelist_"+item.idveh).removeClass(old_motorclass);
+                    $("#vehiclelist_"+item.idveh).addClass(motor);                    
 
+                    $("#vehiclelist_"+item.idveh).removeClass(old_speedclass);
+                    $("#vehiclelist_"+item.idveh).addClass(speed);                   
+                     
                     //Add actual class
                     vehicleslist_info[i].class_motor = motor;
                     vehicleslist_info[i].class_speed = item.speed;
@@ -1195,11 +1198,11 @@ $(".back-to-vlist").on("click", function () {
 //load_sites(); 
 load_vehicles();
 
-
-/*$(document).ready(function(){
+/*
+$(document).ready(function(){
     "use strict";     
-    setInterval(load_vehicles(),8000);  
+    setInterval(load_vehicles(),30000);  
 });*/
-//var load_v = setInterval( function() { load_vehicles(); }, 10000);
+var load_v = setInterval( function() { load_vehicles(); }, 30000);
 //console.log(localStorage);
 </script> 

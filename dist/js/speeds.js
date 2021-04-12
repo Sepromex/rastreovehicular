@@ -4,7 +4,7 @@ function speed_formedit(id){
     $.ajax({
         type: "POST", 
         data: {id:id},
-        url: "/Config/Speeds/view_speedconfig",
+        url: "/rv/Config/Speeds/view_speedconfig",
         success: function (response) { 
                        
                 //Set speed information

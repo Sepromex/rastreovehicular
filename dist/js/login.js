@@ -2,10 +2,10 @@ function login() {
     jQuery.ajax({
         type: "POST",
         data: $("#login_form").serialize(),
-        url: "Login/start",
+        url: "/rv/Login/start",
         success: function (response) {
             if (response == "true") {
-                    window.location.href = "MainMap";
+                    window.location.href = "/rv/MainMap";
             } else {                            
                 alert(response);
             }

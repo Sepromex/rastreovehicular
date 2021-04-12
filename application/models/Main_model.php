@@ -18,7 +18,7 @@ Class Main_model extends CI_Model {
 		}else{			
 			return false; 			
 		}
-	}
+	} 
 
     
     // Contact user list
@@ -27,7 +27,7 @@ Class Main_model extends CI_Model {
         $this->db->select("id_usuario, email, nombre, username");
 		$this->db->from("usuarios");
         $this->db->where("activo","1"); 
-        $this->db->where("activo","1");        
+        $this->db->where("ID_EMPRESA",$_SESSION["user"]["company"]);        
         $query = $this->db->get();         
 		if($query->num_rows()>0){            
 			return $query->result();

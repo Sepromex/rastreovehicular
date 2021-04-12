@@ -14,7 +14,7 @@ class Contact extends CI_Controller {
 		$this->load->helper('acount');
 		$this->headerdata["module"] = "Acount";
 	}
-
+ 
 	public function index()
 	{   	  
 		$data["custom"]   = ["title"   => "Contactos",
@@ -26,10 +26,10 @@ class Contact extends CI_Controller {
 		$data["include"]    = includefiles($data["custom"]["page"]);  
         //$data["locations"]  = $this->main_model->get_locations();  
         $data["userlist"]   = $this->main_model->contactuser_list();
-        $data["companys"]   = $this->main_model->company_list(); 
+        //$data["companys"]   = $this->main_model->company_list(); 
 		//Load view
 		$this->load->view('layouts/admin',$data);
-	}
+	} 
 	 
 	public function List(){
 		//Json contact list

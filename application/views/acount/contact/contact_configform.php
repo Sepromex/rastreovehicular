@@ -44,7 +44,7 @@
                             </div> 
                             <div class="form-group col-md-3">
                                 <label for="conf_contactjob">Puesto</label>
-                                <input type="text" class="form-control rounded"  id="conf_contactjob" name="conf_contactjob"  required="">                                
+                                <input type="text" class="form-control rounded w-100"  id="conf_contactjob" name="conf_contactjob"  required="">                                
                             </div>        
                         </div> 
 
@@ -62,30 +62,25 @@
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label for="conf_contactcompanyid">Empresa</label>
-                                <select class="form-control select-form" onchange="validate_select('#conf_contactcompanyid','#feedback-confcontactcompanyid')" id="conf_contactcompanyid" name="conf_contactcompanyid">
-                                    <option value="0">Selecciona una empresa</option>
-                                    <?php foreach($companys as $datacompany): ?>
-                                    <option value="<?=intval($datacompany->id_empresa)?>"><?=$datacompany->razon_social?></option>                     
-                                    <?php endforeach; ?>
-                                </select>   
-                                <div class="invalid-feedback" id="feedback-confcontactcompanyid"></div>
+                                
+                                    <label for="conf_contactuserid">Usuario</label>
+                                    <select class="form-control select-form" id="conf_contactuserid" name="conf_contactuserid">
+                                        <option value="0">Selecciona un usuario</option>
+                                        <?php foreach($userlist as $datauser): ?>
+                                        <option value="<?=intval($datauser->id_usuario)?>" data-email="<?=$datauser->email?>"><?=$datauser->username?></option>                     
+                                        <?php endforeach; ?>
+                                    </select>   
+                                
+
+                                <input type="hidden" name="conf_contactcompanyid" value="<?=$_SESSION["user"]["company"]?>">
+                                
+                                
                             </div> 
                              
                         </div> 
 
 
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="conf_contactuserid">Usuario</label>
-                                <select class="form-control select-form" id="conf_contactuserid" name="conf_contactuserid">
-                                    <option value="0">Selecciona un usuario</option>
-                                    <?php foreach($userlist as $datauser): ?>
-                                    <option value="<?=intval($datauser->id_usuario)?>" data-email="<?=$datauser->email?>"><?=$datauser->username?></option>                     
-                                    <?php endforeach; ?>
-                                </select>   
-                            </div>
-                        </div> 
+                        <!-- <div class="form-row"></div> -->
 
                     </div>
                 </form>  
