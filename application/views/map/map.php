@@ -105,7 +105,7 @@
 </div>
 
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGi-KpwkfLDT4fRXuVTRxAyUsClhTIPBI&callback=initMap&libraries=&v=weekly" async></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbr1ZoDby1GW6nP7RAgokJLqWP_95d6SE&callback=initMap&libraries=&v=weekly" async></script>
 
 
 <script> 
@@ -574,7 +574,7 @@ function MapaCord(la, lo, tv, v, name, vel) {
     }
 
     infowindow = new google.maps.InfoWindow();    
-    var string="<div style='min-width:100px; height:50px; max-width:250px;'>Nombre: "+name+" </br> Velocidad: "+vel+" </br> Lat: "+la+", Lon: "+lo+"</div>";
+    var string="<div style='min-width:100px; height:50px; max-width:250px;'>Nombre: "+name+" </br> Velocidad: "+vel+" km/h </br> Lat: "+la+", Lon: "+lo+"</div>";
     infowindow.setContent(string);
     infowindow.setPosition(miPosicion);
     infowindow.open(map);
@@ -1090,7 +1090,7 @@ function filtervehoption(){
 }
 
 
-function edit_vehiclelist(id){    
+function edit_vehiclelist(id){  
     $.ajax({ 
         type: "POST", 
         data: {id:id},
@@ -1109,6 +1109,7 @@ function edit_vehiclelist(id){
     });
 }
 
+
 function vehicle_detail(id){
     $.ajax({ 
         type: "POST", 
@@ -1123,6 +1124,7 @@ function vehicle_detail(id){
     });     
 }
 
+
 $(".back-to-email").on("click", function () {
     $("#detail-content").html("");
     $('.view-email').hide();  
@@ -1130,7 +1132,9 @@ $(".back-to-email").on("click", function () {
     $('#maincontrols').show();   
 });
 
+
 var vehicleslist_info = [];
+
 
 function load_vehicles(){ 
     //console.log("loaddd");
@@ -1176,6 +1180,7 @@ function load_vehicles(){
         }
     });  
 }
+
 
 /*
 function load_sites(){  

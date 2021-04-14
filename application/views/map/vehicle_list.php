@@ -89,7 +89,7 @@
                             <!-- <i class="mdi mdi-map-marker text-danger toltip"  onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',2)"    data-placement="top" title="Ubicacion"></i> -->
                             <i class="mdi mdi-information text-primary toltip"  onclick="vehicle_detail(<?=$vehid?>)"   data-placement="top" title="Información"></i>
                             
-                            <i class="mdi mdi-map-marker-path ml-1 text-primary toltip" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',2)"  data-list="geoc_list"  data-placement="top" title="Ruta"></i> 
+                            <i class="mdi mdi-map-marker-path ml-1 text-primary toltip" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',2)"  data-list="geoc_list"  data-placement="top" title="Últimas pocisiones"></i> 
 
                             <a href="#" class="ml-3 mark-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-options-vertical"></i>

@@ -12,7 +12,7 @@
             </div>
 
             <form class="float-left d-none d-lg-block search-form">
-                <div class="form-group mb-0 position-relative">
+                <div class="form-group mb-0 position-relative">                
                     <!-- <input type="text" class="form-control border-0 rounded bg-search pl-5" placeholder="Buscar...">
                         <div class="btn-search position-absolute top-0">
                             <a href="#"><i class="h6 icon-magnifier"></i></a>
@@ -29,7 +29,9 @@
 
                     <li class="d-inline-block align-self-center  d-block d-lg-none">
                         <a href="#" class="nav-link mobilesearch" data-toggle="dropdown" aria-expanded="false"><i class="icon-magnifier h4"></i>                               
+                       
                         </a>
+                        
                     </li>          
 
                     <!-- 
@@ -60,7 +62,7 @@
                         </ul>
 
                     </li>
-
+ 
                     <li class="dropdown align-self-center d-inline-block">
                         <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false"><i class="icon-bell h4"></i>
                             <span class="badge badge-default"> <span class="ring">
@@ -108,9 +110,10 @@
 
                     <li class="dropdown user-profile align-self-center d-inline-block">
                         <a href="#" class="nav-link py-0" data-toggle="dropdown" aria-expanded="false"> 
-                            <div class="media">                                   
-                                <img src="<?=base_url()?>/dist/images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29">
+                            <div class="media m-auto">                                   
+                                <img src="<?=base_url()?>/dist/images/author.jpg" alt="" class="d-flex img-fluid rounded-circle m-auto" width="29">                               
                             </div>
+                            <p class="text-center "> <?=$_SESSION["user"]["nombre"]?> </p>
                         </a>
 
                         <div class="dropdown-menu border dropdown-menu-right p-0">

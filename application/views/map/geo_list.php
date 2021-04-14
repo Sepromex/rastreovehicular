@@ -42,11 +42,11 @@
             </div> 
 
         </div>
-</div> 
+</div>  
 <form id="form_geolist">
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
     <ul class="mail-app list-unstyled" id="geo_list">
-        <?php foreach($geoc as $geo): 
+        <?php if(is_array($geoc)): foreach($geoc as $geo): 
                 $type = $geo->tipo;
 
                 $icon  = ($type==0)?'circle':'polig';  
@@ -95,7 +95,7 @@
 
             </div>
         </li>        
-        <?php endforeach; ?>
+        <?php endforeach; endif; ?>
     </ul>
 </div> <!-- LISTADO VEHICULOS --> 
 </form>

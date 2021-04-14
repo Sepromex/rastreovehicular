@@ -54,11 +54,11 @@
 <div class="scrollertodo">  <!-- LISTADO VEHICULOS -->
     <ul class="mail-app list-unstyled" id="sites_list">
         <!-- ITEMS <div id="vehicles_list"></div> -->
-        <?php foreach($sites as $site): 
+        <?php if(is_array($sites)): foreach($sites as $site): 
                 $icon_class = ($site->id_tipo>0)?$site->id_tipo:0;			
                 $iconimg    = ($site->imagen!="")?substr($site->imagen,14):"defaul_marker.png";    
                 $idsite     = $site->id_sitio;
-        ?> 
+        ?>  
         <li class="py-1 px-2 mail-item inbox sitetype-<?=$icon_class?> cursor-pointer pointer" id="sitelist_<?=$idsite?>"> 
             <div class="d-flex align-self-center align-middle">
                 <label class="chkbox">
@@ -80,7 +80,7 @@
                 </div> 
             </div>
         </li>
-        <?php endforeach; ?>
+        <?php  endforeach; endif; ?>
     </ul>
 </div> <!-- LISTADO VEHICULOS -->
 </form> 
