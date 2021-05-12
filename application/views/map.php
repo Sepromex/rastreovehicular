@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- START: Head-->
+    <!-- START: Head test -->
     <head>
         <meta charset="UTF-8">
         <title><?=$custom["title"]?></title>
