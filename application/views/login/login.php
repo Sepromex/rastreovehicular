@@ -1,5 +1,5 @@
 <form method="POST" id="login_form" class="row row-eq-height lockscreen  mt-5 mb-5">
-    <div class="lock-image col-12 col-sm-5"></div>
+    <div class="col-12 col-sm-5"></div> <!-- lock-image  -->
     <div class="login-form col-12 col-sm-7">
         <div class="form-group mb-3 text-center">
             <p>Por favor introduzca su usuario y contraseña para acceder a la aplicación.</p>

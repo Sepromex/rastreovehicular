@@ -3,9 +3,9 @@
     <div class="site-width">
         <nav class="navbar navbar-expand-lg  p-0">
             <div class="navbar-header  h-100 h4 mb-0 align-self-center logo-bar text-left hidde-mobile">  
-                <a href="<?=base_url()?>/MainMap" class="horizontal-logo text-left">
-                    <img   height="40px" src="<?=base_url()?>/assets/images/layout/logo_head.png"/>                                
-                </a>                    
+                <!-- <a href="<?=base_url()?>/MainMap" class="horizontal-logo text-left">
+                    <img   height="40px" src="< ?=base_url()?>/assets/images/layout/logo_head.png"/>                                
+                </a> -->                   
             </div>
             <div class="navbar-header h4 mb-0 text-center h-100 collapse-menu-bar">
                 <a href="#" class="sidebarCollapse" id="collapse" onclick="collapse()"><i class="icon-menu"></i></a>

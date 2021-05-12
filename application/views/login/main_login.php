@@ -30,14 +30,14 @@
     <body id="main-container" class="default">
         <!-- START: Main Content-->
         <div class="container">
-            <div class="row vh-100 justify-content-between align-items-center">
+            <div class="row vh-100  align-items-center">
                 <div class="col-12">
                     <?php $this->load->view($custom["form"]); ?>
                 </div>
                 <div class="col-12">
-                <p style="font-size:15px;" class="my-3 text-muted text-center">Si tiene dudas, comentarios o sugerencias llámenos al <span> (33 38255200) ext. 104 </span>, o bien envíe un email a <span>monitoreo_gps@sepromex.com.mx.</span></p>
+                <!-- <p style="font-size:15px;" class="my-3 text-muted text-center">Si tiene dudas, comentarios o sugerencias llámenos al <span> (33 38255200) ext. 104 </span>, o bien envíe un email a <span>monitoreo_gps@sepromex.com.mx.</span></p> -->
                 </div>
-
+ 
             </div>
         </div>
         <!-- END: Content-->

@@ -1,6 +1,6 @@
 <!-- START: Footer-->
 <footer class="site-footer">
-    2021 &copy; Sepromex S.A. de C.V. | Teléfono +52 (33) 3825 5200
+    <!-- 2021 &copy; Sepromex S.A. de C.V. | Teléfono +52 (33) 3825 5200 -->
 </footer>
 <!-- END: Footer-->
 

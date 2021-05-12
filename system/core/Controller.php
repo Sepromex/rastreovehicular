@@ -91,6 +91,7 @@ class CI_Controller {
 		//if(isset($_SESSION["user"])){
 			$this->dbweb    = $this->load->database('web', TRUE);
 			$this->dbmaster = $this->load->database('master', TRUE);
+			//$this->dbcruce = $this->load->database('cruce', TRUE);
 		//}else{
 		//	header("Location:".base_url()."/Login");
 		//}

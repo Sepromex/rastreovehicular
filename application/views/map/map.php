@@ -105,7 +105,7 @@
 </div>
 
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbr1ZoDby1GW6nP7RAgokJLqWP_95d6SE&callback=initMap&libraries=&v=weekly" async></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2ZgtqdFwl6hQomaR295YK0A1XVjcVXl0&callback=initMap&libraries=&v=weekly" async></script>
 
 
 <script> 
@@ -144,6 +144,7 @@ var markers = [];
 var markers_rutas = [];
 var directionsVisible = false;
 var currentId = 0;
+ var settimeputarray = new Array();
 
 
 let map;
@@ -531,19 +532,186 @@ function mark_list(e){
     $(e).css("background","#d4f8b1");
 }
 
-function vehicle_realtime(id,company,e){  
-    if($(e).is(":checked")) {
-        console.log("checo");        
-        vehicle_ubication(id,company,1);
+function vehicle_ubicationwwww(id,company,check) {    
+    $.ajax({ 
+        type: "POST",
+        data: {id:id,company:company,check:check},
+        url: "<?=base_url()?>/MainMap/get_ubication",
+        success: function (response) {              
+            if(response.error){
+                alert(response.error);
+            }else{
+
+                var last = response.last;                
+                $("#ubicacion").html(response.table); 
+                
+                MapaCord(last.lat, last.lon, last.tipov, response.veh, last.name, last.vel, last.ub);      
+                  
+ 
+            }
+        }
+    }); 
+}
+
+function limpiar_veh(){
+    if(arrayInfo.length!=0){
+        for(var f=0; f < arrayInfo.length; f++){
+            var info = arrayInfo[f]; // find the marker by given id
+            info.setMap(null);
+        }   
+    }
+    if(markersArrays.length!=0){
+        for(var f=0; f < markersArrays.length; f++){
+            var marker = markersArrays[f]; // find the marker by given id
+            marker.setMap(null);
+        }   
+    }
+    elimR();
+    $("#ubicacion").html("");
+}
+
+var time_live;
+ 
+
+
+function vehicle_realtime(){
+    var ids = "";
+    var count = 0;
+    $("#form_vehlist input[type=checkbox]:checked").each(function(){
+        ids = ids + $(this).val() + ",";
+        count++;
+    });
+    ids = ids.slice(0, -1);
+    console.log(ids);
+    if(count<=50){
+            
+            if(!time_live)
+				time_live = window.setTimeout('vehicle_realtime()',(1000*60*1));
+			if(time_live){
+				window.clearInterval(time_live);
+				time_live = window.setTimeout('vehicle_realtime()',(1000*60*1));
+			}
+
+
+            $.ajax({ 
+                type: "POST",
+                data: {ids:ids},
+                url: "<?=base_url()?>/MainMap/get_ubication_list",
+                success: function (responses) {              
+                    if(responses.length > 0){
+                        //elimR();
+                        var temp = "<div id='mostrar_veh' style='margin:0px; width: 100%;'>"+
+                                        "<div style='float:right;'></div>"+
+                                        "<table border='0' id='box-table-a' class='table' style=' margin:0px;'>"+
+                                            "<thead>"+
+                                                "<tr class='fuente_siete' style='margin:0px; width: 100%; background-color:#f3f3f3;'>"+
+                                                    "<th align='center'>Vehículo</th>"+
+                                                    "<th  align='center'>Fecha / Hora</th>"+
+                                                    "<th align='center'>Km/H</th>"+
+                                                    "<th align='center'>Batería</th>"+
+                                                    "<th align='center'>ODO</th>"+
+                                                    "<th align='center'>Latitud,Longitud</th>"+
+                                                    "<th align='center'>Ubicación</th>"+			
+                                                    "<th>Satelites</th>"+		
+                                                    "</tr>"+
+                                                    "</thead>"+
+                                                "<tbody class='tr_vehcontent'></tbody>"+
+                                            "</table>"+
+                                        "</div>";
+                        $("#ubicacion").html(temp);
+                        
+                                if(arrayInfo.length!=0){
+                                    for(var f=0; f < arrayInfo.length; f++){
+                                        var info = arrayInfo[f]; // find the marker by given id
+                                        info.setMap(null);
+                                    }   
+                                }
+
+                                if(markersArrays.length!=0){
+                                    for(var f=0; f < markersArrays.length; f++){
+                                        var marker = markersArrays[f]; // find the marker by given id
+                                        marker.setMap(null);
+                                    }   
+                                }
+                                elimR();
+            
+                    
+
+                        
+
+                    
+                        
+
+                    }
+                    
+                }
+            }); 
+
+
+
+            
+
+
     }else{
-        console.log("no checo");
-    } 
-    
-} 
-	
+        alert("No puede agregar mas de 50 vehiculos al mismo tiempo");
+    }
+
+}
+
+
+function vehicle_ubication_zoom(id,company,check) {    
+    $.ajax({ 
+        type: "POST",
+        data: {id:id,company:company,check:check},
+        url: "<?=base_url()?>/MainMap/get_ubication",
+        success: function (response) {              
+            if(response.error){
+                alert(response.error);
+            }else{
+                
+                
+                //$('#form_sitelist input:checkbox').prop('checked', false);
+
+                    var last = response.last;                
+                    $("#ubicacion").html(response.table);                     
+                    
+                    elimR();
+               
+              /****************** */ 
+              var la = last.lat; 
+              var lo = last.lon;
+              var t  = last.tipov; 
+              var v  = response.veh;
+              var name = last.name;
+              var vel = last.vel;
+              var ub = last.ub; 
+
+                var miPosicion=new google.maps.LatLng(la,lo);
+                map.setOptions({
+                    overviewMapControl:true,
+                    center:miPosicion,		
+                    zoom:15
+                }); 
+                if(arrayInfo.length!=0){
+                    for(var f=0; f < arrayInfo.length; f++){
+                        var info = arrayInfo[f]; // find the marker by given id
+                        info.setMap(null);
+                    }   
+                }
+                infowindow = new google.maps.InfoWindow();    
+                var string="<div style='min-width:100px; max-height:100px; max-width:350px;'>Nombre: "+name+" </br> Velocidad: "+vel+" km/h </br> Ubicación: "+ub+"</div>";
+                infowindow.setContent(string);
+                infowindow.setPosition(miPosicion);
+                infowindow.open(map);
+                arrayInfo.push(infowindow);
+              /**************** */
+            }
+        }
+    }); 
+}
 
 //funcion que recibe los datos de la ubicacion y los envia a createMarker
-function MapaCord(la, lo, tv, v, name, vel) { 
+function MapaCord(la, lo, tv, v, name, vel, ub) { 
 	if(markersArrays.length!=0){var elim=elimMarcador(); }
    
 	if(al.length!=0){al.splice(al.length);}
@@ -574,15 +742,13 @@ function MapaCord(la, lo, tv, v, name, vel) {
     }
 
     infowindow = new google.maps.InfoWindow();    
-    var string="<div style='min-width:100px; height:50px; max-width:250px;'>Nombre: "+name+" </br> Velocidad: "+vel+" km/h </br> Lat: "+la+", Lon: "+lo+"</div>";
+    var string="<div style='min-width:100px; max-height:100px; max-width:350px;'>Nombre: "+name+" </br> Velocidad: "+vel+" km/h </br> Ubicación: "+ub+"</div>";
     infowindow.setContent(string);
     infowindow.setPosition(miPosicion);
     infowindow.open(map);
     arrayInfo.push(infowindow);
     
     markersArrays.push(marcador);
-    
-    
 }
  
 
@@ -621,7 +787,7 @@ function elimR(){
     } 
 }
 
-function vehicle_ubication(id,company,check) {    
+function vehicle_ubication(id,company,check){   
     $.ajax({ 
         type: "POST",
         data: {id:id,company:company,check:check},
@@ -630,30 +796,47 @@ function vehicle_ubication(id,company,check) {
             if(response.error){
                 alert(response.error);
             }else{
+                        if(arrayInfo.length!=0){
+                            for(var f=0; f < arrayInfo.length; f++){
+                                var info = arrayInfo[f]; // find the marker by given id
+                                info.setMap(null);
+                            }   
+                        }
 
-                var last = response.last;                
-                $("#ubicacion").html(response.table); 
+                        if(markersArrays.length!=0){
+                            for(var f=0; f < markersArrays.length; f++){
+                                var marker = markersArrays[f]; // find the marker by given id
+                                marker.setMap(null);
+                            }   
+                        }
+                        elimR();
+                        $("#ubicacion").html("");                         
+                        $('#form_vehlist input:checkbox').prop('checked', false);
                 
-                MapaCord(last.lat, last.lon, last.tipov, response.veh, last.name, last.vel);      
-                 
-                
+                    var last = response.last;                
+                    $("#ubicacion").html(response.table);                     
+                    MapaCord(last.lat, last.lon, last.tipov, response.veh, last.name, last.vel, last.ub); 
+                   
+               
+                /*if(check == 1){ //Zoom 
+                    var last = response.last;                
+                    MapaCordZoom(last.lat, last.lon); 
+                }*/
 
-                if(check == 2){
-                    elimR();
-                    //var flightPath = arregloDeRecorridos[0];    
-                    //flightPath.setMap(null);
-                    //arregloDeRecorridos.length=0;
-
+                if(check == 2){  //Ruta
+                    
                     $.each(response.route, function(i, item) {
                         crea_recorrido(item.lat,item.lon,item.tipoveh,0);
                     });  
-
-                    mostrarLinea2(0);
-
+                    mostrarLinea2(0); 
                 }
+
+
             }
         }
     }); 
+
+                
 }
 
 function clearveh(){
@@ -680,6 +863,7 @@ function elimMarcador(){
 		marker.setMap(null);
 		markersArrays.length=0;
 }	 
+
 function cleargeo(){
     for(var j=0; j < impresos.length; j++){
 		var geoCer = impresos[j]; // find the marker by given id
@@ -694,6 +878,7 @@ function cleargeo(){
     
     $('#form_geolist input:checkbox').prop('checked', false);
 }
+
 function geo_go(lat,lon,type,id){ 
     if(type==1){
         $.ajax({ 
@@ -762,6 +947,7 @@ function crea_sitios(nombre,lat,lon,contacto,tel1,tel2,imagenes,tipoGeo,zoom = 0
     }*/
 }
 
+
 function show_site(e,id){
     if($(e).is(":checked")) {    
         $.ajax({ 
@@ -784,35 +970,27 @@ function show_site(e,id){
 			marker.setMap(null);
 		}
 		sitios_seleccionados();
-	}
-
-    
+	}    
 } 
+
  
 function clearMark() { 
     for(var i=0; i<elim_sitio.length;i++){
 			var marker = elim_sitio[i];
 			marker.setMap(null);
-		}    
-    
-
+		}  
     $('#form_sitelist input:checkbox').prop('checked', false);
 }
 
 
 function sitios_seleccionados(){
-
     $("#form_sitelist input[type=checkbox]:checked").each(function(){
         //cada elemento seleccionado
         //console.log($(this).val());
         show_site(this,$(this).val());
     });
-	
 }
 
-
-
-      
 
 function validate_form_newsite(){
     var sitename = validate_name("#edit_sitename","#feedback-edit_sitename");
@@ -1201,7 +1379,7 @@ $(".back-to-vlist").on("click", function () {
 });*/
 
 //load_sites(); 
-load_vehicles();
+//load_vehicles();
 
 /*
 $(document).ready(function(){

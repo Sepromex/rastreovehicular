@@ -79,7 +79,7 @@ class Login extends CI_Controller {
                        "company" => $user["id_empresa"],
                        "rol_id"  => $user["id_rol"],
                        "estatus" => $user["estatus"]);        
-
+ 
         $data["rol"] = $this->rol_model->rol_access($user["id_rol"]);
         
         $modules_ = $this->login_model->get_modules();

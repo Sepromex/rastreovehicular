@@ -70,17 +70,22 @@
         <?php foreach($vehicles as $veh): $vehid = $veh->NUM_VEH;  $comp = $veh->id_empresa; ?>
             <li class="py-1 px-2 mail-item inbox  cursor-pointer" id="vehiclelist_<?=$vehid?>">
                 <div class="d-flex align-self-center align-middle">
-                  
+                <label class="chkbox">
+                    <input type="checkbox" onclick="vehicle_realtime()" name="markr_veh[<?=$vehid?>]" value="<?=$vehid?>">
+                    <span class="checkmark small"></span>
+                </label>
                     <div class="mail-content d-md-flex w-100">                                                    
                         
-                        <span class="car-name" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',1)"><?=$veh->ID_VEH?></span>
+                        <span class="car-name" onclick="vehicle_ubication_zoom('<?=$vehid?>','<?=$comp?>',1)"><?=$veh->ID_VEH?></span>
 
-                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>" onclick="vehicle_ubication('<?=$vehid?>','<?=$comp?>',0)">                                                           <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
+                        <div class="d-flex mt-3 mt-md-0 ml-auto" id="vehicle-element<?=$vehid?>">
+
+                            <div class="h6 mr-1 mdi mdi-engine-off text-info engine-off"></div>
                                 
                             <div class="speed-icon mr-1">
                                     <img class="toltip" style="width:100%;" src="<?=base_url()?>/dist/images/config/vehicles/speed_blue.png">
                             </div>
-
+ 
                         </div>
  
                         <div class="d-flex mt-3 mt-md-0">       

@@ -1,0 +1,55 @@
+< Las instacias locales de XAMP no funcionan
+
+> LOCAL IP
+< http://sepromex.cloudapp.net/
+< 23.101.140.165
+< 23.101.141.44
+
+> DATABASE LOCAL (Funciona / Actualizada)
+< Host: localhost (23.101.140.165) (23.101.141.44)
+< Port: 3306 (DEFAULT) (OPEN)
+< User: root
+< Pass: 53g53pr0
+
+> DATABASE
+< Port 3305 AND 3306 is closed on 160.16.18.20.
+< Host: 160.16.18.20
+< Port: 3305
+< User: usercruce
+< Pass: server (?)
+
+> DATABASE 2
+< Port 3306 is closed
+< Host: 160.16.18.8
+< Port: 3306 (DEFAULT)
+< User: egweb
+< Pass: egW@b2009
+
+
+> El archivo no devuelve nada al buscar reportes de recorrido
+< http://10.0.0.2/egweb/reportes_recorrido.php
+< Utiliza librerias/func_recorridoCambios.js
+< SOLUCIONADO
+
+> Solucionar errores relacionados con la base de datos de calles (crucev2)
+< 
+< Hay DEMACIADAS conexiones que se abren en el sistema, el acceso a la base de datos
+< debería realizarse en 1 sola conexion, desde 1 solo archivo, para solucionar esto
+< voy a hacer un reemplazo en 22 lugares distintos de la cadena:
+< mysql_connect("160.16.18.8","egweb","egW@b2009") por:
+< mysql_connect("localhost","root","53g53pr0")
+< y 22 ocurrencias de:
+< mysql_connect("160.16.18.20:3305","usercruce","server") por:
+< mysql_connect("localhost","root","53g53pr0")
+
+
+> Poll position
+$socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+$connec = socket_connect($socket, "10.0.2.8", '6668'); //$ipcerebro (LOCAL)
+socket_send($socket, $package, strlen($package), 0);
+socket_close($socket);
+
+> POLL (Poleo)
+< "POLL:".$idu.";".$veh;
+> EMAIL (Mensaje por clave)
+< "EMAIL:".$idu.";".$veh.",A1".$msgc;

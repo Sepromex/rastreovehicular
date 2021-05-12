@@ -37,5 +37,23 @@ function generalstatus($type){
     }
     return $status;
 }
+function monthtochar($mes){
+    $mess = 'Indefinido';
+    switch($mes){
+        case 1: $mess='Ene'; break;
+        case 2: $mess='Feb'; break;
+        case 3: $mess='Mar'; break;
+        case 4: $mess='Abr'; break;
+        case 5: $mess='May'; break;
+        case 6: $mess='Jun'; break;
+        case 7: $mess='Jul'; break;
+        case 8: $mess='Ago'; break;
+        case 9: $mess='Sep'; break;
+        case 10: $mess='Oct'; break;
+        case 11: $mess='Nov'; break;
+        case 12: $mess='Dic'; break;
+    }
+    return $mess;
+}
 
 ?>

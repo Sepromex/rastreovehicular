@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Piecemaker>
+  <Settings>
+    <imageWidth>700</imageWidth>
+    <imageHeight>350</imageHeight>
+    <segments>7</segments>
+    <tweenTime>1.2</tweenTime>
+    <tweenDelay>0.1</tweenDelay>
+    <tweenType>easeInOutBack</tweenType>
+    <zDistance>0</zDistance>
+    <expand>20</expand>
+    <innerColor>0x111111</innerColor>
+    <textBackground>0x3C96F0</textBackground>
+    <shadowDarkness>100</shadowDarkness>
+    <textDistance>25</textDistance>
+    <autoplay>12</autoplay>
+  </Settings>
+  <Image Filename="principal.jpg">
+    <Text>
+    
+    </Text>
+  </Image>
+  <Image Filename="las4Cs.jpg">
+    <Text>
+     
+    </Text>
+  </Image>
+  <Image Filename="controlar.jpg">
+    <Text>
+	
+     </Text>
+  </Image>
+  <Image Filename="conocer.jpg">
+    <Text>
+      
+	</Text>
+  </Image>
+  <Image Filename="contactos.png">
+    <Text>
+     
+    </Text>
+  </Image>
+  <Image Filename="contrasenia.png">
+    <Text>
+      
+      </Text>
+  </Image>
+  <Image Filename="notaImportante.png">
+    <Text>
+      
+    </Text>
+  </Image>
+</Piecemaker>
